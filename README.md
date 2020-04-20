@@ -3,4 +3,4 @@ A browser for the AllGoods marketplace
 
 ### Disclaimer
 
-This is not an officially supported AllGoods product.
+This project is not assoicated with or officially supported by AllGoods.
