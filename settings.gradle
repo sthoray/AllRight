@@ -1,0 +1,2 @@
+rootProject.name='AllRight'
+include ':app'
