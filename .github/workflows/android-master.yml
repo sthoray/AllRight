@@ -21,7 +21,7 @@ jobs:
       run: bash ./gradlew test --stacktrace
 
   apk:
-    name: Generate Debug APK
+    name: Generate debug APK
     runs-on: ubuntu-latest
 
     steps:
