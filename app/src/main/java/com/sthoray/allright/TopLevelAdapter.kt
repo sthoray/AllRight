@@ -8,15 +8,13 @@ import kotlinx.android.synthetic.main.topcategory_row.view.*
 
 /**
  * Adapter for topLevel categories.
+ *
+ * Provides data for the list view.
  */
-class TopLevelAdapter: RecyclerView.Adapter<TopLevelViewHolder>() {
-
-    // temp lists for testing recycler view
-    val categoryNames = listOf<String>("First","Second","Third")
-    val categoryItemCount = listOf<Int>(55, 125, 0)
+class TopLevelAdapter(val topLevel: Array<TopLevelCategory>): RecyclerView.Adapter<TopLevelViewHolder>() {
 
     override fun getItemCount(): Int {
-        return categoryNames.count()
+        return topLevel.count()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopLevelViewHolder {
@@ -27,11 +25,10 @@ class TopLevelAdapter: RecyclerView.Adapter<TopLevelViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TopLevelViewHolder, position: Int) {
-        val categoryName = categoryNames.get(position)
-        val categoryItemCount = categoryItemCount.get(position)
+        val category = topLevel.get(position)
 
-        holder.view.textView_name.text = categoryName
-        holder.view.textView_itemCount.text = categoryItemCount.toString()
+        holder.view.textView_name.text = category.name
+        holder.view.textView_ListingCount.text = category.listing_count.toString()
     }
 }
 
