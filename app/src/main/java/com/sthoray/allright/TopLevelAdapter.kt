@@ -28,7 +28,7 @@ class TopLevelAdapter(val topLevel: Array<TopLevelCategory>): RecyclerView.Adapt
         val category = topLevel.get(position)
 
         holder.view.textView_name.text = category.name
-        holder.view.textView_ListingCount.text = category.listing_count.toString()
+        holder.view.textView_listingCount.text = category.listing_count.toString()
     }
 }
 
