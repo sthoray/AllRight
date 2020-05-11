@@ -2,7 +2,7 @@
 
 A browser for the AllGoods marketplace.
 
-![](https://github.com/sthoray/AllRight/workflows/Android%20PR%20&%20Master%20Build/badge.svg)
+![](https://github.com/sthoray/AllRight/workflows/Android%20Master%20Build/badge.svg)
 
 ### Disclaimer
 
