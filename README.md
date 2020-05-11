@@ -1,5 +1,8 @@
 # AllRight
-A browser for the AllGoods marketplace
+
+A browser for the AllGoods marketplace.
+
+![](https://github.com/sthoray/AllRight/workflows/Android%20Master%20Build/badge.svg)
 
 ### Disclaimer
 
