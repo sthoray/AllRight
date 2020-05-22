@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This a "Splash Screen" XML file, here all the text view, Image view are laid in a linearly fashion inside the Linear layout. The reason of linear layout is for accurately placing the logo and the progress bar without happen to use the constraints -->
+
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,9 +9,10 @@
     android:layout_height="match_parent"
     android:background="@color/darkOrange">
 
-    <!-- Don't worry about the id names I have named the id's with reference to the file name for consistency -->
+
 
     <ImageView
+        android:contentDescription="@string/logo"
         android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,13 +21,13 @@
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/logo"
         android:gravity="center"
         android:padding="30dp"
-        android:text="All Right"
+        android:text="@string/app_name"
         android:textColor="@color/white"
         android:textSize="40dp"
         android:textStyle="bold" />
@@ -35,20 +36,20 @@
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView"
+        android:layout_below="@id/textViewTitle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:indeterminateTint="@color/white"/>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textViewTeamName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/progressBar"
         android:gravity="center"
         android:layout_marginTop="100dp"
         android:padding="15dp"
-        android:text="sthoray 2020"
+        android:text="@string/team_name"
         android:textColor="@color/white"
         android:textSize="15dp"
         android:textStyle="bold"
