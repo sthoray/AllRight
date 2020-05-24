@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show()
 
 //        recyclerView_topLevel.setBackgroundColor(Color.LTGRAY)
-        recyclerView_topLevel.layoutManager = GridLayoutManager(this, 2)
+        recyclerView_topLevel.layoutManager = GridLayoutManager(this, 3)
 //        recyclerView_topLevel.adapter = TopLevelAdapter()
 
         fetchJson()
