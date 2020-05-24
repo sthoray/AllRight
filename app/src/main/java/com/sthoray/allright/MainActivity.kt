@@ -1,8 +1,10 @@
 package com.sthoray.allright
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show()
 
 //        recyclerView_topLevel.setBackgroundColor(Color.LTGRAY)
-        recyclerView_topLevel.layoutManager = LinearLayoutManager(this)
+        recyclerView_topLevel.layoutManager = GridLayoutManager(this, 2)
 //        recyclerView_topLevel.adapter = TopLevelAdapter()
 
         fetchJson()
