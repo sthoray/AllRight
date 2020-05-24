@@ -25,6 +25,8 @@ android {
 
 }
 
+
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -39,4 +41,5 @@ dependencies {
     // integrate 3rd party libs
     implementation 'com.squareup.okhttp3:okhttp:4.6.0'
     implementation 'com.google.code.gson:gson:2.8.6'
+
 }
