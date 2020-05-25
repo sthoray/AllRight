@@ -14,9 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        recyclerView_topLevel.setBackgroundColor(Color.LTGRAY)
         recyclerView_topLevel.layoutManager = LinearLayoutManager(this)
-//        recyclerView_topLevel.adapter = TopLevelAdapter()
 
         fetchJson()
     }
