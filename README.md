@@ -30,6 +30,10 @@ On Mac or Linux:
 
 This creates an APK named `app-debug.apk` in `app\build\outputs\apk\debug` which can be installed on a device.
 
+## Documentation
+
+[Developer documentation](https://sthoray.github.io/AllRight/index.html) is generated from KDoc comments using Dokka and hosted on GitHub Pages.
+
 ## Disclaimer
 
 This project is not associated with or officially supported by AllGoods.
