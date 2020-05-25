@@ -9,6 +9,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
     lateinit var handler: Handler
 
+    private val delayTime: Long = 500
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
@@ -19,6 +21,6 @@ class SplashScreenActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 3000) // delaying 3 seconds to open main activity
+        }, delayTime)
     }
 }
