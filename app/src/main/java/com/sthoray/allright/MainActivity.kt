@@ -18,9 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show()
 
-//        recyclerView_topLevel.setBackgroundColor(Color.LTGRAY)
         recyclerView_topLevel.layoutManager = GridLayoutManager(this, 3)
-//        recyclerView_topLevel.adapter = TopLevelAdapter()
 
         fetchJson()
     }
