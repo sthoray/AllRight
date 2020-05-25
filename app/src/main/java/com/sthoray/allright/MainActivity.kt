@@ -1,12 +1,14 @@
 package com.sthoray.allright
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,7 +16,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerView_topLevel.layoutManager = LinearLayoutManager(this)
+        Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show()
+
+        recyclerView_topLevel.layoutManager = GridLayoutManager(this, 3)
 
         fetchJson()
     }
