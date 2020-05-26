@@ -20,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SearchResultsActivity"
+            android:label="Search Results"
+            android:launchMode="singleTop"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.sthoray.allright
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,5 +56,13 @@ class TopLevelAdapter(val topLevel: Array<TopLevelCategory>): RecyclerView.Adapt
  * This is responsible for displaying a single top level category.
  */
 class TopLevelViewHolder(val view: View): RecyclerView.ViewHolder(view) {
+    init {
+        view.setOnClickListener {
+            println("CUSTOM VIEW HOLDER INIT TO STRING: " + toString())
 
+            val intent = Intent(view.context, SearchResultsActivity::class.java)
+
+            view.context.startActivity(intent)
+        }
+    }
 }
