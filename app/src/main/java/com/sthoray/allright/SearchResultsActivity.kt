@@ -21,12 +21,13 @@ class SearchResultsActivity : AppCompatActivity(){
     }
     private class SearchResultsAdapter: RecyclerView.Adapter<SearchResultsViewHolder>(){
         override fun getItemCount(): Int {
-            return 5
+            return 20
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultsViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.search_results_row, parent, false)
+
             //val blueView = View(parent.context)
             //blueView.setBackgroundColor(Color.BLUE)
             //blueView.minimumHeight = 50
