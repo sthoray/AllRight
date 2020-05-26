@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
+import com.sthoray.allright.TopLevelCategory
 
 
 class MainActivity : AppCompatActivity() {
@@ -58,5 +59,3 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
-
-class TopLevelCategory(val id: Int, val name: String, val listing_count: Int, val icon: String)
