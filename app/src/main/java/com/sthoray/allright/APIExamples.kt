@@ -2,10 +2,14 @@ package com.sthoray.allright
 
 import com.google.gson.Gson
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
 import java.io.IOException
 
 const val baseUrl = "https://allgoods.co.nz/api/"
 
+/**
+ * Perform HTTP GET request for top level categories.
+ */
 fun getTopLevel() {
     println("Attempting to fetch JSON")
 
@@ -35,17 +39,37 @@ fun getTopLevel() {
     })
 }
 
+/**
+ * Perform HTTP POST request for search.
+ */
 fun searchCategory() {
     println("Attempting to post JSON")
 
     val url = baseUrl + "search"
 
     val searchObj = SearchRequest("3250") // search electronics category
-    val jsonRequest = Gson().toJson(searchObj)
+    val json = Gson().toJson(searchObj)
+
+    // we should not used the deprecated create method! This should be updated:
+    // https://square.github.io/okhttp/upgrading_to_okhttp_4/
+    val requestBody = RequestBody.create("application/json; charset=utf-8".toMediaType(), json)
 
     val request = Request.Builder()
         .url(url)
+        .post(requestBody)
         .build()
 
     val client = OkHttpClient()
+    client.newCall(request).enqueue(object: Callback {
+        override fun onResponse(call: Call, response: Response) {
+            println("Received response")
+            val body = response.body?.string() // the search response could be large, be careful
+
+            println(body)
+        }
+
+        override fun onFailure(call: Call, e: IOException) {
+            println("Failed to execute request")
+        }
+    })
 }
