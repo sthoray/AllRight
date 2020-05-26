@@ -8,7 +8,6 @@ import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
-import com.sthoray.allright.TopLevelCategory
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 // category/topLevel returns an array of objects
                 val topLevel: Array<TopLevelCategory> =
                     gson.fromJson(body, Array<TopLevelCategory>::class.java)
-
+                
                 // we must update the UI from from the main thread
                 runOnUiThread {
                     recyclerView_topLevel.adapter = TopLevelAdapter(topLevel)
