@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.gson.GsonBuilder
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show()
 
         recyclerView_topLevel.layoutManager = GridLayoutManager(this, 3)
+
+        searchCategory()
 
         fetchJson()
     }
@@ -38,9 +40,7 @@ class MainActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
-                println(body)
-
-                val gson = GsonBuilder().create()
+                val gson = Gson()
 
                 // category/topLevel returns an array of objects
                 val topLevel: Array<TopLevelCategory> =
