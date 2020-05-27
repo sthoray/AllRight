@@ -11,7 +11,7 @@ class SearchResultsAdapter: RecyclerView.Adapter<SearchResultsActivity.SearchRes
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultsActivity.SearchResultsViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.search_results_row, parent, false)
+        val view = layoutInflater.inflate(R.layout.search_result_row, parent, false)
         return SearchResultsActivity.SearchResultsViewHolder(view)
     }
 //
