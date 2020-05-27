@@ -21,11 +21,13 @@
         </activity>
 
         <activity android:name=".ExploreActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop">
+        </activity>
 
         <activity android:name=".BrowseActivity"
             android:label="Browse"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop">
+        </activity>
 
         <activity android:name=".SearchActivity"
             android:label="Search Results"
