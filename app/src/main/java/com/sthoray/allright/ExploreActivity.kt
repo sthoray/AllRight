@@ -22,7 +22,7 @@ class ExploreActivity : AppCompatActivity() {
 
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show()
         recyclerView_featuredCategories.layoutManager = GridLayoutManager(this, 3)
-        fetchFeatured()
+        getFeatured()
     }
 
     /**
@@ -31,7 +31,7 @@ class ExploreActivity : AppCompatActivity() {
      * If the request was performed successfully, the recycler view is updated. If
      * the request fails for any reason, a message is printed to the console.
      */
-    fun fetchFeatured() {
+    fun getFeatured() {
         val baseUrl = "https://allgoods.co.nz/api/"
         val url = baseUrl + "categoryFeaturePanel"
         val request = Request.Builder()

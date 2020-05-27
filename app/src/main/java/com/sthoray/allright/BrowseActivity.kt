@@ -20,7 +20,7 @@ class BrowseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_browse)
 
         recyclerView_topLevel.layoutManager = LinearLayoutManager(this)
-        fetchTopLevel()
+        getTopLevel()
     }
 
     /**
@@ -29,7 +29,7 @@ class BrowseActivity : AppCompatActivity() {
      * If the request was performed successfully, the recycler view is updated. If
      * the request fails for any reason, a message is printed to the console.
      */
-    private fun fetchTopLevel() {
+    private fun getTopLevel() {
         val baseUrl = "https://allgoods.co.nz/api/"
         val url = baseUrl + "category/topLevel"
         val request = Request.Builder()

@@ -10,7 +10,7 @@ const val baseUrl = "https://allgoods.co.nz/api/"
 /**
  * Perform HTTP GET request for top level categories.
  */
-fun getTopLevel() {
+fun getTopLevelExample() {
     println("Attempting to fetch JSON")
 
     val url = baseUrl + "category/topLevel"
@@ -42,7 +42,7 @@ fun getTopLevel() {
 /**
  * Perform HTTP POST request for search.
  */
-fun searchCategory() {
+fun searchCategoryExample() {
     println("Attempting to post JSON")
 
     val url = baseUrl + "search"
