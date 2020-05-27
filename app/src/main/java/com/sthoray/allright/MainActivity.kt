@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
+                println(body)
+
                 val gson = Gson()
 
                 // category/topLevel returns an array of objects
