@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView_product_image"
+        android:id="@+id/imageView_productImage"
         android:layout_width="140dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="h,16:9"
@@ -16,12 +16,12 @@
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/textView_product_name"
+        android:id="@+id/textView_productName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:text="@android:string/unknownName"
-        app:layout_constraintStart_toEndOf="@+id/imageView_product_image"
+        app:layout_constraintStart_toEndOf="@+id/imageView_productImage"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Product Name" />
 
@@ -32,7 +32,7 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:text="@android:string/unknownName"
-        app:layout_constraintStart_toEndOf="@+id/imageView_product_image"
-        app:layout_constraintTop_toBottomOf="@+id/textView_product_name"
+        app:layout_constraintStart_toEndOf="@+id/imageView_productImage"
+        app:layout_constraintTop_toBottomOf="@+id/textView_productName"
         tools:text="Location" />
 </androidx.constraintlayout.widget.ConstraintLayout>
