@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.gson.GsonBuilder
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 val body = response.body?.string()
                 println(body)
 
-                val gson = GsonBuilder().create()
+                val gson = Gson()
 
                 // category/topLevel returns an array of objects
                 val topLevel: Array<TopLevelCategory> =
