@@ -47,7 +47,7 @@ fun searchCategoryExample() {
 
     val url = baseUrl + "search"
 
-    val searchObj = SearchRequest("3250") // search electronics category
+    val searchObj = SearchRequest(3250) // search electronics category
     val jsonBody = Gson().toJson(searchObj)
 
     // we should not used the deprecated create method! This should be updated:
