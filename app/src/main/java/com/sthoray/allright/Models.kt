@@ -1,5 +1,7 @@
 package com.sthoray.allright
 
+// TODO: Merge TopLevel and FeatureCategory together
+
 // Browse model
 
 /**

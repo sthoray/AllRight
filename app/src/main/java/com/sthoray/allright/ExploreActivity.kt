@@ -94,25 +94,30 @@ class ExploreActivity : AppCompatActivity() {
             holder.view.textView_listingCount.text = category.listing_count.toString()
 
             // TODO: add featured category images here -- Look at [FeatureCategory] for fields
+
+            holder.category = category
         }
     }
+}
 
-    /**
-     * View holder for featured categories.
-     *
-     * Responsible for displaying a single featured categories and providing an on
-     * click listener.
-     */
-    private class FeaturedCategoryViewHolder(val view: View): RecyclerView.ViewHolder(view) {
+/**
+ * View holder for featured categories.
+ *
+ * Responsible for displaying a single featured categories and providing an on
+ * click listener.
+ */
+class FeaturedCategoryViewHolder(val view: View, var category: FeatureCategory? = null): RecyclerView.ViewHolder(view) {
 
-        init {
-            view.setOnClickListener {
-                // start the search activity
-                val intent = Intent(view.context, SearchActivity::class.java)
-                view.context.startActivity(intent)
-            }
-        }
-
+    companion object {
+        val SEARCH_KEY = "SEARCH"
     }
 
+    init {
+        view.setOnClickListener {
+            // start the search activity
+            val intent = Intent(view.context, SearchActivity::class.java)
+            intent.putExtra(SEARCH_KEY, category?.name)
+            view.context.startActivity(intent)
+        }
+    }
 }

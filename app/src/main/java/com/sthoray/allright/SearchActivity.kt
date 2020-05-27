@@ -17,6 +17,10 @@ class SearchActivity : AppCompatActivity() {
 
         recyclerView_searchResults.layoutManager = LinearLayoutManager(this)
         recyclerView_searchResults.adapter = SearchResultAdapter()
+
+        // Update nav bar title
+        val navBarTitle = intent.getStringExtra(FeaturedCategoryViewHolder.SEARCH_KEY)
+        supportActionBar?.title = navBarTitle
     }
 
     /**
