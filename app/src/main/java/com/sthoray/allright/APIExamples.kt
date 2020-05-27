@@ -48,11 +48,11 @@ fun searchCategory() {
     val url = baseUrl + "search"
 
     val searchObj = SearchRequest("3250") // search electronics category
-    val json = Gson().toJson(searchObj)
+    val jsonBody = Gson().toJson(searchObj)
 
     // we should not used the deprecated create method! This should be updated:
     // https://square.github.io/okhttp/upgrading_to_okhttp_4/
-    val requestBody = RequestBody.create("application/json; charset=utf-8".toMediaType(), json)
+    val requestBody = RequestBody.create("application/json; charset=utf-8".toMediaType(), jsonBody)
 
     val request = Request.Builder()
         .url(url)
@@ -65,7 +65,11 @@ fun searchCategory() {
             println("Received response")
             val body = response.body?.string() // the search response could be large, be careful
 
-            println(body)
+            val gson = Gson()
+            val searchResponse = gson.fromJson(body,SearchResponse::class.java)
+            val items = searchResponse.data // list of items (max size = 24)
+
+            println(items)
         }
 
         override fun onFailure(call: Call, e: IOException) {
