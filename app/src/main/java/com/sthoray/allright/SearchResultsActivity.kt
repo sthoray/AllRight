@@ -27,11 +27,6 @@ class SearchResultsActivity : AppCompatActivity(){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultsViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.search_results_row, parent, false)
-
-            //val blueView = View(parent.context)
-            //blueView.setBackgroundColor(Color.BLUE)
-            //blueView.minimumHeight = 50
-            //return SearchResultsViewHolder(blueView)
             return SearchResultsViewHolder(view)
         }
 
