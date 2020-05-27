@@ -109,14 +109,18 @@ class ExploreActivity : AppCompatActivity() {
 class FeaturedCategoryViewHolder(val view: View, var category: FeatureCategory? = null): RecyclerView.ViewHolder(view) {
 
     companion object {
-        val SEARCH_KEY = "SEARCH"
+        const val CATEGORY_NAME_KEY = "CATEGORY_NAME"
+        const val CATEGORY_ID_KEY = "CATEGORY_ID"
     }
 
     init {
         view.setOnClickListener {
             // start the search activity
             val intent = Intent(view.context, SearchActivity::class.java)
-            intent.putExtra(SEARCH_KEY, category?.name)
+
+            intent.putExtra(CATEGORY_NAME_KEY, category?.name)
+            intent.putExtra(CATEGORY_ID_KEY, category?.id)
+
             view.context.startActivity(intent)
         }
     }
