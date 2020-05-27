@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.search_result_row.view.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import java.io.IOException
@@ -20,7 +21,6 @@ class SearchActivity : AppCompatActivity() {
         super.setContentView(R.layout.activity_search)
 
         recyclerView_searchResults.layoutManager = LinearLayoutManager(this)
-        recyclerView_searchResults.adapter = SearchResultAdapter()
 
         // update nav bar title
         val navBarTitle = intent.getStringExtra(FeaturedCategoryViewHolder.CATEGORY_NAME_KEY)
@@ -61,9 +61,11 @@ class SearchActivity : AppCompatActivity() {
 
                 val gson = Gson()
                 val searchResponse = gson.fromJson(body, SearchResponse::class.java)
-                val items = searchResponse.data // list of items (max size = 24)
+                val items = searchResponse.data // array of SearchItem (max size = 24)
 
-                println(items.get(0).name)
+                runOnUiThread {
+                    recyclerView_searchResults.adapter = SearchResultAdapter(items)
+                }
             }
 
             override fun onFailure(call: Call, e: IOException) {
@@ -78,10 +80,10 @@ class SearchActivity : AppCompatActivity() {
      * Populates the search results recycler view by creating search result view holders
      * as required.
      */
-    private class SearchResultAdapter : RecyclerView.Adapter<SearchResultViewHolder>() {
+    private class SearchResultAdapter(val searchItems: Array<SearchItem>) : RecyclerView.Adapter<SearchResultViewHolder>() {
 
         override fun getItemCount(): Int {
-            return 20
+            return searchItems.size
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
@@ -93,7 +95,12 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
+            val searchItem = searchItems.get(position)
 
+            holder.view.textView_productName.text = searchItem.name
+            holder.view.textView_location.text = searchItem.location_name
+
+            // TODO: Load image, add other fields
         }
 
     }
@@ -104,7 +111,7 @@ class SearchActivity : AppCompatActivity() {
      * Responsible for displaying a single search result and providing an  on click listener.
      */
     private class SearchResultViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-
+        // TODO: Add on click listener
     }
 
 }
