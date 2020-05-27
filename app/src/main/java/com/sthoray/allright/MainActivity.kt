@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView_topLevel.layoutManager = GridLayoutManager(this, 3)
 
-        searchCategory()
-
         fetchJson()
     }
 
