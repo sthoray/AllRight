@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_browse.*
 import kotlinx.android.synthetic.main.featured_category_row.view.*
 import okhttp3.*
 import java.io.IOException
@@ -17,7 +17,7 @@ class BrowseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_browse)
 
         recyclerView_topLevel.layoutManager = LinearLayoutManager(this)
         fetchTopLevel()
@@ -64,7 +64,8 @@ class BrowseActivity : AppCompatActivity() {
      * @property topLevel the array containing [TopLevelCategory]s
      * @constructor Creates a TopLevelAdapter with an array of categories
      */
-    private class TopLevelAdapter(val topLevel: Array<TopLevelCategory>): RecyclerView.Adapter<TopLevelViewHolder>() {
+    private class TopLevelAdapter(val topLevel: Array<TopLevelCategory>)
+        : RecyclerView.Adapter<TopLevelViewHolder>() {
 
         override fun getItemCount(): Int {
             return topLevel.count()
@@ -72,8 +73,10 @@ class BrowseActivity : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopLevelViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val categoryRowView = layoutInflater.inflate(R.layout.top_level_row, parent, false)
-            return TopLevelViewHolder(categoryRowView)
+            val categoryItemView = layoutInflater.inflate(R.layout.top_level_row,
+                parent,
+                false)
+            return TopLevelViewHolder(categoryItemView)
         }
 
         override fun onBindViewHolder(holder: TopLevelViewHolder, position: Int) {
@@ -86,7 +89,7 @@ class BrowseActivity : AppCompatActivity() {
     /**
      * View holder for top level categories.
      *
-     * This is responsible for displaying a single top level category.
+     * Responsible for displaying a single top level category.
      */
     private class TopLevelViewHolder(val view: View): RecyclerView.ViewHolder(view) {
 

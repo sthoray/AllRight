@@ -58,7 +58,7 @@ class TopLevelAdapter(val topLevel: Array<TopLevelCategory>): RecyclerView.Adapt
 class TopLevelViewHolder(val view: View): RecyclerView.ViewHolder(view) {
     init {
         view.setOnClickListener {
-            val intent = Intent(view.context, SearchResultsActivity::class.java)
+            val intent = Intent(view.context, SearchActivity::class.java)
             view.context.startActivity(intent)
         }
     }

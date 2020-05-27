@@ -1,60 +1,108 @@
 package com.sthoray.allright
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_explore.*
+import kotlinx.android.synthetic.main.featured_category_row.view.*
 import okhttp3.*
 import java.io.IOException
 
-
-class MainActivity : AppCompatActivity() {
+class ExploreActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_explore)
 
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show()
-
-        recyclerView_topLevel.layoutManager = GridLayoutManager(this, 3)
-
-        fetchJson()
+        recyclerView_featuredCategories.layoutManager = GridLayoutManager(this, 3)
+        fetchFeatured()
     }
 
-    fun fetchJson() {
-        println("Attempting to Fetch JSON")
-
+    /**
+     * Fetches featured categories.
+     *
+     * If the request was performed successfully, the recycler view is updated. If
+     * the request fails for any reason, a message is printed to the console.
+     */
+    fun fetchFeatured() {
         val baseUrl = "https://allgoods.co.nz/api/"
-        val url = baseUrl + "category/topLevel"
-
+        val url = baseUrl + "categoryFeaturePanel"
         val request = Request.Builder()
             .url(url)
             .build()
-
         val client = OkHttpClient()
+
         // execute the request on a background thread
         client.newCall(request).enqueue(object: Callback {
+
             override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                println(body)
+                val responseBody = response.body?.string()
+                val featuredPanel = Gson().fromJson<FeaturePanelCategory>(
+                    responseBody,
+                    FeaturePanelCategory::class.java)
 
-                val gson = Gson()
+                // convert the response into a list
+                val featuredCategories = ArrayList(featuredPanel.categories.values)
 
-                // category/topLevel returns an array of objects
-                val topLevel: Array<TopLevelCategory> =
-                    gson.fromJson(body, Array<TopLevelCategory>::class.java)
-                
-                // we must update the UI from from the main thread
+                // UI must be updated from the main thread
                 runOnUiThread {
-                    recyclerView_topLevel.adapter = TopLevelAdapter(topLevel)
+                    recyclerView_featuredCategories.adapter = FeaturedCategoriesAdapter(featuredCategories)
                 }
             }
 
             override fun onFailure(call: Call, e: IOException) {
-                println("Failed to execute request")
+                println("Failed to request categoryFeaturePanel")
             }
         })
     }
+
+    /**
+     * Adapter for featured categories.
+     *
+     * Populates the featured panel recycler view by creating featured view holders as required.
+     *
+     * @property featuredCategories the array containing [FeaturePanelCategory]s
+     * @constructor Creates a FeaturedCategoriesAdapter with an array of categories
+     */
+    private class FeaturedCategoriesAdapter(val featuredCategories: ArrayList<FeatureCategory>)
+        : RecyclerView.Adapter<FeaturedCategoryViewHolder>() {
+
+        override fun getItemCount(): Int {
+            return featuredCategories.count()
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
+                : FeaturedCategoryViewHolder {
+            val layoutInflater = LayoutInflater.from(parent.context)
+            val categoryItemView = layoutInflater.inflate(R.layout.featured_category_row,
+                parent,
+                false)
+            return FeaturedCategoryViewHolder(categoryItemView)
+        }
+
+        override fun onBindViewHolder(holder: FeaturedCategoryViewHolder, position: Int) {
+            val category = featuredCategories.get(position)
+            holder.view.textView_name.text = category.name
+            holder.view.textView_listingCount.text = category.listing_count.toString()
+
+            // TODO: add featured category images here -- Look at [FeatureCategory] for fields
+        }
+    }
+
+    /**
+     * View holder for featured categories.
+     *
+     * Responsible for displaying a single featured category.
+     */
+    private class FeaturedCategoryViewHolder(val view: View): RecyclerView.ViewHolder(view) {
+
+    }
+
 }

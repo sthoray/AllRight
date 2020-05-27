@@ -20,19 +20,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"
-            android:launchMode="singleTop" />
+        <activity android:name=".ExploreActivity"
+            android:launchMode="singleTop"/>
 
         <activity android:name=".BrowseActivity"
             android:label="Browse"
             android:launchMode="singleTop"/>
 
-        <activity android:name=".SearchResultsActivity"
+        <activity android:name=".SearchActivity"
             android:label="Search Results"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".ExploreActivity" />
         </activity>
     </application>
 
