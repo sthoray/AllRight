@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.top_category_row.view.*
+import kotlinx.android.synthetic.main.featured_category_row.view.*
 
 /**
  * Adapter for topLevel categories.
@@ -33,7 +33,7 @@ class TopLevelAdapter(val topLevel: Array<TopLevelCategory>): RecyclerView.Adapt
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopLevelViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val cellForRow = layoutInflater.inflate(R.layout.top_category_row, parent, false)
+        val cellForRow = layoutInflater.inflate(R.layout.featured_category_row, parent, false)
         return TopLevelViewHolder(cellForRow)
     }
 
