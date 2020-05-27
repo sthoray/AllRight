@@ -42,12 +42,12 @@ class MainActivity : AppCompatActivity() {
                 val body = response.body?.string()
                 println(body)
 
-                val gson = GsonBuilder().create()
+                val gson = Gson()
 
                 // category/topLevel returns an array of objects
                 val topLevel: Array<TopLevelCategory> =
                     gson.fromJson(body, Array<TopLevelCategory>::class.java)
-
+                
                 // we must update the UI from from the main thread
                 runOnUiThread {
                     recyclerView_topLevel.adapter = TopLevelAdapter(topLevel)
@@ -60,5 +60,3 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
-
-class TopLevelCategory(val id: Int, val name: String, val listing_count: Int, val icon: String)
