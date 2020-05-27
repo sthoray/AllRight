@@ -1,5 +1,6 @@
 package com.sthoray.allright
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -99,9 +100,18 @@ class ExploreActivity : AppCompatActivity() {
     /**
      * View holder for featured categories.
      *
-     * Responsible for displaying a single featured category.
+     * Responsible for displaying a single featured categories and providing an on
+     * click listener.
      */
     private class FeaturedCategoryViewHolder(val view: View): RecyclerView.ViewHolder(view) {
+
+        init {
+            view.setOnClickListener {
+                // start the search activity
+                val intent = Intent(view.context, SearchActivity::class.java)
+                view.context.startActivity(intent)
+            }
+        }
 
     }
 
