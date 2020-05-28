@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView_logo"
+        android:id="@+id/imageView_splashLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
@@ -16,37 +16,33 @@
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
-        android:id="@+id/textView_title"
+        android:id="@+id/textView_splashTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imageView_logo"
         android:gravity="center"
         android:padding="30dp"
         android:text="@string/app_name"
         android:textColor="@color/primaryDarkTextColor"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:textStyle="bold" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBar_splashSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_title"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:indeterminateTint="@color/primaryDarkTextColor"/>
 
     <TextView
-        android:id="@+id/textView_teamName"
+        android:id="@+id/textView_splashTeamName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/progressBar"
         android:gravity="center"
         android:layout_marginTop="100dp"
         android:padding="15dp"
         android:text="@string/team_name"
         android:textColor="@color/primaryDarkTextColor"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:textAlignment="center"/>
 
