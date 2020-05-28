@@ -7,12 +7,12 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:contentDescription="@string/logo"
         android:id="@+id/imageView_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        android:src="@drawable/allrightlogo"
+        android:contentDescription="@string/logo"
+        android:src="@mipmap/ic_launcher"
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
