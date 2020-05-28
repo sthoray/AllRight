@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
+import coil.target.ImageViewTarget
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_result_row.view.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 
 class SearchActivity : AppCompatActivity() {
@@ -43,11 +47,10 @@ class SearchActivity : AppCompatActivity() {
 
         val searchObj = SearchRequest(categoryID)
         val jsonBody = Gson().toJson(searchObj)
-
-        // TODO: remove deprecated create method
+        
         // https://square.github.io/okhttp/upgrading_to_okhttp_4/
         val requestBody =
-            RequestBody.create("application/json; charset=utf-8".toMediaType(), jsonBody)
+            jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType())
 
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -108,8 +111,8 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_subtitle.text = searchItem.location_name
             // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
+            holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
 
-            // TODO: Load images
         }
 
     }
@@ -117,10 +120,11 @@ class SearchActivity : AppCompatActivity() {
     /**
      * View holder for search results.
      *
-     * Responsible for displaying a single search result and providing an  on click listener.
+     * Responsible for displaying a single search result and providing an on click listener.
      */
     private class SearchResultViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         // TODO: Add on click listener
+
     }
 
 }
