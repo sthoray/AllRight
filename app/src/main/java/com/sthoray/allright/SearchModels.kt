@@ -8,10 +8,11 @@ package com.sthoray.allright
  * Contains properties for search POST requests. This object must be parsed to a
  * json string before being used in a request.
  * TODO: Document properties
+ * TODO: Make properties optional and build search queries within the class
  */
 class SearchRequest(var auctions: Int,
                     var brand_new: Int,
-                    var category_id: String,
+                    var category_id: Int,
                     var fast_shipping: Int,
                     var free_shipping: Int,
                     var location: SearchLocation,
@@ -29,7 +30,7 @@ class SearchRequest(var auctions: Int,
      *
      * @param category_id the category ID to search
      */
-    constructor(category_id: String) : this(0,
+    constructor(category_id: Int) : this(0,
         0,
         category_id,
         0,

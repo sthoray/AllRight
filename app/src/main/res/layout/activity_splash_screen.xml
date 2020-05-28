@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/darkOrange">
-
-
+    android:layout_height="match_parent">
 
     <ImageView
         android:contentDescription="@string/logo"
-        android:id="@+id/logo"
+        android:id="@+id/imageView_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
@@ -21,10 +16,10 @@
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
-        android:id="@+id/textViewTitle"
+        android:id="@+id/textView_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/logo"
+        android:layout_below="@id/imageView_logo"
         android:gravity="center"
         android:padding="30dp"
         android:text="@string/app_name"
@@ -36,13 +31,13 @@
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewTitle"
+        android:layout_below="@id/textView_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:indeterminateTint="@color/white"/>
 
     <TextView
-        android:id="@+id/textViewTeamName"
+        android:id="@+id/textView_teamName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/progressBar"
