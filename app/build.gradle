@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.sthoray.allright"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -28,11 +28,14 @@ android {
         outputFormat = 'html'
         outputDirectory = "$rootDir/docs/dokka"
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
-}
-
-repositories {
-    mavenCentral()
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 dependencies {

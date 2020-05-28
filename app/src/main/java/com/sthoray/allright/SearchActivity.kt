@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
+import coil.target.ImageViewTarget
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_result_row.view.*
@@ -108,8 +111,8 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_subtitle.text = searchItem.location_name
             // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
-
-            // TODO: Load images
+            holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
+            
         }
 
     }
