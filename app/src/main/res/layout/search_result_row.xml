@@ -9,6 +9,8 @@
         android:id="@+id/imageView_productImage"
         android:layout_width="140dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintDimensionRatio="h,16:9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,20 +21,38 @@
         android:id="@+id/textView_productName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="@android:string/unknownName"
         app:layout_constraintStart_toEndOf="@+id/imageView_productImage"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Product Name" />
 
     <TextView
-        android:id="@+id/textView_location"
+        android:id="@+id/textView_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
         android:text="@android:string/unknownName"
-        app:layout_constraintStart_toEndOf="@+id/imageView_productImage"
+        app:layout_constraintStart_toStartOf="@+id/textView_productName"
         app:layout_constraintTop_toBottomOf="@+id/textView_productName"
-        tools:text="Location" />
+        tools:text="Subtitle" />
+
+    <TextView
+        android:id="@+id/textView_priceLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@android:string/unknownName"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_productImage"
+        app:layout_constraintStart_toStartOf="@+id/textView_productName"
+        tools:text="Price 1" />
+
+    <TextView
+        android:id="@+id/textView_priceRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@android:string/unknownName"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_priceLeft"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Price 2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
