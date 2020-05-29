@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_explore.*
 import kotlinx.android.synthetic.main.featured_category_row.view.*
@@ -92,9 +93,7 @@ class ExploreActivity : AppCompatActivity() {
             val category = featuredCategories.get(position)
             holder.view.textView_name.text = category.name
             holder.view.textView_listingCount.text = category.listing_count.toString()
-
-            // TODO: add featured category images here -- Look at [FeatureCategory] for fields
-
+            holder.view.imageView_image.load("https://allgoods.co.nz/" + category.image)
             holder.category = category
         }
     }

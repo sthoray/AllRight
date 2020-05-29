@@ -48,7 +48,6 @@ class SearchActivity : AppCompatActivity() {
         val searchObj = SearchRequest(categoryID)
         val jsonBody = Gson().toJson(searchObj)
 
-        // https://square.github.io/okhttp/upgrading_to_okhttp_4/
         val requestBody =
             jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType())
 
@@ -114,6 +113,7 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
             holder.searchItemId = searchItems.get(position).id
+
         }
     }
 
