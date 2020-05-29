@@ -1,15 +1,15 @@
 package com.sthoray.allright
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import coil.target.ImageViewTarget
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_result_row.view.*
@@ -82,7 +82,8 @@ class SearchActivity : AppCompatActivity() {
      * Populates the search results recycler view by creating search result view holders
      * as required.
      */
-    private class SearchResultAdapter(val searchItems: Array<SearchItem>) : RecyclerView.Adapter<SearchResultViewHolder>() {
+    private class SearchResultAdapter(val searchItems: Array<SearchItem>) : RecyclerView.Adapter
+    <SearchResultViewHolder>() {
 
         override fun getItemCount(): Int {
             return searchItems.size
@@ -110,10 +111,10 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_subtitle.text = searchItem.location_name
             // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
-
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
-        }
+            holder.searchItemId = searchItems.get(position).id
 
+        }
     }
 
     /**
@@ -121,9 +122,17 @@ class SearchActivity : AppCompatActivity() {
      *
      * Responsible for displaying a single search result and providing an on click listener.
      */
-    private class SearchResultViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        // TODO: Add on click listener
+    private class SearchResultViewHolder(val view: View, var searchItemId : Int? = null) : RecyclerView.ViewHolder(view) {
 
+        init {
+            view.setOnClickListener {
+                val baseUrl = "https://www.allgoods.co.nz/product/"
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(baseUrl + searchItemId)
+                println(searchItemId)
+                view.context.startActivity(intent)
+            }
+        }
     }
 
 }
