@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
@@ -104,9 +103,9 @@ class SearchActivity : AppCompatActivity() {
 
             // Mall mappings
             holder.view.textView_productName.text = searchItem.name
-            holder.view.textView_subtitle.text =  searchItem.location_name // usually an item specific for mall
-            holder.view.textView_priceLeft.text = "$" + searchItem.start_price .toString() // have to figure out what fields are best TODO: Format as price
-            holder.view.textView_priceRight.text = "$" + searchItem.shipping    .toString() // TODO: map to free shipping or get cost from shipping_options etc.
+            holder.view.textView_subtitle.text = searchItem.location_name // usually an item specific for mall
+            holder.view.textView_priceLeft.text = "$" + searchItem.start_price.toString() // have to figure out what fields are best TODO: Format as price
+            holder.view.textView_priceRight.text = "$" + searchItem.shipping.toString() // TODO: map to free shipping or get cost from shipping_options etc.
 
             // Second hand mappings TODO: Figure out fields for second hand and map to UI
             // holder.view.textView_productName.text = searchItem.name
@@ -114,6 +113,7 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
+            holder.searchItemId = searchItems.get(position).id
         }
     }
 
@@ -122,13 +122,20 @@ class SearchActivity : AppCompatActivity() {
      *
      * Responsible for displaying a single search result and providing an on click listener.
      */
-    private class SearchResultViewHolder(val view: View/*, val id : Int*/) : RecyclerView.ViewHolder(view) {
-        // TODO: Add on click listener
+    private class SearchResultViewHolder(val view: View, var searchItemId : Int? = null) : RecyclerView.ViewHolder(view) {
+
+
+        companion object {
+            val SEARCH_ITEM_URL = "PRODUCT_LINK_KEY"
+        }
+
         init {
             view.setOnClickListener {
-                val url = "https://www.allgoods.co.nz/product/"//$id"
+                val baseUrl = "https://www.allgoods.co.nz/product/"
                 val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(url)
+                intent.data = Uri.parse(baseUrl + searchItemId)
+                println(searchItemId)
+                intent.putExtra(SEARCH_ITEM_URL, baseUrl + searchItemId.toString())
                 view.context.startActivity(intent)
             }
         }
