@@ -104,7 +104,7 @@ class SearchActivity : AppCompatActivity() {
             holder.view.textView_productName.text = searchItem.name
             holder.view.textView_subtitle.text = searchItem.location_name // usually an item specific for mall
             holder.view.textView_priceLeft.text = "$" + searchItem.start_price.toString() // have to figure out what fields are best TODO: Format as price
-            holder.view.textView_priceRight.text = "$" + searchItem.shipping.toString() // TODO: map to free shipping or get cost from shipping_options etc.
+            holder.view.textView_priceRight.text = searchItem.shipping.toString() // TODO: map to free shipping or get cost from shipping_options etc.
 
             // Second hand mappings TODO: Figure out fields for second hand and map to UI
             // holder.view.textView_productName.text = searchItem.name
