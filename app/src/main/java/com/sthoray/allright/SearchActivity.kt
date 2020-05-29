@@ -122,11 +122,11 @@ class SearchActivity : AppCompatActivity() {
      *
      * Responsible for displaying a single search result and providing an on click listener.
      */
-    private class SearchResultViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    private class SearchResultViewHolder(val view: View/*, val id : Int*/) : RecyclerView.ViewHolder(view) {
         // TODO: Add on click listener
         init {
             view.setOnClickListener {
-                val url = "https://www.allgoods.co.nz/product/"
+                val url = "https://www.allgoods.co.nz/product/"//$id"
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(url)
                 view.context.startActivity(intent)
