@@ -124,18 +124,12 @@ class SearchActivity : AppCompatActivity() {
      */
     private class SearchResultViewHolder(val view: View, var searchItemId : Int? = null) : RecyclerView.ViewHolder(view) {
 
-
-        companion object {
-            val SEARCH_ITEM_URL = "PRODUCT_LINK_KEY"
-        }
-
         init {
             view.setOnClickListener {
                 val baseUrl = "https://www.allgoods.co.nz/product/"
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(baseUrl + searchItemId)
                 println(searchItemId)
-                intent.putExtra(SEARCH_ITEM_URL, baseUrl + searchItemId.toString())
                 view.context.startActivity(intent)
             }
         }
