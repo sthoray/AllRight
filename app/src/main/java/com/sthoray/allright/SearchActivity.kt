@@ -1,15 +1,16 @@
 package com.sthoray.allright
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import coil.target.ImageViewTarget
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_result_row.view.*
@@ -47,7 +48,7 @@ class SearchActivity : AppCompatActivity() {
 
         val searchObj = SearchRequest(categoryID)
         val jsonBody = Gson().toJson(searchObj)
-        
+
         // https://square.github.io/okhttp/upgrading_to_okhttp_4/
         val requestBody =
             jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType())
@@ -83,7 +84,8 @@ class SearchActivity : AppCompatActivity() {
      * Populates the search results recycler view by creating search result view holders
      * as required.
      */
-    private class SearchResultAdapter(val searchItems: Array<SearchItem>) : RecyclerView.Adapter<SearchResultViewHolder>() {
+    private class SearchResultAdapter(val searchItems: Array<SearchItem>) : RecyclerView.Adapter
+    <SearchResultViewHolder>() {
 
         override fun getItemCount(): Int {
             return searchItems.size
@@ -101,10 +103,10 @@ class SearchActivity : AppCompatActivity() {
             val searchItem = searchItems.get(position)
 
             // Mall mappings
-            holder.view.textView_productName.text = searchItem.name
-            holder.view.textView_subtitle.text = searchItem.location_name // usually an item specific for mall
-            holder.view.textView_priceLeft.text = "$" + searchItem.start_price.toString() // have to figure out what fields are best TODO: Format as price
-            holder.view.textView_priceRight.text = searchItem.shipping.toString() // TODO: map to free shipping or get cost from shipping_options etc.
+            holder.view.textView_productName.   text =            searchItem.name
+            holder.view.textView_subtitle.      text =            searchItem.location_name // usually an item specific for mall
+            holder.view.textView_priceLeft.     text =      "$" + searchItem.start_price .toString() // have to figure out what fields are best TODO: Format as price
+            holder.view.textView_priceRight.    text =      "$" + searchItem.shipping    .toString() // TODO: map to free shipping or get cost from shipping_options etc.
 
             // Second hand mappings TODO: Figure out fields for second hand and map to UI
             // holder.view.textView_productName.text = searchItem.name
@@ -112,9 +114,7 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
-
         }
-
     }
 
     /**
@@ -124,7 +124,14 @@ class SearchActivity : AppCompatActivity() {
      */
     private class SearchResultViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         // TODO: Add on click listener
-
+        init {
+            view.setOnClickListener {
+                val url = "https://www.allgoods.co.nz/product/"
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(url)
+                view.context.startActivity(intent)
+            }
+        }
     }
 
 }
