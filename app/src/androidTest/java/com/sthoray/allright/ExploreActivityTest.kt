@@ -3,6 +3,7 @@ package com.sthoray.allright
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -24,19 +25,23 @@ class ExploreActivityTest{
     fun test_isActivityInView() {
 
         //This function launches the activity and tests that it is in view
-
-        //val activityScenario = ActivityScenario.launch(ExploreActivity::class.java)
-
         onView(withId(R.id.exploreActivity)).check(matches(isDisplayed()))
     }
 
     @Test
     fun test_visibility_categories() {
-        //This function test the visibility of the categories
-
-        //val activityScenario = ActivityScenario.launch(ExploreActivity::class.java)
-
+        //This function tests the visibility of the categories
         onView(withId(R.id.recyclerView_featuredCategories))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_navSearchActivity() {
+        //This function tests the navigation to the SearchActivity
+        //Not quite working yet
+        onView(withId(R.id.recyclerView_featuredCategories)).perform(click())
+
+        onView(withId(R.id.searchActivity))
             .check(matches(isDisplayed()))
     }
 }
