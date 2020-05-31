@@ -24,4 +24,14 @@ class ExploreActivityTest{
 
         onView(withId(R.id.exploreActivity)).check(matches(isDisplayed()))
     }
+
+    @Test
+    fun test_visibility_categories() {
+        //This function test the visibility of the categories
+
+        val activityScenario = ActivityScenario.launch(ExploreActivity::class.java)
+
+        onView(withId(R.id.recyclerView_featuredCategories))
+            .check(matches(isDisplayed()))
+    }
 }
