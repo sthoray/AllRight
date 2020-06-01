@@ -91,9 +91,10 @@ class ExploreActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: FeaturedCategoryViewHolder, position: Int) {
             val category = featuredCategories[position]
+            val categoryImageUri = "https://allgoods.co.nz/" + category.image
             holder.view.textView_name.text = category.name
             holder.view.textView_listingCount.text = category.listing_count.toString()
-            holder.view.imageView_image.load("https://allgoods.co.nz/" + category.image)
+            holder.view.imageView_image.load(categoryImageUri)
             holder.category = category
         }
     }
