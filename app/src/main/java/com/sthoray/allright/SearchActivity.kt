@@ -98,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
-            val searchItem = searchItems.get(position)
+            val searchItem = searchItems[position]
 
             // Mall mappings
             holder.view.textView_productName.text = searchItem.name
@@ -112,7 +112,7 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
-            holder.searchItemId = searchItems.get(position).id
+            holder.searchItemId = searchItems[position].id
 
         }
     }
