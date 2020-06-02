@@ -30,7 +30,8 @@ class SearchRequest(var auctions: Int,
      *
      * @param category_id the category ID to search
      */
-    constructor(category_id: Int) : this(0,
+    constructor(category_id: Int) : this(
+        0,
         0,
         category_id,
         0,
