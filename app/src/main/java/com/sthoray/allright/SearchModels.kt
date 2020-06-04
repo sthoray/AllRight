@@ -65,6 +65,12 @@ class SearchRequest(var auctions: Int,
         "best_match",
         false
     )
+    fun toggleCategory(){
+        auctions = auctions xor 1
+        products = products xor 1
+        // TODO change xor to call to inv without crashing the app
+        // TODO cont: the app crashes when calling inv like: auctions = auctions.inv()
+    }
 }
 
 /**

@@ -10,13 +10,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.sthoray.allright.R.id.floatingActionButton_switch
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_result_row.view.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
+import java.lang.RuntimeException
 
 class SearchActivity : AppCompatActivity() {
 
@@ -29,6 +32,9 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.activity_search)
 
+
+
+
         recyclerView_searchResults.layoutManager = LinearLayoutManager(this)
 
         // update nav bar title
@@ -39,6 +45,13 @@ class SearchActivity : AppCompatActivity() {
         val categoryID = intent.getIntExtra(FeaturedCategoryViewHolder.CATEGORY_ID_KEY, 0)
         searchQuery.category_id = categoryID
         searchCategory(searchQuery)
+
+
+        val fab: View = findViewById(R.id.floatingActionButton_switch)
+        fab.setOnClickListener {
+            searchQuery.toggleCategory()
+            searchCategory(searchQuery)
+        }
     }
 
     /**
@@ -65,7 +78,6 @@ class SearchActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 println("Received response")
                 val body = response.body?.string()
-
                 val gson = Gson()
                 val searchResponse = gson.fromJson(body, SearchResponse::class.java)
                 val items = searchResponse.data // array of SearchItem (max size = 24)
@@ -118,7 +130,6 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
             holder.searchItemId = searchItems[position].id
-
         }
     }
 
@@ -128,7 +139,6 @@ class SearchActivity : AppCompatActivity() {
      * Responsible for displaying a single search result and providing an on click listener.
      */
     private class SearchResultViewHolder(val view: View, var searchItemId : Int? = null) : RecyclerView.ViewHolder(view) {
-
         init {
             view.setOnClickListener {
                 val baseUrl = "https://www.allgoods.co.nz/product/"
@@ -139,5 +149,4 @@ class SearchActivity : AppCompatActivity() {
             }
         }
     }
-
 }
