@@ -43,6 +43,7 @@ class SearchActivity : AppCompatActivity() {
         val btnMarketplaceSwitch: View = findViewById(R.id.button_switch)
         btnMarketplaceSwitch.setOnClickListener {
             searchQuery.toggleCategory()
+            searchQuery.page = 1
             searchCategory(searchQuery)
         }
     }
