@@ -20,6 +20,11 @@ import java.io.IOException
 
 class SearchActivity : AppCompatActivity() {
 
+    /**
+     * A query to search for.
+     */
+    private var searchQuery: SearchRequest = SearchRequest(0)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.activity_search)
@@ -32,7 +37,8 @@ class SearchActivity : AppCompatActivity() {
 
         // perform search TODO: Double check default value i.e. value when searching all categories
         val categoryID = intent.getIntExtra(FeaturedCategoryViewHolder.CATEGORY_ID_KEY, 0)
-        searchCategory(categoryID)
+        searchQuery.category_id = categoryID
+        searchCategory(searchQuery)
     }
 
     /**
@@ -41,11 +47,10 @@ class SearchActivity : AppCompatActivity() {
      * If the request was performed successfully, the recycler view is updated. If
      * the request fails for any reason, a message is printed to the console.
      */
-    private fun searchCategory(categoryID: Int) {
+    private fun searchCategory(searchObj: SearchRequest) {
         val baseUrl = "https://allgoods.co.nz/api/"
         val url = baseUrl + "search"
 
-        val searchObj = SearchRequest(categoryID)
         val jsonBody = Gson().toJson(searchObj)
 
         val requestBody =
