@@ -65,6 +65,7 @@ class SearchRequest(var auctions: Int,
         "best_match",
         false
     )
+
     fun toggleCategory(){
         auctions = auctions xor 1
         products = products xor 1
@@ -141,9 +142,18 @@ class MetaSearch()
 
 /**
  * Search pagination model.
- * TODO: Create search pagination model.
+ *
+ * @property total the number of listings in this search query [this conflict's the reported number!]
+ * @property count the number of listings in this page
+ * @property per_page the maximum number of listings in each page
+ * @property current_page our page position in the pages
+ * @property total_pages the total number of pages in this search query
  */
-class SearchPagination()
+class SearchPagination(val total: Int,
+                       val count: Int,
+                       val per_page: Int,
+                       val current_page: Int,
+                       val total_pages: Int)
 
 
 // Search Response DATA

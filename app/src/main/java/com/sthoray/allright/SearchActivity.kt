@@ -71,6 +71,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 println("Received response")
                 val body = response.body?.string()
+
                 val gson = Gson()
                 val searchResponse = gson.fromJson(body, SearchResponse::class.java)
                 val items = searchResponse.data // array of SearchItem (max size = 24)
@@ -140,6 +141,25 @@ class SearchActivity : AppCompatActivity() {
                 println(searchItemId)
                 view.context.startActivity(intent)
             }
+        }
+    }
+
+    /**
+     * Get the items on the next page (if any).
+     */
+    fun nextPage(view: View) {
+        // TODO: Check that we have not reached the last page
+        searchQuery.page = searchQuery.page.inc()
+        searchCategory(searchQuery)
+    }
+
+    /**
+     * Get the items on the previous page (if any).
+     */
+    fun previousPage(view: View) {
+        if (searchQuery.page != 1) {
+            searchQuery.page = searchQuery.page.dec()
+            searchCategory(searchQuery)
         }
     }
 }
