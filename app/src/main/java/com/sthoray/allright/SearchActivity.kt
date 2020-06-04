@@ -39,6 +39,12 @@ class SearchActivity : AppCompatActivity() {
         val categoryID = intent.getIntExtra(FeaturedCategoryViewHolder.CATEGORY_ID_KEY, 0)
         searchQuery.category_id = categoryID
         searchCategory(searchQuery)
+
+        val btnMarketplaceSwitch: View = findViewById(R.id.button_switch)
+        btnMarketplaceSwitch.setOnClickListener {
+            searchQuery.toggleCategory()
+            searchCategory(searchQuery)
+        }
     }
 
     /**
@@ -118,7 +124,6 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
             holder.searchItemId = searchItems[position].id
-
         }
     }
 
@@ -128,7 +133,6 @@ class SearchActivity : AppCompatActivity() {
      * Responsible for displaying a single search result and providing an on click listener.
      */
     private class SearchResultViewHolder(val view: View, var searchItemId : Int? = null) : RecyclerView.ViewHolder(view) {
-
         init {
             view.setOnClickListener {
                 val baseUrl = "https://www.allgoods.co.nz/product/"

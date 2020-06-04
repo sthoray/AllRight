@@ -31,10 +31,20 @@
         android:id="@+id/button_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="nextPage"
         android:text="@string/btn_next"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/button_previous" />
+
+    <Button
+        android:id="@+id/button_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/primaryLightColor"
+        android:text="@string/btn_switch"
+        app:layout_constraintEnd_toStartOf="@+id/button_next"
+        app:layout_constraintStart_toEndOf="@+id/button_previous"
+        app:layout_constraintTop_toTopOf="@+id/button_previous" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
