@@ -38,13 +38,14 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
         android:clickable="true"
+        android:focusable="true"
+        android:foreground="@drawable/ic_switch_drawing"
         app:layout_constraintEnd_toStartOf="@+id/button_next"
         app:layout_constraintStart_toEndOf="@+id/button_previous"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/sym_def_app_icon"
-        android:focusable="true" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
