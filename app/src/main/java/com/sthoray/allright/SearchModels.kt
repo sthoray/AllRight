@@ -22,6 +22,27 @@ class SearchRequest(var auctions: Int,
                     var showRestricted: Boolean,
                     var sort_by: String,
                     var useRegion: Boolean) {
+
+    /**
+     * Empty search constructor.
+     *
+     * Create a standard search request object with no filters enabled.
+     */
+    constructor() : this(
+        0,
+        0,
+        0,
+        0,
+        0,
+        SearchLocation(),
+        1,
+        1,
+        emptyList(),
+        true,
+        "best_match",
+        false
+    )
+
     /**
      * Category search constructor.
      *

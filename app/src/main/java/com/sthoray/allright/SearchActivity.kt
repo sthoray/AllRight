@@ -23,7 +23,7 @@ class SearchActivity : AppCompatActivity() {
     /**
      * A query to search for.
      */
-    private var searchQuery: SearchRequest = SearchRequest(0)
+    private var searchQuery: SearchRequest = SearchRequest()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
