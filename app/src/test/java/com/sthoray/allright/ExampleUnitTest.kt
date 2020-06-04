@@ -11,7 +11,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameter
-import java.io.IOException;
 
 
 /**
@@ -47,33 +46,5 @@ class ExampleUnitTest {
         //Assert.assertTrue(!"403".equals(statusCode) && !"404".equals(statusCode) && !"400".equals(statusCode));
         //Assert.assertNotNull(statusCode);
     }
-    /**
-     * unit test for searching a category.
-     *
-     * It will return a status code of 200 on successfull call.
-     */
 
-    //@Test
-    @Parameterized.Parameters
-    fun getSerach_isCorrect(categoryId : Int)  {
-
-        val client = OkHttpClient()
-        val request =  Request.Builder().url(this.url1 + categoryId)
-            .get()
-            .build()
-
-        val response = client.newCall(request)
-            .execute()
-        val responseBody = response.body?.string()
-        val statusCode = response.code
-
-        assertEquals(statusCode, 200)
-
-        val jsonResponse = JSONObject(responseBody)
-        val id = jsonResponse.getJSONObject("data")
-            .getInt("id")
-        assertThat(id, equalTo(categoryId))
-
-
-    }
 }
