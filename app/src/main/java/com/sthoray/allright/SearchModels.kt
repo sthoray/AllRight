@@ -22,6 +22,27 @@ class SearchRequest(var auctions: Int,
                     var showRestricted: Boolean,
                     var sort_by: String,
                     var useRegion: Boolean) {
+
+    /**
+     * Empty search constructor.
+     *
+     * Create a standard search request object with no filters enabled.
+     */
+    constructor() : this(
+        0,
+        0,
+        0,
+        0,
+        0,
+        SearchLocation(),
+        1,
+        1,
+        emptyList(),
+        true,
+        "best_match",
+        false
+    )
+
     /**
      * Category search constructor.
      *
@@ -30,7 +51,8 @@ class SearchRequest(var auctions: Int,
      *
      * @param category_id the category ID to search
      */
-    constructor(category_id: Int) : this(0,
+    constructor(category_id: Int) : this(
+        0,
         0,
         category_id,
         0,
@@ -113,9 +135,18 @@ class MetaSearch()
 
 /**
  * Search pagination model.
- * TODO: Create search pagination model.
+ *
+ * @property total the number of listings in this search query [this conflict's the reported number!]
+ * @property count the number of listings in this page
+ * @property per_page the maximum number of listings in each page
+ * @property current_page our page position in the pages
+ * @property total_pages the total number of pages in this search query
  */
-class SearchPagination()
+class SearchPagination(val total: Int,
+                       val count: Int,
+                       val per_page: Int,
+                       val current_page: Int,
+                       val total_pages: Int)
 
 
 // Search Response DATA
