@@ -33,7 +33,7 @@ class ExploreActivity : AppCompatActivity() {
      * If the request was performed successfully, the recycler view is updated. If
      * the request fails for any reason, a message is printed to the console.
      */
-    private fun getFeatured() {
+    fun getFeatured() {
         val baseUrl = "https://allgoods.co.nz/api/"
         val url = baseUrl + "categoryFeaturePanel"
         val request = Request.Builder()
@@ -90,11 +90,10 @@ class ExploreActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: FeaturedCategoryViewHolder, position: Int) {
-            val category = featuredCategories[position]
-            val categoryImageUri = "https://allgoods.co.nz/" + category.image
+            val category = featuredCategories.get(position)
             holder.view.textView_name.text = category.name
             holder.view.textView_listingCount.text = category.listing_count.toString()
-            holder.view.imageView_image.load(categoryImageUri)
+            holder.view.imageView_image.load("https://allgoods.co.nz/" + category.image)
             holder.category = category
         }
     }
