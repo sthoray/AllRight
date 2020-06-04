@@ -4,4 +4,5 @@
     <string name="logo">logo</string>
     <string name="btn_next" />
     <string name="btn_previous" />
+    <string name="btn_switch">Switch Marketplace</string>
 </resources>

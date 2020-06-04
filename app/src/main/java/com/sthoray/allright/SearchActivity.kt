@@ -10,16 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import com.sthoray.allright.R.id.floatingActionButton_switch
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_result_row.view.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
-import java.lang.RuntimeException
 
 class SearchActivity : AppCompatActivity() {
 
@@ -32,9 +29,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.activity_search)
 
-
-
-
         recyclerView_searchResults.layoutManager = LinearLayoutManager(this)
 
         // update nav bar title
@@ -46,9 +40,8 @@ class SearchActivity : AppCompatActivity() {
         searchQuery.category_id = categoryID
         searchCategory(searchQuery)
 
-
-        val fab: View = findViewById(R.id.floatingActionButton_switch)
-        fab.setOnClickListener {
+        val btnMarketplaceSwitch: View = findViewById(R.id.button_switch)
+        btnMarketplaceSwitch.setOnClickListener {
             searchQuery.toggleCategory()
             searchCategory(searchQuery)
         }
