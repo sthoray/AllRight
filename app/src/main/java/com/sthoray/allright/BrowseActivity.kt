@@ -80,7 +80,7 @@ class BrowseActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: TopLevelViewHolder, position: Int) {
-            val category = topLevel.get(position)
+            val category = topLevel[position]
             holder.view.textView_name.text = category.name
             holder.view.textView_listingCount.text = category.listing_count.toString()
         }

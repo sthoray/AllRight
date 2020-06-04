@@ -22,6 +22,27 @@ class SearchRequest(var auctions: Int,
                     var showRestricted: Boolean,
                     var sort_by: String,
                     var useRegion: Boolean) {
+
+    /**
+     * Empty search constructor.
+     *
+     * Create a standard search request object with no filters enabled.
+     */
+    constructor() : this(
+        0,
+        0,
+        0,
+        0,
+        0,
+        SearchLocation(),
+        1,
+        1,
+        emptyList(),
+        true,
+        "best_match",
+        false
+    )
+
     /**
      * Category search constructor.
      *
@@ -30,7 +51,8 @@ class SearchRequest(var auctions: Int,
      *
      * @param category_id the category ID to search
      */
-    constructor(category_id: Int) : this(0,
+    constructor(category_id: Int) : this(
+        0,
         0,
         category_id,
         0,
@@ -43,6 +65,12 @@ class SearchRequest(var auctions: Int,
         "best_match",
         false
     )
+    fun toggleCategory(){
+        auctions = auctions xor 1
+        products = products xor 1
+        // TODO change xor to call to inv without crashing the app
+        // TODO cont: the app crashes when calling inv like: auctions = auctions.inv()
+    }
 }
 
 /**

@@ -10,19 +10,30 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.sthoray.allright.R.id.floatingActionButton_switch
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_result_row.view.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
+import java.lang.RuntimeException
 
 class SearchActivity : AppCompatActivity() {
+
+    /**
+     * A query to search for.
+     */
+    private var searchQuery: SearchRequest = SearchRequest()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.activity_search)
+
+
+
 
         recyclerView_searchResults.layoutManager = LinearLayoutManager(this)
 
@@ -32,7 +43,15 @@ class SearchActivity : AppCompatActivity() {
 
         // perform search TODO: Double check default value i.e. value when searching all categories
         val categoryID = intent.getIntExtra(FeaturedCategoryViewHolder.CATEGORY_ID_KEY, 0)
-        searchCategory(categoryID)
+        searchQuery.category_id = categoryID
+        searchCategory(searchQuery)
+
+
+        val fab: View = findViewById(R.id.floatingActionButton_switch)
+        fab.setOnClickListener {
+            searchQuery.toggleCategory()
+            searchCategory(searchQuery)
+        }
     }
 
     /**
@@ -41,11 +60,10 @@ class SearchActivity : AppCompatActivity() {
      * If the request was performed successfully, the recycler view is updated. If
      * the request fails for any reason, a message is printed to the console.
      */
-    private fun searchCategory(categoryID: Int) {
+    private fun searchCategory(searchObj: SearchRequest) {
         val baseUrl = "https://allgoods.co.nz/api/"
         val url = baseUrl + "search"
 
-        val searchObj = SearchRequest(categoryID)
         val jsonBody = Gson().toJson(searchObj)
 
         val requestBody =
@@ -60,7 +78,6 @@ class SearchActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 println("Received response")
                 val body = response.body?.string()
-
                 val gson = Gson()
                 val searchResponse = gson.fromJson(body, SearchResponse::class.java)
                 val items = searchResponse.data // array of SearchItem (max size = 24)
@@ -98,7 +115,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
-            val searchItem = searchItems.get(position)
+            val searchItem = searchItems[position]
 
             // Mall mappings
             holder.view.textView_productName.text = searchItem.name
@@ -112,8 +129,7 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
-            holder.searchItemId = searchItems.get(position).id
-
+            holder.searchItemId = searchItems[position].id
         }
     }
 
@@ -123,7 +139,6 @@ class SearchActivity : AppCompatActivity() {
      * Responsible for displaying a single search result and providing an on click listener.
      */
     private class SearchResultViewHolder(val view: View, var searchItemId : Int? = null) : RecyclerView.ViewHolder(view) {
-
         init {
             view.setOnClickListener {
                 val baseUrl = "https://www.allgoods.co.nz/product/"
@@ -134,5 +149,4 @@ class SearchActivity : AppCompatActivity() {
             }
         }
     }
-
 }
