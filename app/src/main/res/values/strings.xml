@@ -2,4 +2,6 @@
     <string name="app_name">AllRight</string>
     <string name="team_name">Sthoray 2020</string>
     <string name="logo">logo</string>
+    <string name="btn_previous">Previous</string>
+    <string name="btn_next">Next</string>
 </resources>
