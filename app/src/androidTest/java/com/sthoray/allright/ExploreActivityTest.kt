@@ -55,14 +55,14 @@ class ExploreActivityTest{
             .check(matches(isDisplayed()))
     }
 
-   @Test
-   fun test_navSearchActivity() {
+   //@Test
+   //fun test_navSearchActivity() {
         //This function tests the navigation to the SearchActivity
 
 
-        onView(withId(R.id.recyclerView_featuredCategories)).perform(actionOnItemAtPosition<FeaturedCategoryViewHolder>(LIST_ITEM_IN_TEST, click()))
+        //onView(withId(R.id.recyclerView_featuredCategories)).perform(actionOnItemAtPosition<FeaturedCategoryViewHolder>(LIST_ITEM_IN_TEST, click()))
 
-        onView(withId(R.id.searchActivity))
-            .check(matches(isDisplayed()))
-    }
+        //onView(withId(R.id.searchActivity))
+        //    .check(matches(isDisplayed()))
+   // }
 }

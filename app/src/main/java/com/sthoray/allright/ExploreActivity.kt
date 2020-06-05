@@ -93,10 +93,15 @@ class ExploreActivity : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
                 : FeaturedCategoryViewHolder {
+            //Increment the espresso idling resource for testing purposes
+            EspressoIdlingResource.increment()
+
             val layoutInflater = LayoutInflater.from(parent.context)
             val categoryItemView = layoutInflater.inflate(R.layout.featured_category_row,
                 parent,
                 false)
+            //Decrement the espresso idling resource for testing purposes
+            EspressoIdlingResource.decrement()
             return FeaturedCategoryViewHolder(categoryItemView)
         }
 
