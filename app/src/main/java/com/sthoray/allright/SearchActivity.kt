@@ -35,7 +35,7 @@ class SearchActivity : AppCompatActivity() {
         val navBarTitle = intent.getStringExtra(FeaturedCategoryViewHolder.CATEGORY_NAME_KEY)
         supportActionBar?.title = navBarTitle
 
-        // perform search TODO: Double check default value i.e. value when searching all categories
+        // perform search
         val categoryID = intent.getIntExtra(FeaturedCategoryViewHolder.CATEGORY_ID_KEY, 0)
         searchQuery.category_id = categoryID
         searchCategory(searchQuery)
@@ -115,10 +115,10 @@ class SearchActivity : AppCompatActivity() {
             // Mall mappings
             holder.view.textView_productName.text = searchItem.name
             holder.view.textView_subtitle.text = searchItem.location_name // usually an item specific for mall
-            holder.view.textView_priceLeft.text = "$" + searchItem.start_price.toString() // have to figure out what fields are best TODO: Format as price
-            holder.view.textView_priceRight.text = searchItem.shipping.toString() // TODO: map to free shipping or get cost from shipping_options etc.
+            holder.view.textView_priceLeft.text = "$" + searchItem.start_price.toString() // have to figure out what fields are best
+            holder.view.textView_priceRight.text = searchItem.shipping.toString() // TODO: Map to free shipping or get cost from shipping_options etc.
 
-            // Second hand mappings TODO: Figure out fields for second hand and map to UI
+            // Second hand mappings TODO: Map separate fields for second hand
             // holder.view.textView_productName.text = searchItem.name
             // holder.view.textView_subtitle.text = searchItem.location_name
             // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price

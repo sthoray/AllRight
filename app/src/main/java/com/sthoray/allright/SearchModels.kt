@@ -7,8 +7,19 @@ package com.sthoray.allright
  *
  * Contains properties for search POST requests. This object must be parsed to a
  * json string before being used in a request.
- * TODO: Document properties
- * TODO: Make properties optional and build search queries within the class
+ *
+ * @property auctions 1 if auctions should be included, else 0
+ * @property brand_new 1 if only brand new should be included, else 0
+ * @property category_id the ID of the category to search in, else 0 to ignore
+ * @property fast_shipping 1 if items should have fast shipping, else 0
+ * @property free_shipping 1 if items should have free shipping, else 0
+ * @property location the [SearchLocation] to search around
+ * @property page the page to get items from for the current search properties
+ * @property products 1 if store 'products' should be included, else 0
+ * @property propertyFilters a list of search [PropertyFilter]s
+ * @property showRestricted true if restricted items should be included, else false
+ * @property sort_by the sort order of the items TODO: create an enum for sort_by
+ * @property useRegion the region to return results from
  */
 class SearchRequest(var auctions: Int,
                     var brand_new: Int,
@@ -49,7 +60,7 @@ class SearchRequest(var auctions: Int,
      * Create a standard category search request object. All filters are
      * disabled/default.
      *
-     * @param category_id the category ID to search
+     * @param category_id the ID of the category to search in
      */
     constructor(category_id: Int) : this(
         0,
@@ -66,6 +77,11 @@ class SearchRequest(var auctions: Int,
         false
     )
 
+    /**
+     * Change between the AllGoods 'Mall' and 'Second Hand' marketplace.
+     *
+     * This inverts the [auctions] and [products] properties of this search request.
+     */
     fun toggleCategory(){
         auctions = auctions xor 1
         products = products xor 1
@@ -82,8 +98,7 @@ class SearchLocation()
 
 /**
  * Property filter model.
- * TODO: Create property filter search model
- * TODO: This could be the same as [SearchProperties], check and merge if possible
+ * TODO: Create property filter search model. Possibly merge with [SearchProperties]?
  */
 class PropertyFilter()
 
@@ -107,7 +122,12 @@ class SearchResponse(val data: Array<SearchItem>, val meta: SearchMeta)
 
 /**
  * Search meta model.
- * TODO: Document search meta properties
+ *
+ * @property properties a list of [SearchProperties]s from a search result
+ * @property categories a list of [SearchCategories]s from a search result
+ * @property stores a list of [SearchStores] contained in a search result
+ * @property metaSearch meta data from a search result
+ * @property pagination pagination information from a search result
  */
 class SearchMeta(val properties: List<SearchProperties>,
                  val categories: List<SearchCategories>,
@@ -123,8 +143,7 @@ class SearchProperties()
 
 /**
  * Search categories.
- * TODO: Create search categories model.
- * TODO: Investigate the overlap between category models and merge if possible.
+ * TODO: Create search categories model. Possible merge with other category models?
  */
 class SearchCategories()
 
@@ -165,7 +184,16 @@ class SearchPagination(val total: Int,
  * should process as little information as possible. Properties may not be used in both
  * "Mall" and "Second hand" marketplaces. Differences also exist between categories. This
  * is why some properties are nullable.
- * TODO: Document search data properties
+ *
+ * @property id the id of the listing
+ * @property name the name of the listing
+ * @property location_name the location name of the listing
+ * @property start_price the starting price of the listing
+ * @property buy_now the buy now price of the listing
+ * @property current_price the current auction price of the listing
+ * @property shipping the type of shipping offered // TODO: Decode what each 'shipping' number represents
+ * @property shipping_options a list of [ShippingOption]s
+ * @property main_image the main image of the listing
  */
 class SearchItem(val id: Int,
                  val name: String,
@@ -173,7 +201,7 @@ class SearchItem(val id: Int,
                  val start_price: Float?,
                  val buy_now: Float?,
                  val current_price: Float?,
-                 val shipping: Int, // TODO: Decode what each 'shipping' number represents
+                 val shipping: Int,
                  val shipping_options: List<ShippingOption>,
                  val main_image: MainImage)
 
@@ -181,7 +209,9 @@ class SearchItem(val id: Int,
  * Shipping option model.
  *
  * This model (currently) excludes some properties.
- * TODO: Document search data properties
+ *
+ * @property description the description of the shipping option
+ * @property cost the cost of the shipping option
  */
 class ShippingOption(val description: String, val cost: Float)
 
