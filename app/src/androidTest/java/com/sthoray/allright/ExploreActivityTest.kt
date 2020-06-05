@@ -1,6 +1,7 @@
 package com.sthoray.allright
 
 
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
@@ -23,6 +24,9 @@ class ExploreActivityTest{
     @get: Rule
     val activityRule = ActivityScenarioRule(ExploreActivity::class.java)
 
+    val LIST_ITEM_IN_TEST = 0
+
+
 
     @Test
     fun test_isActivityInView() {
@@ -38,13 +42,15 @@ class ExploreActivityTest{
             .check(matches(isDisplayed()))
     }
 
-   // @Test
-   // fun test_navSearchActivity() {
+   @Test
+   fun test_navSearchActivity() {
         //This function tests the navigation to the SearchActivity
         //Not quite working yet
-        //onView(withId(R.id.recyclerView_featuredCategories)).perform(actionOnItemAtPosition(0, click()))
+       onView(withId(R.id.recyclerView_featuredCategories))
+           .check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerView_featuredCategories)).perform(actionOnItemAtPosition<FeaturedCategoryViewHolder>(LIST_ITEM_IN_TEST, click()))
 
-        //onView(withId(R.id.searchActivity))
-         //   .check(matches(isDisplayed()))
-    //}
+        onView(withId(R.id.searchActivity))
+            .check(matches(isDisplayed()))
+    }
 }
