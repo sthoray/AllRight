@@ -1,38 +1,30 @@
 # AllRight
-
-A blazing fast browser for the AllGoods marketplace. Built for Android devices using Kotlin.
+A simple and fast browser for the AllGoods marketplace. Built for Android devices using Kotlin.
 
 ![](https://github.com/sthoray/AllRight/workflows/Android%20Master%20Build/badge.svg)
 
-## Build debug APK
-
-The app can be built using [Android Studio](###Android-Studio) or via the [command line](###Command-line).
+## Build from source
+The app can be built from source using [Android Studio](###Android-Studio) or via the [command line](###Command-line).
 
 ### Android Studio
-
-To create a build using [Android Studio](https://developer.android.com/studio), clone this repository using Android Studio (or your preferred git tool). Please refer to Android Studio [User Guide](https://developer.android.com/studio/run) for help building and running the app.
+Refer to the Android Studio [User Guide](https://developer.android.com/studio/run) for help building and running the app.
 
 ### Command line
-
-Clone this repository. You can then build the app using the included Gradle wrapper. You will need to have a working JDK installation between versions 8 and 13. Java 14 and later are not supported by Gradle 5.6.4.
+To use the included Gradle wrapper you must have a working JDK installation. Our project currently uses Gradle 5.6.4 which requires Java between 8 and 13. Once setup, the following command will create an installable APK at `app/build/outputs/apk/debug/app-debug.apk`
 
 On Windows:
-
 ```cmd
 .\gradlew.bat assembleDebug
 ```
 
-On Mac or Linux:
-
+On MacOS or Linux:
 ```bash
 ./gradlew assembleDebug
 ```
 
-This creates an APK named `app-debug.apk` in `app\build\outputs\apk\debug` which can be installed on a device.
-
 ## Documentation
-
-[Developer documentation](https://sthoray.github.io/AllRight/index.html) is generated from KDoc comments using Dokka and hosted on GitHub Pages.
+We use [Dokka](https://github.com/Kotlin/dokka) to generate documentation in a HTML format. It's hosted using GitHub Pages and is always accessible
+[here](https://sthoray.github.io/AllRight/index.html) or in the docs folder of this repository.
 
 ## Disclaimer
 
