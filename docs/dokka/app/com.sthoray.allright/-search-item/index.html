@@ -13,8 +13,7 @@
 <p>This model (currently) does not contain all possible properties. As a general rule, we
 should process as little information as possible. Properties may not be used in both
 "Mall" and "Second hand" marketplaces. Differences also exist between categories. This
-is why some properties are nullable.
-TODO: Document search data properties</p>
+is why some properties are nullable.</p>
 <h3>Constructors</h3>
 <table>
 <tbody>
@@ -37,63 +36,81 @@ TODO: Document search data properties</p>
 <p><a href="buy_now.html">buy_now</a></p>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">buy_now</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">?</span></code></td>
+<code><span class="keyword">val </span><span class="identifier">buy_now</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">?</span></code>
+<p>the buy now price of the listing</p>
+</td>
 </tr>
 <tr>
 <td>
 <p><a href="current_price.html">current_price</a></p>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">current_price</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">?</span></code></td>
+<code><span class="keyword">val </span><span class="identifier">current_price</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">?</span></code>
+<p>the current auction price of the listing</p>
+</td>
 </tr>
 <tr>
 <td>
 <p><a href="id.html">id</a></p>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+<code><span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>the id of the listing</p>
+</td>
 </tr>
 <tr>
 <td>
 <p><a href="location_name.html">location_name</a></p>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">location_name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+<code><span class="keyword">val </span><span class="identifier">location_name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>the location name of the listing</p>
+</td>
 </tr>
 <tr>
 <td>
 <p><a href="main_image.html">main_image</a></p>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">main_image</span><span class="symbol">: </span><a href="../-main-image/index.html"><span class="identifier">MainImage</span></a></code></td>
+<code><span class="keyword">val </span><span class="identifier">main_image</span><span class="symbol">: </span><a href="../-main-image/index.html"><span class="identifier">MainImage</span></a></code>
+<p>the main image of the listing</p>
+</td>
 </tr>
 <tr>
 <td>
 <p><a href="name.html">name</a></p>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+<code><span class="keyword">val </span><span class="identifier">name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>the name of the listing</p>
+</td>
 </tr>
 <tr>
 <td>
 <p><a href="shipping.html">shipping</a></p>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">shipping</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+<code><span class="keyword">val </span><span class="identifier">shipping</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>the type of shipping offered // TODO: Decode what each 'shipping' number represents</p>
+</td>
 </tr>
 <tr>
 <td>
 <p><a href="shipping_options.html">shipping_options</a></p>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">shipping_options</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-shipping-option/index.html"><span class="identifier">ShippingOption</span></a><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">val </span><span class="identifier">shipping_options</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-shipping-option/index.html"><span class="identifier">ShippingOption</span></a><span class="symbol">&gt;</span></code>
+<p>a list of <a href="../-shipping-option/index.html">ShippingOption</a>s</p>
+</td>
 </tr>
 <tr>
 <td>
 <p><a href="start_price.html">start_price</a></p>
 </td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">start_price</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">?</span></code></td>
+<code><span class="keyword">val </span><span class="identifier">start_price</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span class="identifier">Float</span></a><span class="symbol">?</span></code>
+<p>the starting price of the listing</p>
+</td>
 </tr>
 </tbody>
 </table>
