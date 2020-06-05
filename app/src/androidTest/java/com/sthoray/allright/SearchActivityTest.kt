@@ -29,4 +29,11 @@ class SearchActivityTest{
         onView(withId(R.id.searchActivity)).check(matches(isDisplayed()))
     }
 
+    @Test
+    fun test_visibility_searchResults() {
+        //This function tests the visibility of the searchResults
+        onView(withId(R.id.recyclerView_searchResults))
+            .check(matches(isDisplayed()))
+    }
+
 }

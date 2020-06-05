@@ -29,4 +29,11 @@ class BrowseActivityTest{
         onView(withId(R.id.browseActivity)).check(matches(isDisplayed()))
     }
 
+    @Test
+    fun test_visibility_topLevel() {
+        //This function tests the visibility of the topLevel
+        onView(withId(R.id.recyclerView_topLevel))
+            .check(matches(isDisplayed()))
+    }
+
 }
