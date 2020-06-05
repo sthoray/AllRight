@@ -20,6 +20,11 @@ import java.io.IOException
 
 class SearchActivity : AppCompatActivity() {
 
+    /**
+     * A query to search for.
+     */
+    private var searchQuery: SearchRequest = SearchRequest()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         super.setContentView(R.layout.activity_search)
@@ -32,7 +37,15 @@ class SearchActivity : AppCompatActivity() {
 
         // perform search TODO: Double check default value i.e. value when searching all categories
         val categoryID = intent.getIntExtra(FeaturedCategoryViewHolder.CATEGORY_ID_KEY, 0)
-        searchCategory(categoryID)
+        searchQuery.category_id = categoryID
+        searchCategory(searchQuery)
+
+        val btnMarketplaceSwitch: View = findViewById(R.id.button_switch)
+        btnMarketplaceSwitch.setOnClickListener {
+            searchQuery.toggleCategory()
+            searchQuery.page = 1
+            searchCategory(searchQuery)
+        }
     }
 
     /**
@@ -41,11 +54,10 @@ class SearchActivity : AppCompatActivity() {
      * If the request was performed successfully, the recycler view is updated. If
      * the request fails for any reason, a message is printed to the console.
      */
-    private fun searchCategory(categoryID: Int) {
+    private fun searchCategory(searchObj: SearchRequest) {
         val baseUrl = "https://allgoods.co.nz/api/"
         val url = baseUrl + "search"
 
-        val searchObj = SearchRequest(categoryID)
         val jsonBody = Gson().toJson(searchObj)
 
         val requestBody =
@@ -98,7 +110,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
-            val searchItem = searchItems.get(position)
+            val searchItem = searchItems[position]
 
             // Mall mappings
             holder.view.textView_productName.text = searchItem.name
@@ -112,8 +124,7 @@ class SearchActivity : AppCompatActivity() {
             // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
-            holder.searchItemId = searchItems.get(position).id
-
+            holder.searchItemId = searchItems[position].id
         }
     }
 
@@ -123,7 +134,6 @@ class SearchActivity : AppCompatActivity() {
      * Responsible for displaying a single search result and providing an on click listener.
      */
     private class SearchResultViewHolder(val view: View, var searchItemId : Int? = null) : RecyclerView.ViewHolder(view) {
-
         init {
             view.setOnClickListener {
                 val baseUrl = "https://www.allgoods.co.nz/product/"
@@ -135,4 +145,22 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Get the items on the next page (if any).
+     */
+    fun nextPage(view: View) {
+        // TODO: Check that we have not reached the last page
+        searchQuery.page = searchQuery.page.inc()
+        searchCategory(searchQuery)
+    }
+
+    /**
+     * Get the items on the previous page (if any).
+     */
+    fun previousPage(view: View) {
+        if (searchQuery.page != 1) {
+            searchQuery.page = searchQuery.page.dec()
+            searchCategory(searchQuery)
+        }
+    }
 }
