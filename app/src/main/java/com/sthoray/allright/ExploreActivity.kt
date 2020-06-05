@@ -40,11 +40,16 @@ class ExploreActivity : AppCompatActivity() {
             .url(url)
             .build()
         val client = OkHttpClient()
+        //Increment the espresso idling resource for testing purposes
+        EspressoIdlingResource.increment()
 
         // execute the request on a background thread
         client.newCall(request).enqueue(object: Callback {
 
             override fun onResponse(call: Call, response: Response) {
+                //Increment the espresso idling resource for testing purposes
+                EspressoIdlingResource.increment()
+
                 val responseBody = response.body?.string()
                 val featuredPanel = Gson().fromJson<FeaturePanelCategory>(
                     responseBody,
@@ -56,13 +61,19 @@ class ExploreActivity : AppCompatActivity() {
                 // UI must be updated from the main thread
                 runOnUiThread {
                     recyclerView_featuredCategories.adapter = FeaturedCategoriesAdapter(featuredCategories)
+
+                    //Decrement the espresso idling resource for testing purposes
+                    EspressoIdlingResource.decrement()
                 }
             }
 
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to request categoryFeaturePanel")
             }
+
         })
+        //Decrement the espresso idling resource for testing purposes
+        EspressoIdlingResource.decrement()
     }
 
     /**
@@ -82,10 +93,15 @@ class ExploreActivity : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
                 : FeaturedCategoryViewHolder {
+            //Increment the espresso idling resource for testing purposes
+            EspressoIdlingResource.increment()
+
             val layoutInflater = LayoutInflater.from(parent.context)
             val categoryItemView = layoutInflater.inflate(R.layout.featured_category_row,
                 parent,
                 false)
+            //Decrement the espresso idling resource for testing purposes
+            EspressoIdlingResource.decrement()
             return FeaturedCategoryViewHolder(categoryItemView)
         }
 
