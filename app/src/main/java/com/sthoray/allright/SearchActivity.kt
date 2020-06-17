@@ -148,7 +148,7 @@ class SearchActivity : AppCompatActivity() {
     /**
      * Get the items on the next page (if any).
      */
-    fun nextPage(view: View) {
+    fun nextPage(@Suppress("UNUSED_PARAMETER")view: View) {
         // TODO: Check that we have not reached the last page
         searchQuery.page = searchQuery.page.inc()
         searchCategory(searchQuery)
@@ -157,7 +157,7 @@ class SearchActivity : AppCompatActivity() {
     /**
      * Get the items on the previous page (if any).
      */
-    fun previousPage(view: View) {
+    fun previousPage(@Suppress("UNUSED_PARAMETER")view: View) {
         if (searchQuery.page != 1) {
             searchQuery.page = searchQuery.page.dec()
             searchCategory(searchQuery)

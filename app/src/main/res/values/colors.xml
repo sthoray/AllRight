@@ -3,6 +3,6 @@
     <color name="primaryColor">#f57c00</color>
     <color name="primaryDarkColor">#bb4d00</color>
     <color name="primaryLightColor">#ffad42</color>
-    <color name="primaryTextColor">#000000</color>
+    <!-- <color name="primaryTextColor">#000000</color>-->
     <color name="primaryDarkTextColor">#FFFFFF</color>
 </resources>
