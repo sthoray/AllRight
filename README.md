@@ -10,7 +10,7 @@ The app can be built from source using [Android Studio](###Android-Studio) or vi
 Refer to the Android Studio [User Guide](https://developer.android.com/studio/run) for help building and running the app.
 
 ### Command line
-To use the included Gradle wrapper you must have a working JDK installation. Our project currently uses Gradle 5.6.4 which requires Java between 8 and 13. Once setup, the following command will create an installable APK at `app/build/outputs/apk/debug/app-debug.apk`
+To use the included Gradle wrapper you must have a working JDK version 8 or later installation. Once setup, the following command will create an installable APK at `app/build/outputs/apk/debug/app-debug.apk`
 
 On Windows:
 ```cmd

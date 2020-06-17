@@ -114,15 +114,24 @@ class SearchActivity : AppCompatActivity() {
 
             // Mall mappings
             holder.view.textView_productName.text = searchItem.name
-            holder.view.textView_subtitle.text = searchItem.location_name // usually an item specific for mall
-            holder.view.textView_priceLeft.text = "$" + searchItem.start_price.toString() // have to figure out what fields are best
-            holder.view.textView_priceRight.text = searchItem.shipping.toString() // TODO: Map to free shipping or get cost from shipping_options etc.
+            holder.view.textView_subtitle.text = searchItem.location_name
+            holder.view.textView_priceLeft.text = String.format(
+                holder.itemView.context.getText(R.string.price).toString(),
+                searchItem.start_price
+            )
+            // TODO: Map to free shipping or get cost from shipping_options etc.
+            holder.view.textView_priceRight.text = searchItem.shipping.toString()
 
-            // Second hand mappings TODO: Map separate fields for second hand
+            // Second hand mappings
+            // TODO: Map separate fields for second hand
             // holder.view.textView_productName.text = searchItem.name
             // holder.view.textView_subtitle.text = searchItem.location_name
-            // holder.view.textView_priceLeft.text = searchItem.current_price.toString() // or start price
+            //holder.view.textView_priceLeft.text = String.format(
+            //    holder.itemView.context.getText(R.string.price).toString(),
+            //    searchItem.current_price // null if no bids have occurred
+            //)
             // holder.view.textView_priceRight.text = searchItem.buy_now.toString()
+
             holder.view.imageView_productImage.load(searchItem.main_image.thumb_url)
             holder.searchItemId = searchItems[position].id
         }
@@ -148,7 +157,7 @@ class SearchActivity : AppCompatActivity() {
     /**
      * Get the items on the next page (if any).
      */
-    fun nextPage(view: View) {
+    fun nextPage(@Suppress("UNUSED_PARAMETER")view: View) {
         // TODO: Check that we have not reached the last page
         searchQuery.page = searchQuery.page.inc()
         searchCategory(searchQuery)
@@ -157,7 +166,7 @@ class SearchActivity : AppCompatActivity() {
     /**
      * Get the items on the previous page (if any).
      */
-    fun previousPage(view: View) {
+    fun previousPage(@Suppress("UNUSED_PARAMETER")view: View) {
         if (searchQuery.page != 1) {
             searchQuery.page = searchQuery.page.dec()
             searchCategory(searchQuery)
