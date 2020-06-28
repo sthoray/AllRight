@@ -1,2 +1,2 @@
-rootProject.name='AllRight'
 include ':app'
+rootProject.name = "AllRight"
