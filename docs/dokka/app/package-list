@@ -1,4 +1,15 @@
 $dokka.format:html
 $dokka.linkExtension:html
 
-com.sthoray.allright
+com.sthoray.allright.data.api
+com.sthoray.allright.data.model
+com.sthoray.allright.data.repository
+com.sthoray.allright.ui.base
+com.sthoray.allright.ui.main.adapter
+com.sthoray.allright.ui.main.view
+com.sthoray.allright.ui.main.viewmodel
+com.sthoray.allright.ui.search.adapter
+com.sthoray.allright.ui.search.view
+com.sthoray.allright.ui.search.viewmodel
+com.sthoray.allright.ui.splash.view
+com.sthoray.allright.utils
