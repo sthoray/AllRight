@@ -12,7 +12,7 @@ object RetrofitBuilder {
     private const val BASE_URL = "https://allgoods.co.nz/api/"
 
     /**
-     * Get a Retrofit builder object with a base url and Gson converter.
+     * Get a Retrofit builder object with a base url and Gson converter for deserialization.
      *
      * @return a Retrofit Builder object
      */
@@ -23,6 +23,6 @@ object RetrofitBuilder {
             .build()
     }
 
-    /** ApiService object to interact with the AllGoods API. */
+    /** Generate an implementation of [ApiService] to interact with the AllGoods API. */
     val apiService: ApiService = getRetrofit().create(ApiService::class.java)
 }
