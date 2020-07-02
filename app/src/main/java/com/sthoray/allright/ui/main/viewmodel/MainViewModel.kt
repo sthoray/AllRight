@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
  * Uses LiveData to expose observables when interacting with the Model. These
  * can be observed by the View.
  *
- * @property mainRepository the [MainRepository] to interact with
+ * @property mainRepository the data repository to interact with
  */
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
