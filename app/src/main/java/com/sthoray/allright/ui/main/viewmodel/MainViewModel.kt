@@ -2,6 +2,7 @@ package com.sthoray.allright.ui.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.sthoray.allright.data.model.CategoryFeaturePanel
 import com.sthoray.allright.data.repository.MainRepository
 import com.sthoray.allright.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,15 @@ import kotlinx.coroutines.Dispatchers
  */
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
+    /**
+     * Get featured categories on a background thread using the IO Dispatcher.
+     *
+     * If the the HTTP request was performed successfully, data will contain
+     * a [CategoryFeaturePanel]. If an exception is thrown when performing the
+     * request, it is handled here.
+     *
+     * @return liveData with a [CategoryFeaturePanel] or null as data
+     */
     fun getCategoryFeaturePanel() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {

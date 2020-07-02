@@ -11,6 +11,11 @@ import com.sthoray.allright.ui.main.view.MainActivity
  */
 class SplashActivity : AppCompatActivity() {
 
+    /**
+     * Start [MainActivity] when the splash screen is created.
+     *
+     * @param savedInstanceState and data saved if the activity is being re-initialized
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)

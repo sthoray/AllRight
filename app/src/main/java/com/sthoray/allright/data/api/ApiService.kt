@@ -9,9 +9,9 @@ import retrofit2.http.GET
 interface ApiService {
 
     /**
-     * Get featured categories.
+     * Get featured categories panel.
      *
-     * @return a [CategoryFeaturePanel] object
+     * @return a [CategoryFeaturePanel]
      */
     @GET("categoryFeaturePanel")
     suspend fun getCategoryFeaturePanel(): CategoryFeaturePanel

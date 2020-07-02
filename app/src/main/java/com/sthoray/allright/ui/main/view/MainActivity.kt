@@ -32,6 +32,11 @@ class MainActivity : AppCompatActivity() {
     /** The adapter for updating views. */
     private lateinit var adapter: MainAdapter
 
+    /**
+     * Set up ViewModel, UI, and observers when the activity is created.
+     *
+     * @param savedInstanceState and data saved if the activity is being re-initialized
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

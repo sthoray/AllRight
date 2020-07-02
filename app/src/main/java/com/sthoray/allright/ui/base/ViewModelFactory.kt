@@ -14,6 +14,14 @@ import java.lang.IllegalArgumentException
  */
 class ViewModelFactory(private val apiHelper: ApiHelper) : ViewModelProvider.Factory {
 
+    /**
+     * Create a new instance of the given class.
+     *
+     * @param modelClass a Class whose instance is requested
+     * @param T the type parameter for the ViewModel.
+     *
+     * @return T a newly created ViewModel
+     */
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

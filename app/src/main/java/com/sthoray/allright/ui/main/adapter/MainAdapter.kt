@@ -28,8 +28,8 @@ class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
         /**
          * Create OnClickListener for each itemView.
          *
-         * When an itemView is tapped, [SearchActivity] will be launched to
-         * begin searching the selected item's category.
+         * When an itemView is tapped, that category will be used to start
+         * searching in using a new activity.
          */
         init {
             itemView.setOnClickListener {
@@ -69,7 +69,7 @@ class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
     /**
      * Return the number of objects to display in this ViewHolder.
      *
-     * @return the size of the [featuredCategories] list
+     * @return the size of the list to display
      */
     override fun getItemCount(): Int = featuredCategories.size
 
