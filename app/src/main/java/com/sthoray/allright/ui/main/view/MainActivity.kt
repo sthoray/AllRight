@@ -6,8 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.sthoray.allright.R
 import com.sthoray.allright.data.api.ApiHelper
 import com.sthoray.allright.data.api.RetrofitBuilder
@@ -60,13 +59,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setupUI() {
         adapter = MainAdapter(arrayListOf()) // set to empty ArrayList
-        recyclerView.layoutManager = LinearLayoutManager(this)
-//        recyclerView.addItemDecoration(
-//            DividerItemDecoration(
-//                recyclerView.context,
-//                (recyclerView.layoutManager as LinearLayoutManager).orientation
-//            )
-//        )
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
         recyclerView.adapter = adapter
     }
 
