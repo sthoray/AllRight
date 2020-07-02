@@ -24,12 +24,12 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
      * a [CategoryFeaturePanel]. If an exception is thrown when performing the
      * request, it is handled here.
      *
-     * @return liveData with a [CategoryFeaturePanel] or null as data
+     * @return liveData with a list of feature categories or null as data
      */
-    fun getCategoryFeaturePanel() = liveData(Dispatchers.IO) {
+    fun getFeaturedCategories() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = mainRepository.getCategoryFeaturePanel()))
+            emit(Resource.success(data = mainRepository.getCategoryFeaturePanel().categories.values.toList()))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }

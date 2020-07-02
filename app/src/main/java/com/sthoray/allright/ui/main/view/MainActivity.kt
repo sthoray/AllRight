@@ -67,14 +67,14 @@ class MainActivity : AppCompatActivity() {
      * Define View behaviour based on the [Status] of the fetched data.
      */
     private fun setupObservers() {
-        viewModel.getCategoryFeaturePanel().observe(this, Observer {
+        viewModel.getFeaturedCategories().observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
                         recyclerView.visibility = View.VISIBLE
                         progressBar.visibility = View.GONE
                         resource.data?.let { featuredCategories ->
-                            retrieveList(featuredCategories.categories.values.toList())
+                            retrieveList(featuredCategories)
                         }
                     }
                     Status.ERROR -> {
