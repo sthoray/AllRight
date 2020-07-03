@@ -23,7 +23,11 @@ class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
      * Responsible for displaying a single featured categories and providing an on
      * click listener.
      */
-    class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class DataViewHolder(itemView: View, private var category: FeatureCategory? = null) : RecyclerView.ViewHolder(itemView) {
+
+        companion object {
+            const val CATEGORY_ID_KEY = "CATEGORY_ID"
+        }
 
         /**
          * Create OnClickListener for each itemView.
@@ -34,17 +38,21 @@ class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
         init {
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, SearchActivity::class.java)
+                intent.putExtra(CATEGORY_ID_KEY, category?.id)
                 itemView.context.startActivity(intent)
             }
         }
 
         /**
+         * Associate this view holder with a category.
+         *
          * Update all views within this view holder with the given category
          * information.
          *
          * @param category the category to display
          */
         fun bind(category: FeatureCategory) {
+            this.category = category
             itemView.apply {
                 textViewCategoryName.text = category.name
                 textViewListingCount.text = category.listingCount.toString()
@@ -67,7 +75,7 @@ class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
         )
 
     /**
-     * Return the number of objects to display in this ViewHolder.
+     * Return the number of items to display in this ViewHolder.
      *
      * @return the size of the list to display
      */

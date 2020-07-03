@@ -2,18 +2,21 @@ package com.sthoray.allright.ui.search.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
 import com.sthoray.allright.data.api.ApiHelper
 import com.sthoray.allright.data.api.RetrofitBuilder
+import com.sthoray.allright.data.model.SearchItem
+import com.sthoray.allright.data.model.SearchMeta
 import com.sthoray.allright.ui.base.ViewModelFactory
 import com.sthoray.allright.ui.search.adapter.SearchAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.utils.Status
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.recyclerView
 import kotlinx.android.synthetic.main.activity_search.*
 
 /**
@@ -73,6 +76,37 @@ class SearchActivity : AppCompatActivity() {
      * Define View behaviour based on the [Status] of the fetched data.
      */
     private fun setupObservers() {
+        viewModel.search().observe(this, Observer {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        recyclerView.visibility = View.VISIBLE
+                        progressBar.visibility = View.GONE
+                        resource.data?.let { searchResponse ->
+                            retrieveList(
+                                searchResponse.data,
+                                searchResponse.meta
+                            )
+                        }
+                    }
+                    Status.ERROR -> {
+                        recyclerView.visibility = View.VISIBLE
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    }
+                    Status.LOADING -> {
+                        progressBar.visibility = View.VISIBLE
+                        recyclerView.visibility = View.GONE
+                    }
+                }
+            }
+        })
+    }
 
+    private fun retrieveList(searchItems: List<SearchItem>, searchMeta: SearchMeta) {
+        adapter.apply {
+            addItems(searchItems, searchMeta)
+            notifyDataSetChanged()
+        }
     }
 }

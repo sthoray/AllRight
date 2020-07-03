@@ -2,4 +2,6 @@
     <string name="app_name">AllRight</string>
 
     <string name="search_label">Search</string>
+    
+    <string name="format_price">$%.2f</string>
 </resources>

@@ -39,22 +39,22 @@
         tools:text="Subtitle" />
 
     <TextView
-        android:id="@+id/textViewPriceLeft"
+        android:id="@+id/textViewPrice0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@android:string/unknownName"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewProductImage"
         app:layout_constraintStart_toStartOf="@+id/textViewSubtitle"
-        tools:text="Price L" />
+        tools:text="Price 0" />
 
     <TextView
-        android:id="@+id/textViewPriceRight"
+        android:id="@+id/textViewPrice1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@android:string/unknownName"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewPriceLeft"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPrice0"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Price R" />
+        tools:text="Price 1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

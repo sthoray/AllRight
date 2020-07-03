@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.data.api.ApiHelper
 import com.sthoray.allright.data.repository.MainRepository
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
+import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import java.lang.IllegalArgumentException
 
 /**
@@ -26,6 +27,9 @@ class ViewModelFactory(private val apiHelper: ApiHelper) : ViewModelProvider.Fac
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return MainViewModel(MainRepository(apiHelper)) as T
+        } else if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return SearchViewModel(MainRepository(apiHelper)) as T
         }
         throw IllegalArgumentException("Unknown class name")
     }
