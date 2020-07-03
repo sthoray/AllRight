@@ -8,8 +8,22 @@
 <a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.sthoray.allright.ui.search.adapter</a>&nbsp;/&nbsp;<a href="./index.html">SearchAdapter</a><br/>
 <br/>
 <h1>SearchAdapter</h1>
-<code><span class="keyword">class </span><span class="identifier">SearchAdapter</span></code>
+<code><span class="keyword">class </span><span class="identifier">SearchAdapter</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Adapter</span><span class="symbol">&lt;</span><a href="-search-item-view-holder/index.html"><span class="identifier">SearchAdapter.SearchItemViewHolder</span></a><span class="symbol">&gt;</span></code>
 <p>Adapter for populating the RecyclerView in SearchActivity.</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-search-item-view-holder/index.html">SearchItemViewHolder</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SearchItemViewHolder</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ViewHolder</span></code>
+<p>Responsible for displaying a single item.</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3>Constructors</h3>
 <table>
 <tbody>
@@ -18,8 +32,49 @@
 <p><a href="-init-.html">&lt;init&gt;</a></p>
 </td>
 <td>
-<code><span class="identifier">SearchAdapter</span><span class="symbol">(</span><span class="symbol">)</span></code>
+<code><span class="identifier">SearchAdapter</span><span class="symbol">(</span><span class="identifier" id="com.sthoray.allright.ui.search.adapter.SearchAdapter$<init>(java.util.ArrayList((com.sthoray.allright.data.model.SearchItem)))/searchItems">searchItems</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-array-list/index.html"><span class="identifier">ArrayList</span></a><span class="symbol">&lt;</span><a href="../../com.sthoray.allright.data.model/-search-item/index.html"><span class="identifier">SearchItem</span></a><span class="symbol">&gt;</span><span class="symbol">)</span></code>
 <p>Adapter for populating the RecyclerView in SearchActivity.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add-items.html">addItems</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addItems</span><span class="symbol">(</span><span class="identifier" id="com.sthoray.allright.ui.search.adapter.SearchAdapter$addItems(kotlin.collections.List((com.sthoray.allright.data.model.SearchItem)), com.sthoray.allright.data.model.SearchMeta)/searchItems">searchItems</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.sthoray.allright.data.model/-search-item/index.html"><span class="identifier">SearchItem</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.ui.search.adapter.SearchAdapter$addItems(kotlin.collections.List((com.sthoray.allright.data.model.SearchItem)), com.sthoray.allright.data.model.SearchMeta)/searchMeta">searchMeta</span><span class="symbol">:</span>&nbsp;<a href="../../com.sthoray.allright.data.model/-search-meta/index.html"><span class="identifier">SearchMeta</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Add search items to this adapter.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-item-count.html">getItemCount</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getItemCount</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Return the number of objects to display in this ViewHolder.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="on-bind-view-holder.html">onBindViewHolder</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onBindViewHolder</span><span class="symbol">(</span><span class="identifier" id="com.sthoray.allright.ui.search.adapter.SearchAdapter$onBindViewHolder(com.sthoray.allright.ui.search.adapter.SearchAdapter.SearchItemViewHolder, kotlin.Int)/holder">holder</span><span class="symbol">:</span>&nbsp;<a href="-search-item-view-holder/index.html"><span class="identifier">SearchAdapter.SearchItemViewHolder</span></a><span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.ui.search.adapter.SearchAdapter$onBindViewHolder(com.sthoray.allright.ui.search.adapter.SearchAdapter.SearchItemViewHolder, kotlin.Int)/position">position</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Bind the data found at <a href="on-bind-view-holder.html#com.sthoray.allright.ui.search.adapter.SearchAdapter$onBindViewHolder(com.sthoray.allright.ui.search.adapter.SearchAdapter.SearchItemViewHolder, kotlin.Int)/position">position</a> to the <a href="on-bind-view-holder.html#com.sthoray.allright.ui.search.adapter.SearchAdapter$onBindViewHolder(com.sthoray.allright.ui.search.adapter.SearchAdapter.SearchItemViewHolder, kotlin.Int)/holder">holder</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="on-create-view-holder.html">onCreateViewHolder</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onCreateViewHolder</span><span class="symbol">(</span><span class="identifier" id="com.sthoray.allright.ui.search.adapter.SearchAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/parent">parent</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/view/ViewGroup.html"><span class="identifier">ViewGroup</span></a><span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.ui.search.adapter.SearchAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/viewType">viewType</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-search-item-view-holder/index.html"><span class="identifier">SearchAdapter.SearchItemViewHolder</span></a></code>
+<p>Inflate the view holder with a layout upon creation.</p>
 </td>
 </tr>
 </tbody>

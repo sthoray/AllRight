@@ -26,6 +26,8 @@ class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
     class FeatureCategoryViewHolder(itemView: View, private var category: FeatureCategory? = null) : RecyclerView.ViewHolder(itemView) {
 
         companion object {
+
+            /** The key for the selected categoryId. */
             const val CATEGORY_ID_KEY = "CATEGORY_ID"
         }
 

@@ -1,0 +1,142 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SearchRequest - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.sthoray.allright.data.model</a>&nbsp;/&nbsp;<a href="./index.html">SearchRequest</a><br/>
+<br/>
+<h1>SearchRequest</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SearchRequest</span></code>
+<p>Model for a search request.</p>
+<p>Default values represent a search without any filters.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SearchRequest</span><span class="symbol">(</span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/auctions">auctions</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/brandNew">brandNew</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/categoryId">categoryId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/fastShipping">fastShipping</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/freeShipping">freeShipping</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/location">location</span><span class="symbol">:</span>&nbsp;<a href="../-search-location/index.html"><span class="identifier">SearchLocation</span></a>&nbsp;<span class="symbol">=</span>&nbsp;SearchLocation()<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/page">page</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;1<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/products">products</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;1<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/propertyFilters">propertyFilters</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-property-filter/index.html"><span class="identifier">PropertyFilter</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;emptyList()<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/showRestricted">showRestricted</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/sortBy">sortBy</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Order.BEST.key<span class="symbol">, </span><span class="identifier" id="com.sthoray.allright.data.model.SearchRequest$<init>(kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, kotlin.Int, com.sthoray.allright.data.model.SearchLocation, kotlin.Int, kotlin.Int, kotlin.collections.List((com.sthoray.allright.data.model.PropertyFilter)), kotlin.Boolean, kotlin.String, kotlin.Boolean)/useRegion">useRegion</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">)</span></code>
+<p>Model for a search request.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="auctions.html">auctions</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">auctions</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>1 if auctions are required, else 0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="brand-new.html">brandNew</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">brandNew</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>1 if brand new items are required, else 0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="category-id.html">categoryId</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">categoryId</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>the ID of the category to search in, else 0 to search everywhere</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="fast-shipping.html">fastShipping</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">fastShipping</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>1 if fast shipping is required, else 0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="free-shipping.html">freeShipping</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">freeShipping</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>1 if free shipping is required, else 0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="location.html">location</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">location</span><span class="symbol">: </span><a href="../-search-location/index.html"><span class="identifier">SearchLocation</span></a></code>
+<p>the <a href="../-search-location/index.html">SearchLocation</a> to search around</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="page.html">page</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">page</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>the page to get items from for the current search query</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="products.html">products</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">products</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>1 if store 'products' should be included, else 0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="property-filters.html">propertyFilters</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">propertyFilters</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-property-filter/index.html"><span class="identifier">PropertyFilter</span></a><span class="symbol">&gt;</span></code>
+<p>a list of search <a href="../-property-filter/index.html">PropertyFilter</a>s</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="show-restricted.html">showRestricted</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">showRestricted</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>true if restricted items should be included, else false</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="sort-by.html">sortBy</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">sortBy</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>the sort order of the returned results</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="use-region.html">useRegion</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">useRegion</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>the region to return results from</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
