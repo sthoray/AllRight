@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
  * marketplaces. This means some properties are nullable.
  *
  * @property id the id of the listing
- * @property name the name of the listing
+ * @property productName the name of the listing
  * @property locationName the location name of the listing
  * @property startPrice the starting price of the listing
  * @property buyNow the buy now price of the listing
@@ -21,7 +21,8 @@ import com.google.gson.annotations.SerializedName
  */
 data class SearchItem(
     val id: Int,
-    val name: String,
+    @SerializedName("name")
+    val productName: String,
     @SerializedName("location_name")
     val locationName: String,
     @SerializedName("start_price")
