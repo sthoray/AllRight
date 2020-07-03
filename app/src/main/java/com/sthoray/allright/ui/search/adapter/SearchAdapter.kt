@@ -1,5 +1,7 @@
 package com.sthoray.allright.ui.search.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +23,22 @@ class SearchAdapter(private val searchItems: ArrayList<SearchItem>) :
     /**
      * Responsible for displaying a single item.
      */
-    class SearchItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class SearchItemViewHolder(itemView: View, private var searchItem: SearchItem? = null) : RecyclerView.ViewHolder(itemView) {
+
+        /**
+         * Create OnClickListener for each itemView.
+         *
+         * When an itemView is tapped, the associated searchResult should be
+         * opened in a browser.
+         */
+        init {
+            itemView.setOnClickListener {
+                val baseUrl = "https://www.allgoods.co.nz/product/"
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(baseUrl + searchItem?.id)
+                itemView.context.startActivity(intent)
+            }
+        }
 
         /**
          * Update all views within this view holder with the given item information.
@@ -29,6 +46,7 @@ class SearchAdapter(private val searchItems: ArrayList<SearchItem>) :
          * @param searchItem the item to display
          */
         fun bind(searchItem: SearchItem) {
+            this.searchItem = searchItem
             itemView.apply {
                 // Mall mappings
                 textViewProductName.text = searchItem.productName
