@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.item_layout_search.view.*
  * @property searchItems
  */
 class SearchAdapter(private val searchItems: ArrayList<SearchItem>) :
-    RecyclerView.Adapter<SearchAdapter.DataViewHolder>() {
+    RecyclerView.Adapter<SearchAdapter.SearchItemViewHolder>() {
 
     /**
      * Responsible for displaying a single item.
      */
-    class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class SearchItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         /**
          * Update all views within this view holder with the given item information.
@@ -47,8 +47,8 @@ class SearchAdapter(private val searchItems: ArrayList<SearchItem>) :
      * @param parent the parent ViewGroup of this ViewHolder
      * @param viewType the id of the viewType
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder =
-        DataViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder =
+        SearchItemViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_layout_search,
                 parent,
@@ -69,7 +69,7 @@ class SearchAdapter(private val searchItems: ArrayList<SearchItem>) :
      * @param holder the DataViewHolder to bind to
      * @param position the index of the data to bind
      */
-    override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
         holder.bind(searchItems[position])
     }
 

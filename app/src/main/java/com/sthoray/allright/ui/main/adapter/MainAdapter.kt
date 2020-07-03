@@ -17,13 +17,13 @@ import kotlinx.android.synthetic.main.item_layout_main.view.*
  * @property featuredCategories the array containing [FeatureCategory]s
  */
 class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
-    RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
+    RecyclerView.Adapter<MainAdapter.FeatureCategoryViewHolder>() {
 
     /**
      * Responsible for displaying a single featured categories and providing an on
      * click listener.
      */
-    class DataViewHolder(itemView: View, private var category: FeatureCategory? = null) : RecyclerView.ViewHolder(itemView) {
+    class FeatureCategoryViewHolder(itemView: View, private var category: FeatureCategory? = null) : RecyclerView.ViewHolder(itemView) {
 
         companion object {
             const val CATEGORY_ID_KEY = "CATEGORY_ID"
@@ -67,8 +67,8 @@ class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
      * @param parent the parent ViewGroup of this ViewHolder
      * @param viewType the id of the viewType
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder =
-        DataViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeatureCategoryViewHolder =
+        FeatureCategoryViewHolder(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.item_layout_main, parent, false)
@@ -87,7 +87,7 @@ class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
      * @param holder the DataViewHolder to bind to
      * @param position the index of the data to bind
      */
-    override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FeatureCategoryViewHolder, position: Int) {
         holder.bind(featuredCategories[position])
     }
 
