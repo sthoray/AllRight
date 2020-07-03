@@ -32,4 +32,12 @@ class SearchViewModel(private val mainRepository: MainRepository) : ViewModel() 
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }
+
+    /**
+     * Select a category leaving the rest of the search query alone.
+     */
+    fun setCategory(categoryId: Int) {
+        searchRequest.categoryId = categoryId
+        searchRequest.page = 1 // reset search to first page
+    }
 }

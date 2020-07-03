@@ -14,6 +14,7 @@ import com.sthoray.allright.data.api.RetrofitBuilder
 import com.sthoray.allright.data.model.SearchItem
 import com.sthoray.allright.data.model.SearchMeta
 import com.sthoray.allright.ui.base.ViewModelFactory
+import com.sthoray.allright.ui.main.adapter.MainAdapter
 import com.sthoray.allright.ui.search.adapter.SearchAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.utils.Status
@@ -44,6 +45,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         setupViewModel()
         setupUI()
+        setupSearchRequest()
         setupObservers()
     }
 
@@ -55,6 +57,18 @@ class SearchActivity : AppCompatActivity() {
             this,
             ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
         ).get(SearchViewModel::class.java)
+    }
+
+    /**
+     * Modify the search request to match the intent.
+     */
+    private fun setupSearchRequest() {
+        viewModel.setCategory(
+            intent.getIntExtra(
+                MainAdapter.FeatureCategoryViewHolder.CATEGORY_ID_KEY,
+                0
+            )
+        )
     }
 
     /**
