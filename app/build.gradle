@@ -71,4 +71,9 @@ dependencies {
 
     // Coil
     implementation 'io.coil-kt:coil:0.11.0'
+
+    // Paging
+    def paging_version = "2.1.2"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
 }
