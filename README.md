@@ -30,8 +30,7 @@ On MacOS or Linux:
 
 ## Documentation
 
-We use [Dokka](https://github.com/Kotlin/dokka) to generate documentation in a HTML format. It's hosted using GitHub Pages and is always accessible
-[here](https://sthoray.github.io/AllRight/index.html) or in the docs folder of this repository.
+We use [Dokka](https://github.com/Kotlin/dokka) to extract kdoc into a HTML format. It's hosted [here](https://sthoray.github.io/AllRight/index.html) via GitHub Pages. You can also generate local documentation using the `dokka` Gradle task. 
 
 ## Disclaimer
 

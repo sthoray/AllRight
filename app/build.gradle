@@ -35,7 +35,7 @@ android {
 
     dokka {
         outputFormat = 'html'
-        outputDirectory = "$rootDir/docs/dokka"
+        outputDirectory = "$rootDir/dokka"
     }
 }
 
