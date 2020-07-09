@@ -1,8 +1,8 @@
-name: Android Feature Branch CI
+name: Android Feature CI
 
 on:
   push:
-    branches: [ '*' ,'!master' ]
+    branches: [ '*' ,'!master', '!gh-pages' ]
 
 jobs:
   test:
