@@ -2,7 +2,8 @@
 
 A simple and fast browser for the AllGoods marketplace. Built for Android devices using Kotlin.
 
-![](https://github.com/sthoray/AllRight/workflows/Android%20Master%20Build/badge.svg)
+![Android Build](https://github.com/sthoray/AllRight/workflows/Android%20Build/badge.svg)
+![Documentation](https://github.com/sthoray/AllRight/workflows/Documentation/badge.svg)
 
 ## Build from source
 
