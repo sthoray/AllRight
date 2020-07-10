@@ -32,4 +32,4 @@ Thumbs.db
 .DS_Store
 
 # Generated docs
-/dokka
+/docs
