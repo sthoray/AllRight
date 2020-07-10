@@ -1,11 +1,7 @@
 <resources>
     <string name="app_name">AllRight</string>
-    <string name="team_name">Sthoray 2020</string>
-    <string name="logo">logo</string>
 
-    <string name="btn_previous">Prev</string>
-    <string name="btn_next">Next</string>
-    <string name="btn_switch">Switch Marketplace</string>
-
-    <string name="price">$%.2f</string>
+    <string name="search_label">Search</string>
+    
+    <string name="format_price">$%.2f</string>
 </resources>
