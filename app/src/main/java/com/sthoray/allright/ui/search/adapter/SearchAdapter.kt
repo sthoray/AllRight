@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.SearchItem
-import com.sthoray.allright.data.model.SearchMeta
+import com.sthoray.allright.data.model.search.Listing
+import com.sthoray.allright.data.model.search.SearchResponseMetadata
 import kotlinx.android.synthetic.main.item_layout_search.view.*
 
 /**
@@ -17,13 +17,13 @@ import kotlinx.android.synthetic.main.item_layout_search.view.*
  *
  * @property searchItems
  */
-class SearchAdapter(private val searchItems: ArrayList<SearchItem>) :
+class SearchAdapter(private val searchItems: ArrayList<Listing>) :
     RecyclerView.Adapter<SearchAdapter.SearchItemViewHolder>() {
 
     /**
      * Responsible for displaying a single item.
      */
-    class SearchItemViewHolder(itemView: View, private var searchItem: SearchItem? = null) : RecyclerView.ViewHolder(itemView) {
+    class SearchItemViewHolder(itemView: View, private var searchItem: Listing? = null) : RecyclerView.ViewHolder(itemView) {
 
         /**
          * Create OnClickListener for each itemView.
@@ -45,7 +45,7 @@ class SearchAdapter(private val searchItems: ArrayList<SearchItem>) :
          *
          * @param searchItem the item to display
          */
-        fun bind(searchItem: SearchItem) {
+        fun bind(searchItem: Listing) {
             this.searchItem = searchItem
             itemView.apply {
                 // Mall mappings
@@ -97,10 +97,10 @@ class SearchAdapter(private val searchItems: ArrayList<SearchItem>) :
      * If the search query changed, the page number will be reset to 1 and the
      * existing list should be cleared.
      *
-     * @param searchItems a list of [SearchItem]s to add
+     * @param searchItems a list of [Listing]s to add
      * @param searchMeta metadata defining the [searchItems]
      */
-    fun addItems(searchItems: List<SearchItem>, searchMeta: SearchMeta) {
+    fun addItems(searchItems: List<Listing>, searchMeta: SearchResponseMetadata) {
         this.searchItems.apply {
             if (searchMeta.pagination.currentPage == 1) {
                 clear()

@@ -1,26 +1,27 @@
-package com.sthoray.allright.data.model
+package com.sthoray.allright.data.model.search
 
 import com.google.gson.annotations.SerializedName
 
 /**
- * Model for search item.
+ * Model for listings.
  *
  * This model (currently) does not contain all possible properties. The same
  * properties are not always used in both "Mall" and "Second hand"
  * marketplaces. This means some properties are nullable.
  *
- * @property id the id of the listing
- * @property productName the name of the listing
- * @property locationName the location name of the listing
- * @property startPrice the starting price of the listing
- * @property buyNow the buy now price of the listing
- * @property currentPrice the current auction price of the listing
- * @property shipping the type of shipping offered
+ * @property listingId the listing id
+ * @property productName the listing name
+ * @property locationName the listing location
+ * @property startPrice the listing start price
+ * @property buyNowPrice the listing buy now price
+ * @property currentPrice the current auction price
+ * @property shippingType the type of shipping offered
  * @property shippingOptions a list of [ShippingOption]s
- * @property mainImage the main image of the listing
+ * @property mainImage the listing [MainImage]
  */
-data class SearchItem(
-    val id: Int,
+data class Listing(
+    @SerializedName("id")
+    val listingId: Int,
     @SerializedName("name")
     val productName: String,
     @SerializedName("location_name")
@@ -28,10 +29,11 @@ data class SearchItem(
     @SerializedName("start_price")
     val startPrice: Float?,
     @SerializedName("buy_now")
-    val buyNow: Float?,
+    val buyNowPrice: Float?,
     @SerializedName("current_price")
     val currentPrice: Float?,
-    val shipping: Int,
+    @SerializedName("shipping")
+    val shippingType: Int,
     @SerializedName("shipping_options")
     val shippingOptions: List<ShippingOption>,
     @SerializedName("main_image")

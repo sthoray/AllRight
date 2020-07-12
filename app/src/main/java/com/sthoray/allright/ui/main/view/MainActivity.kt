@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sthoray.allright.R
 import com.sthoray.allright.data.api.ApiHelper
-import com.sthoray.allright.data.api.RetrofitBuilder
+import com.sthoray.allright.data.api.RetrofitInstance
 import com.sthoray.allright.data.model.FeatureCategory
 import com.sthoray.allright.ui.base.ViewModelFactory
 import com.sthoray.allright.ui.main.adapter.MainAdapter
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             this,
-            ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
+            ViewModelFactory(ApiHelper(RetrofitInstance.apiService))
         ).get(MainViewModel::class.java)
     }
 

@@ -1,17 +1,17 @@
-package com.sthoray.allright.data.model
+package com.sthoray.allright.data.model.search
 
 import com.google.gson.annotations.SerializedName
 
 /**
- * Model for search pagination.
+ * Model for pagination info.
  *
  * @property total the number of listings in this search query (conflict's the reported number!)
  * @property count the number of listings in this page
  * @property perPage the maximum number of listings in each page
- * @property currentPage the index of the current page
- * @property totalPages the total number of pages for this search query
+ * @property currentPage the current page number
+ * @property totalPages the total number of pages in this search query
  */
-data class SearchPagination(
+data class Pagination(
     val total: Int,
     @SerializedName("count")
     val count: Int,

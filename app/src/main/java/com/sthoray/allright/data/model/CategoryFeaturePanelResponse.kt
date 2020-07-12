@@ -1,7 +1,7 @@
 package com.sthoray.allright.data.model
 
 /**
- * Model representing a feature category panel.
+ * Model representing a category feature panel.
  *
  * AllGoods are using integer object names for each category. This can be
  * represented as a map containing indices and [FeatureCategory]s. It may
@@ -10,4 +10,6 @@ package com.sthoray.allright.data.model
  *
  * @property categories a map with [FeatureCategory] as values
  */
-data class CategoryFeaturePanel(val categories: Map<Int, FeatureCategory>)
+data class CategoryFeaturePanelResponse(
+    val categories: Map<Int, FeatureCategory>
+)

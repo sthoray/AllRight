@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
 import com.sthoray.allright.data.api.ApiHelper
-import com.sthoray.allright.data.api.RetrofitBuilder
-import com.sthoray.allright.data.model.SearchItem
-import com.sthoray.allright.data.model.SearchMeta
+import com.sthoray.allright.data.api.RetrofitInstance
+import com.sthoray.allright.data.model.search.Listing
+import com.sthoray.allright.data.model.search.SearchResponseMetadata
 import com.sthoray.allright.ui.base.ViewModelFactory
 import com.sthoray.allright.ui.main.adapter.MainAdapter
 import com.sthoray.allright.ui.search.adapter.SearchAdapter
@@ -55,7 +55,7 @@ class SearchActivity : AppCompatActivity() {
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             this,
-            ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
+            ViewModelFactory(ApiHelper(RetrofitInstance.apiService))
         ).get(SearchViewModel::class.java)
     }
 
@@ -117,7 +117,7 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    private fun retrieveList(searchItems: List<SearchItem>, searchMeta: SearchMeta) {
+    private fun retrieveList(searchItems: List<Listing>, searchMeta: SearchResponseMetadata) {
         adapter.apply {
             addItems(searchItems, searchMeta)
             notifyDataSetChanged()
