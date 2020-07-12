@@ -1,5 +1,7 @@
 package com.sthoray.allright.data.model.search
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -19,7 +21,11 @@ import com.google.gson.annotations.SerializedName
  * @property shippingOptions a list of [ShippingOption]s
  * @property mainImage the listing [MainImage]
  */
+@Entity(
+    tableName = "listings"
+)
 data class Listing(
+    @PrimaryKey
     @SerializedName("id")
     val listingId: Int,
     @SerializedName("name")
