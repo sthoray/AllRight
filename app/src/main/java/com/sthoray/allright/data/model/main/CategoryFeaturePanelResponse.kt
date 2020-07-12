@@ -1,4 +1,4 @@
-package com.sthoray.allright.data.model
+package com.sthoray.allright.data.model.main
 
 /**
  * Model representing a category feature panel.

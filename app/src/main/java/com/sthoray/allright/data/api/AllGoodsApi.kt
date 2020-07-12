@@ -1,6 +1,6 @@
 package com.sthoray.allright.data.api
 
-import com.sthoray.allright.data.model.CategoryFeaturePanelResponse
+import com.sthoray.allright.data.model.main.CategoryFeaturePanelResponse
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import retrofit2.Response

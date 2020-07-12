@@ -1,4 +1,4 @@
-package com.sthoray.allright.data.model
+package com.sthoray.allright.data.model.main
 
 import com.google.gson.annotations.SerializedName
 
