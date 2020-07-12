@@ -13,7 +13,7 @@ import com.sthoray.allright.data.db.Converters
  * properties are not always used in both "Mall" and "Second hand"
  * marketplaces. This means some properties are nullable.
  *
- * @property listingId the listing id
+ * @property id the listing id
  * @property productName the listing name
  * @property locationName the listing location
  * @property startPrice the listing start price
@@ -29,8 +29,7 @@ import com.sthoray.allright.data.db.Converters
 @TypeConverters(Converters::class)
 data class Listing(
     @PrimaryKey
-    @SerializedName("id")
-    val listingId: Int,
+    val id: Int,
     @SerializedName("name")
     val productName: String,
     @SerializedName("location_name")
