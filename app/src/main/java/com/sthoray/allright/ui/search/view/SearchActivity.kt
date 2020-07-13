@@ -1,5 +1,7 @@
 package com.sthoray.allright.ui.search.view
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.AppDatabase
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.search.adapter.SearchAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModelProviderFactory
+import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.coroutines.MainScope
@@ -48,6 +52,14 @@ class SearchActivity : AppCompatActivity() {
         setupViewModel()
         setupUI()
         setupObservers()
+
+        // Bad implementation but works for now (try rotating the device)
+        newSearch(
+            intent.getIntExtra(
+                MainActivity.CATEGORY_ID_KEY,
+                0   // search all categories
+            )
+        )
     }
 
 
@@ -71,6 +83,12 @@ class SearchActivity : AppCompatActivity() {
                     (layoutManager as LinearLayoutManager).orientation
                 )
             )
+        }
+
+        searchAdapter.setOnItemClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(BASE_PRODUCT_URL + it.id)
+            this.startActivity(intent)
         }
     }
 

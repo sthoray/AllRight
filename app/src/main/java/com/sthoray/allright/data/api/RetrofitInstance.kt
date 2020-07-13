@@ -1,6 +1,6 @@
 package com.sthoray.allright.data.api
 
-import com.sthoray.allright.utils.Constants.Companion.BASE_URL
+import com.sthoray.allright.utils.Constants.Companion.BASE_API_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,7 +25,7 @@ class RetrofitInstance {
 
             // Finally, the retrofit builder with Gson converter for deserialization
             Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

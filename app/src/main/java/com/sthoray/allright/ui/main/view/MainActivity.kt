@@ -1,5 +1,6 @@
 package com.sthoray.allright.ui.main.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.main.adapter.MainAdapter
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.main.viewmodel.MainViewModelProviderFactory
+import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -63,6 +65,12 @@ class MainActivity : AppCompatActivity() {
             adapter = mainAdapter
             layoutManager = GridLayoutManager(context, 3)
         }
+
+        mainAdapter.setOnItemClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            intent.putExtra(CATEGORY_ID_KEY, it.id)
+            this.startActivity(intent)
+        }
     }
 
     /**  Subscribe to observable data and define View behaviour. */
@@ -95,5 +103,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun removeProgressBar() {
         progBarMainPagination.visibility = View.GONE
+    }
+
+    companion object {
+
+        /** The key for the selected categoryId. */
+        const val CATEGORY_ID_KEY = "CATEGORY_ID"
     }
 }

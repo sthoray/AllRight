@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.main.FeatureCategory
-import com.sthoray.allright.utils.Constants.Companion.AG_BASE_URL
+import com.sthoray.allright.utils.Constants.Companion.BASE_URL
 import kotlinx.android.synthetic.main.item_layout_main.view.*
 
 /**
@@ -79,7 +79,7 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.FeatureCategoryViewHolder>(
         holder.itemView.apply {
             textViewCategoryName.text = category.name
             textViewListingCount.text = category.listingCount.toString()
-            imageViewCategoryImage.load(AG_BASE_URL + category.imagePath)
+            imageViewCategoryImage.load(BASE_URL + category.imagePath)
 
             setOnClickListener {
                 onItemClickListener?.let { it(category) }
