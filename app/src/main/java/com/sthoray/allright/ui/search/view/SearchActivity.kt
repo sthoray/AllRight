@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.AppDatabase
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.search.adapter.SearchAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
-import com.sthoray.allright.ui.search.viewmodel.SearchViewModelProviderFactory
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_search.*
@@ -66,7 +66,7 @@ class SearchActivity : AppCompatActivity() {
     /** Initialise the View Model for this activity. */
     private fun setupViewModel() {
         val appRepository = AppRepository(AppDatabase(this))
-        val viewModelProviderFactory = SearchViewModelProviderFactory(appRepository)
+        val viewModelProviderFactory = ViewModelProviderFactory(appRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(SearchViewModel::class.java)
     }

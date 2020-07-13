@@ -13,7 +13,7 @@ import com.sthoray.allright.data.db.AppDatabase
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.main.adapter.MainAdapter
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
-import com.sthoray.allright.ui.main.viewmodel.MainViewModelProviderFactory
+import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_main.*
@@ -53,7 +53,10 @@ class MainActivity : AppCompatActivity() {
     /** Initialise the View Model for this activity. */
     private fun setupViewModel() {
         val appRepository = AppRepository(AppDatabase(this))
-        val viewModelProviderFactory = MainViewModelProviderFactory(appRepository)
+        val viewModelProviderFactory =
+            ViewModelProviderFactory(
+                appRepository
+            )
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(MainViewModel::class.java)
     }
