@@ -1,37 +1,57 @@
 package com.sthoray.allright.ui.main.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import com.sthoray.allright.data.model.CategoryFeaturePanelResponse
-import com.sthoray.allright.data.repository.MainRepository
+import androidx.lifecycle.viewModelScope
+import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
+import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Resource
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
 
 /**
- * View model for bridging the View and Model components.
+ * View model for the Main activity.
  *
  * Uses LiveData to expose observables when interacting with the Model. These
  * can be observed by the View.
  *
- * @property mainRepository the data repository to interact with
+ * @property appRepository the data repository to interact with
  */
-class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
+class MainViewModel(
+    private val appRepository: AppRepository
+) : ViewModel() {
+
+    /** Featured categories response. */
+    val featureCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> =
+        MutableLiveData()
+
+    /** Make the network request on initialisation. */
+    init {
+        getFeaturedCategories()
+    }
+
+    /** Get feature categories on a background thread. */
+    private fun getFeaturedCategories() = viewModelScope.launch {
+        featureCategories.postValue(Resource.Loading())
+        val response = appRepository.getFeatureCategories()
+        featureCategories.postValue(handleFeatureCategoriesResponse(response))
+    }
 
     /**
-     * Get featured categories on a background thread using the IO Dispatcher.
+     * Emit successful or failed responses.
      *
-     * If the the HTTP request was performed successfully, data will contain
-     * a [CategoryFeaturePanelResponse]. If an exception is thrown when performing the
-     * request, it is handled here.
+     * @param response the network response to handle
      *
-     * @return liveData with a list of feature categories or null as data
+     * @return a [Resource] containing data or an error message
      */
-    fun getFeaturedCategories() = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            emit(Resource.success(data = mainRepository.getCategoryFeaturePanel().categories.values.toList()))
-        } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+    private fun handleFeatureCategoriesResponse(
+        response: Response<FeatureCategoriesResponse>
+    ): Resource<FeatureCategoriesResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { responseBody ->
+                return Resource.Success(responseBody)
+            }
         }
+        return Resource.Error(response.message())
     }
 }

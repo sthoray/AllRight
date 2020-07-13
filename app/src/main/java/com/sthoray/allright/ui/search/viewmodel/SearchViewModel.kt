@@ -1,42 +1,56 @@
 package com.sthoray.allright.ui.search.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import com.sthoray.allright.data.model.search.SearchRequest
-import com.sthoray.allright.data.repository.MainRepository
+import androidx.lifecycle.viewModelScope
+import com.sthoray.allright.data.model.search.SearchResponse
+import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Resource
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
 
 /**
- * View model for bridging the View and Model components.
+ * View model for the Search activity.
  *
- * @property mainRepository the data repository to interact with
+ * Uses LiveData to expose observables when interacting with the Model. These
+ * can be observed by the View.
+ *
+ * @property appRepository the data repository to interact with
  */
-class SearchViewModel(private val mainRepository: MainRepository) : ViewModel() {
+class SearchViewModel(
+    private val appRepository: AppRepository
+) : ViewModel() {
 
-    /** The search request to post. */
-    private var searchRequest =
-        SearchRequest()
+    /** Search response. */
+    val searchListings: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
+
+    /** Current search page number */
+    private val searchListingsPage = 1
 
     /**
-     * Search a AllGoods market place on a background thread using the IO Dispatcher.
-     *
-     * @return liveData containing the search response or null
+     * Search AllGoods for listings.
      */
-    fun search() = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            emit(Resource.success(data = mainRepository.search(searchRequest)))
-        } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
-        }
+    fun searchListings(searchQuery: String, categoryId: Int) = viewModelScope.launch {
+        searchListings.postValue(Resource.Loading())
+        val response = appRepository.searchListings(searchQuery, categoryId, searchListingsPage)
+        searchListings.postValue(handleSearchListingsResponse(response))
     }
 
     /**
-     * Select a category leaving the rest of the search query alone.
+     * Emit successful or failed responses.
+     *
+     * @param response the network response to handle
+     *
+     * @return a [Resource] containing data or an error message
      */
-    fun setCategory(categoryId: Int) {
-        searchRequest.categoryId = categoryId
-        searchRequest.page = 1 // reset search to first page
+    private fun handleSearchListingsResponse(
+        response: Response<SearchResponse>
+    ): Resource<SearchResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { responseBody ->
+                return Resource.Success(responseBody)
+            }
+        }
+        return Resource.Error(response.message())
     }
 }

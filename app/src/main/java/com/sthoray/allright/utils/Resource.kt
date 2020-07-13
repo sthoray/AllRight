@@ -1,26 +1,24 @@
 package com.sthoray.allright.utils
 
 /**
- * Utility to communicate the current state of Network Calls to the UI layer.
+ * Generic resource to wrap around network responses.
  *
- * @property status the status of the resource
- * @property data the actual data stored in the resource
- * @property message the message if an error occurs
+ * Allows us differentiate between successful and failed responses. Used
+ * to communicate the current state of Network Calls to the UI component.
+ *
+ * @property data any data returned from a response
+ * @property message error message returned from a failed response
  */
-data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
+sealed class Resource<T>(
+    val data: T? = null,
+    val message: String? = null
+) {
+    /** A successfully retrieved resource. */
+    class Success<T>(data: T?) : Resource<T>(data)
 
-    companion object {
+    /** A unsuccessfully retrieved resource. */
+    class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
 
-        /** A resource that has been retrieved. */
-        fun <T> success(data: T): Resource<T> =
-            Resource(status = Status.SUCCESS, data = data, message = null)
-
-        /** A resource that has not been retrieved successfully. */
-        fun <T> error(data: T?, message: String): Resource<T> =
-            Resource(status = Status.ERROR, data = data, message = message)
-
-        /** A resource that is currently being retrieved. */
-        fun <T> loading(data: T?): Resource<T> =
-            Resource(status = Status.LOADING, data = data, message = null)
-    }
+    /** A resource that is currently being retrieved. */
+    class Loading<T>() : Resource<T>()
 }

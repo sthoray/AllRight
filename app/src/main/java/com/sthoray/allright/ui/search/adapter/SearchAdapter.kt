@@ -1,63 +1,57 @@
 package com.sthoray.allright.ui.search.adapter
 
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.search.Listing
-import com.sthoray.allright.data.model.search.SearchResponseMetadata
 import kotlinx.android.synthetic.main.item_layout_search.view.*
 
 /**
- * Adapter for populating the RecyclerView in SearchActivity.
- *
- * @property searchItems
+ * Adapter for adapting listings into a RecyclerView.
  */
-class SearchAdapter(private val searchItems: ArrayList<Listing>) :
-    RecyclerView.Adapter<SearchAdapter.SearchItemViewHolder>() {
+class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ListingViewHolder>() {
 
-    /**
-     * Responsible for displaying a single item.
-     */
-    class SearchItemViewHolder(itemView: View, private var searchItem: Listing? = null) : RecyclerView.ViewHolder(itemView) {
+
+    /** Responsible for displaying a single listing. */
+    inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+
+    /** Callback for ListDiffer. */
+    private val differCallback = object : DiffUtil.ItemCallback<Listing>() {
 
         /**
-         * Create OnClickListener for each itemView.
+         * Check if two listings are the same.
          *
-         * When an itemView is tapped, the associated searchResult should be
-         * opened in a browser.
+         * @param oldItem the old [Listing]
+         * @param newItem the new [Listing]
+         *
+         * @return true if they are the same, else false
          */
-        init {
-            itemView.setOnClickListener {
-                val baseUrl = "https://www.allgoods.co.nz/product/"
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(baseUrl + searchItem?.id)
-                itemView.context.startActivity(intent)
-            }
+        override fun areItemsTheSame(oldItem: Listing, newItem: Listing): Boolean {
+            return oldItem.id == newItem.id
         }
 
         /**
-         * Update all views within this view holder with the given item information.
+         * Check if two listings have the same contents.
          *
-         * @param searchItem the item to display
+         * @param oldItem the old [Listing]
+         * @param newItem the new [Listing]
+         *
+         * @return true if they have the same contents, else false
          */
-        fun bind(searchItem: Listing) {
-            this.searchItem = searchItem
-            itemView.apply {
-                // Mall mappings
-                textViewProductName.text = searchItem.productName
-                textViewSubtitle.text = searchItem.locationName
-                textViewPrice0.text =
-                    String.format(context.getString(R.string.format_price), searchItem.startPrice)
-                textViewPrice1.text = searchItem.shipping.toString()
-                imageViewProductImage.load(searchItem.mainImage.thumbUrl)
-            }
+        override fun areContentsTheSame(oldItem: Listing, newItem: Listing): Boolean {
+            return oldItem == newItem
         }
     }
+
+    /** Calculate the differences between two lists. */
+    val differ = AsyncListDiffer(this, differCallback)
+
 
     /**
      * Inflate the view holder with a layout upon creation.
@@ -65,47 +59,60 @@ class SearchAdapter(private val searchItems: ArrayList<Listing>) :
      * @param parent the parent ViewGroup of this ViewHolder
      * @param viewType the id of the viewType
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder =
-        SearchItemViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListingViewHolder {
+        return ListingViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_layout_search,
                 parent,
                 false
             )
         )
+    }
 
     /**
-     * Return the number of objects to display in this ViewHolder.
+     * Return the number of items to display in this ViewHolder.
      *
-     * @return the size of the list to display
+     * @return the size of the current list
      */
-    override fun getItemCount(): Int = searchItems.size
+    override fun getItemCount(): Int {
+        return differ.currentList.size
+    }
 
     /**
      * Bind the data found at [position] to the [holder].
      *
-     * @param holder the DataViewHolder to bind to
+     * @param holder the ViewHolder to bind to
      * @param position the index of the data to bind
      */
-    override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
-        holder.bind(searchItems[position])
+    override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
+        val listing = differ.currentList[position]
+        holder.itemView.apply {
+            // Mall mappings
+            textViewProductName.text = listing.productName
+            textViewSubtitle.text = listing.locationName
+            textViewPrice0.text = String.format(
+                context.getString(R.string.format_price),
+                listing.startPrice
+            )
+            textViewPrice1.text = listing.shippingType.toString()
+            imageViewProductImage.load(listing.mainImage.thumbUrl)
+
+            setOnClickListener {
+                onItemClickListener?.let { it(listing) }
+            }
+        }
     }
 
+
+    /** On click listener lambda function for a listing. */
+    private var onItemClickListener: ((Listing) -> Unit)? = null
+
     /**
-     * Add search items to this adapter.
+     * Set on click listener for a listing.
      *
-     * If the search query changed, the page number will be reset to 1 and the
-     * existing list should be cleared.
-     *
-     * @param searchItems a list of [Listing]s to add
-     * @param searchMeta metadata defining the [searchItems]
+     * @param listener the on click listener lambda for a Listing
      */
-    fun addItems(searchItems: List<Listing>, searchMeta: SearchResponseMetadata) {
-        this.searchItems.apply {
-            if (searchMeta.pagination.currentPage == 1) {
-                clear()
-            }
-            addAll(searchItems)
-        }
+    fun setOnItemClickListener(listener: (Listing) -> Unit) {
+        onItemClickListener = listener
     }
 }

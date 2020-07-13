@@ -5,7 +5,7 @@ import androidx.room.*
 import com.sthoray.allright.data.model.search.Listing
 
 /**
- * Defines interactions with a Room database for [Listing]s
+ * Defines interactions for [Listing]s in a Room database.
  */
 @Dao
 interface ListingDao {
@@ -18,7 +18,7 @@ interface ListingDao {
      * @return the id of the inserted listing
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upinsert(listing: Listing): Long
+    suspend fun upsert(listing: Listing): Long
 
     /**
      * Get all listings in the database.

@@ -1,6 +1,6 @@
 package com.sthoray.allright.data.api
 
-import com.sthoray.allright.data.model.main.CategoryFeaturePanelResponse
+import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import retrofit2.Response
@@ -17,10 +17,10 @@ interface AllGoodsApi {
     /**
      * Get the category feature panel.
      *
-     * @return a [CategoryFeaturePanelResponse] response
+     * @return a [FeatureCategoriesResponse] response
      */
     @GET("categoryFeaturePanel")
-    suspend fun getCategoryFeaturePanel(): Response<CategoryFeaturePanelResponse>
+    suspend fun getFeatureCategories(): Response<FeatureCategoriesResponse>
 
     /**
      * Search for listings.
@@ -37,13 +37,13 @@ interface AllGoodsApi {
      * @return a [SearchResponse] response
      */
     @POST("search")
-    suspend fun search(
+    suspend fun searchForListings(
         @Query("q")
-        searchQuery: String?,
+        searchQuery: String = "",
         @Query("category_id")
-        categoryId: Int? = 0,
+        categoryId: Int = 0,
         @Query("page")
-        pageNumber: Int? = 1,
+        pageNumber: Int = 1,
         @Body
         searchRequest: SearchRequest = SearchRequest(
             categoryId = null,

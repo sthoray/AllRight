@@ -32,7 +32,7 @@ class RetrofitInstance {
         }
 
         /** The actual API service object that we can use for requests. */
-        val apiService: AllGoodsApi by lazy {
+        val api: AllGoodsApi by lazy {
             retrofit.create(AllGoodsApi::class.java)
         }
     }

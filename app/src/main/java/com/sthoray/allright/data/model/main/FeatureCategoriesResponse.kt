@@ -10,6 +10,6 @@ package com.sthoray.allright.data.model.main
  *
  * @property categories a map with [FeatureCategory] as values
  */
-data class CategoryFeaturePanelResponse(
+data class FeatureCategoriesResponse(
     val categories: Map<Int, FeatureCategory>
 )

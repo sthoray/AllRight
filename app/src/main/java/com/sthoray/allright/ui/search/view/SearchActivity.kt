@@ -2,23 +2,22 @@ package com.sthoray.allright.ui.search.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
-import com.sthoray.allright.data.api.ApiHelper
-import com.sthoray.allright.data.api.RetrofitInstance
-import com.sthoray.allright.data.model.search.Listing
-import com.sthoray.allright.data.model.search.SearchResponseMetadata
-import com.sthoray.allright.ui.base.ViewModelFactory
-import com.sthoray.allright.ui.main.adapter.MainAdapter
+import com.sthoray.allright.data.db.AppDatabase
+import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.search.adapter.SearchAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
-import com.sthoray.allright.utils.Status
+import com.sthoray.allright.ui.search.viewmodel.SearchViewModelProviderFactory
+import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 /**
  * Activity for viewing search results.
@@ -29,11 +28,14 @@ import kotlinx.android.synthetic.main.activity_search.*
  */
 class SearchActivity : AppCompatActivity() {
 
-    /** The ViewModel that this View subscribes to. */
+
+    /** The ViewModel to interact with data. */
     private lateinit var viewModel: SearchViewModel
 
-    /** The adapter for updating views. */
-    private lateinit var adapter: SearchAdapter
+    /** The adapter for displaying retrieved data. */
+    private lateinit var searchAdapter: SearchAdapter
+
+    private val TAG = "SearchActivity"
 
     /**
      * Set up ViewModel, UI, and observers when the activity is created.
@@ -45,82 +47,74 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         setupViewModel()
         setupUI()
-        setupSearchRequest()
         setupObservers()
     }
 
-    /**
-     * Initialise the View Model for this activity.
-     */
+
+    /** Initialise the View Model for this activity. */
     private fun setupViewModel() {
-        viewModel = ViewModelProviders.of(
-            this,
-            ViewModelFactory(ApiHelper(RetrofitInstance.apiService))
-        ).get(SearchViewModel::class.java)
+        val appRepository = AppRepository(AppDatabase(this))
+        val viewModelProviderFactory = SearchViewModelProviderFactory(appRepository)
+        viewModel = ViewModelProvider(this, viewModelProviderFactory)
+            .get(SearchViewModel::class.java)
     }
 
-    /**
-     * Modify the search request to match the intent.
-     */
-    private fun setupSearchRequest() {
-        viewModel.setCategory(
-            intent.getIntExtra(
-                MainAdapter.FeatureCategoryViewHolder.CATEGORY_ID_KEY,
-                0
-            )
-        )
-    }
-
-    /**
-     * Setup the UI to its initial state.
-     */
+    /** Setup the UI. */
     private fun setupUI() {
-        adapter = SearchAdapter(arrayListOf())
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                recyclerView.context,
-                (recyclerView.layoutManager as LinearLayoutManager).orientation
+        searchAdapter = SearchAdapter()
+        recViewSearch.apply {
+            adapter = searchAdapter
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    (layoutManager as LinearLayoutManager).orientation
+                )
             )
-        )
-        recyclerView.adapter = adapter
+        }
     }
 
-    /**
-     * Define View behaviour based on the [Status] of the fetched data.
-     */
+    /** Subscribe to observable data and define View behaviour. */
     private fun setupObservers() {
-        viewModel.search().observe(this, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.GONE
-                        resource.data?.let { searchResponse ->
-                            retrieveList(
-                                searchResponse.data,
-                                searchResponse.meta
-                            )
-                        }
+        viewModel.searchListings.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    removeProgressBar()
+                    response.data?.let { listingResponse ->
+                        val listings = listingResponse.data
+                        searchAdapter.differ.submitList(listings)
                     }
-                    Status.ERROR -> {
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                }
+                is Resource.Error -> {
+                    removeProgressBar()
+                    response.message?.let { message ->
+                        Log.e(TAG, "An error occurred: $message")
                     }
-                    Status.LOADING -> {
-                        progressBar.visibility = View.VISIBLE
-                        recyclerView.visibility = View.GONE
-                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
                 }
             }
         })
     }
 
-    private fun retrieveList(searchItems: List<Listing>, searchMeta: SearchResponseMetadata) {
-        adapter.apply {
-            addItems(searchItems, searchMeta)
-            notifyDataSetChanged()
+    private fun showProgressBar() {
+        progBarSearchPagination.visibility = View.VISIBLE
+    }
+
+    private fun removeProgressBar() {
+        progBarSearchPagination.visibility = View.GONE
+    }
+
+
+    /**
+     * Search with a given query.
+     *
+     * @param categoryId the category's id to search in
+     */
+    private fun newSearch(categoryId: Int) {
+        MainScope().launch {
+            viewModel.searchListings("", categoryId)
         }
     }
 }
