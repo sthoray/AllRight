@@ -9,6 +9,7 @@ import com.sthoray.allright.utils.SortOrder
  * Default values represent a search without any filters. Nullable properties
  * must be specified when searching the AllGoods API without queries.
  *
+ * @property searchQuery the query to search for
  * @property auctions 1 if auctions are required, else 0
  * @property brandNew 1 if brand new items are required, else 0
  * @property categoryId the id of the category to search in, `0` searches everywhere
@@ -23,18 +24,20 @@ import com.sthoray.allright.utils.SortOrder
  * @property useRegion the region to return results from
  */
 data class SearchRequest(
+    @SerializedName("q")
+    var searchQuery: String = "",
     var auctions: Int = 0,
     @SerializedName("brand_new")
     var brandNew: Int = 0,
     @SerializedName("category_id")
-    var categoryId: Int? = 0,
+    var categoryId: Int = 0,
     @SerializedName("fast_shipping")
     var fastShipping: Int = 0,
     @SerializedName("free_shipping")
     var freeShipping: Int = 0,
     var location: SearchLocation = SearchLocation(),
     @SerializedName("page")
-    var pageNumber: Int? = 1,
+    var pageNumber: Int = 1,
     var products: Int = 1,
     var propertyFilters: List<PropertyFilter> = emptyList(),
     var showRestricted: Boolean = true,

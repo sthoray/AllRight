@@ -2,6 +2,7 @@ package com.sthoray.allright.data.repository
 
 import com.sthoray.allright.data.api.RetrofitInstance
 import com.sthoray.allright.data.db.AppDatabase
+import com.sthoray.allright.data.model.search.SearchRequest
 
 /**
  * Repository for handling all data operations.
@@ -16,6 +17,6 @@ class AppRepository(
         RetrofitInstance.api.getFeatureCategories()
 
     /** Search for listings. */
-    suspend fun searchListings(searchQuery: String, categoryId: Int, pageNumber: Int) =
-        RetrofitInstance.api.searchForListings(searchQuery, categoryId, pageNumber)
+    suspend fun searchListings(searchRequest: SearchRequest) =
+        RetrofitInstance.api.searchForListings(searchRequest)
 }
