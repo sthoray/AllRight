@@ -102,8 +102,6 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ListingViewHolder>() {
         }
     }
 
-
-    /** On click listener lambda function for a listing. */
     private var onItemClickListener: ((Listing) -> Unit)? = null
 
     /**

@@ -20,5 +20,5 @@ sealed class Resource<T>(
     class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
 
     /** A resource that is currently being retrieved. */
-    class Loading<T>() : Resource<T>()
+    class Loading<T> : Resource<T>()
 }
