@@ -21,7 +21,6 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ListingViewHolder>() {
     inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
-    /** Callback for ListDiffer. */
     private val differCallback = object : DiffUtil.ItemCallback<Listing>() {
 
         /**

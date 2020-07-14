@@ -15,10 +15,10 @@ import com.sthoray.allright.utils.SortOrder
  * @property categoryId the id of the category to search in, `0` searches everywhere
  * @property fastShipping 1 if fast shipping is required, else 0
  * @property freeShipping 1 if free shipping is required, else 0
- * @property location the [SearchLocation] to search around
+ * @property location the location to search around
  * @property pageNumber the page to fetch
  * @property products 1 if store 'products' should be included, else 0
- * @property propertyFilters a list of search [PropertyFilter]s
+ * @property propertyFilters a list of search property filters
  * @property showRestricted true if restricted items should be included, else false
  * @property sortBy the sort order of the returned results
  * @property useRegion the region to return results from
@@ -35,11 +35,11 @@ data class SearchRequest(
     var fastShipping: Int = 0,
     @SerializedName("free_shipping")
     var freeShipping: Int = 0,
-    var location: SearchLocation = SearchLocation(),
+    var location: Any = Any(),
     @SerializedName("page")
     var pageNumber: Int = 1,
     var products: Int = 1,
-    var propertyFilters: List<PropertyFilter> = emptyList(),
+    var propertyFilters: List<Any> = emptyList(),
     var showRestricted: Boolean = true,
     @SerializedName("sort_by")
     var sortBy: String = SortOrder.BEST.key,

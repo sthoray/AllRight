@@ -22,7 +22,6 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.FeatureCategoryViewHolder>(
     inner class FeatureCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
-    /** Callback for ListDiffer. */
     private val differCallback = object : DiffUtil.ItemCallback<FeatureCategory>() {
 
         override fun areItemsTheSame(oldItem: FeatureCategory, newItem: FeatureCategory): Boolean {
@@ -88,10 +87,13 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.FeatureCategoryViewHolder>(
     }
 
 
-    /** On click listener lambda function for an item. */
     private var onItemClickListener: ((FeatureCategory) -> Unit)? = null
 
-    /** Set on click listener for an item. */
+    /**
+     * Set on click listener for an item.
+     *
+     * @param listener the onclick listener lambda function
+     */
     fun setOnItemClickListener(listener: (FeatureCategory) -> Unit) {
         onItemClickListener = listener
     }

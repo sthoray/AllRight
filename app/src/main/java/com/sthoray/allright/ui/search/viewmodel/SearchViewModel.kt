@@ -40,13 +40,6 @@ class SearchViewModel(
         searchListings.postValue(handleSearchListingsResponse(response))
     }
 
-    /**
-     * Emit successful or failed responses.
-     *
-     * @param response the network response to handle
-     *
-     * @return a [Resource] containing data or an error message
-     */
     private fun handleSearchListingsResponse(
         response: Response<SearchResponse>
     ): Resource<SearchResponse> {

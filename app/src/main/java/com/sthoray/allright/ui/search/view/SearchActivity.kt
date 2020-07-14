@@ -33,12 +33,8 @@ import kotlinx.android.synthetic.main.activity_search.*
 class SearchActivity : AppCompatActivity() {
 
 
-    /** The ViewModel to interact with data. */
     private lateinit var viewModel: SearchViewModel
-
-    /** The adapter for displaying retrieved data. */
     private lateinit var searchAdapter: SearchAdapter
-
     private val TAG = "SearchActivity"
 
 
@@ -62,7 +58,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    /** Initialise the View Model for this activity. */
     private fun setupViewModel() {
         val appRepository = AppRepository(AppDatabase(this))
         val viewModelProviderFactory = ViewModelProviderFactory(appRepository)
@@ -75,12 +70,6 @@ class SearchActivity : AppCompatActivity() {
     private var isLastPage = false
     private var isScrolling = false
 
-    /**
-     * Scroll listener to manage paging.
-     *
-     * Once the last item in the recycler view has been reached more listings
-     * are requested from the ViewModel.
-     */
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -111,7 +100,6 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    /** Setup the UI. */
     private fun setupUI() {
         searchAdapter = SearchAdapter()
         recViewSearch.apply {
@@ -133,7 +121,6 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    /** Subscribe to observable data and define View behaviour. */
     private fun setupObservers() {
         viewModel.searchListings.observe(this, Observer { response ->
             when (response) {

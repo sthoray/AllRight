@@ -16,7 +16,11 @@ class AppRepository(
     suspend fun getFeatureCategories() =
         RetrofitInstance.api.getFeatureCategories()
 
-    /** Search for listings. */
+    /**
+     * Search for listings.
+     *
+     * @param searchRequest the query to search for
+     */
     suspend fun searchListings(searchRequest: SearchRequest) =
         RetrofitInstance.api.searchForListings(searchRequest)
 }

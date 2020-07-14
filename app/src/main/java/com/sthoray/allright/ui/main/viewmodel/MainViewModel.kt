@@ -30,20 +30,12 @@ class MainViewModel(
         getFeaturedCategories()
     }
 
-    /** Get feature categories on a background thread. */
     private fun getFeaturedCategories() = viewModelScope.launch {
         featureCategories.postValue(Resource.Loading())
         val response = appRepository.getFeatureCategories()
         featureCategories.postValue(handleFeatureCategoriesResponse(response))
     }
 
-    /**
-     * Emit successful or failed responses.
-     *
-     * @param response the network response to handle
-     *
-     * @return a [Resource] containing data or an error message
-     */
     private fun handleFeatureCategoriesResponse(
         response: Response<FeatureCategoriesResponse>
     ): Resource<FeatureCategoriesResponse> {

@@ -25,10 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 
-        /** Singleton instance of the listing database. */
         private var dbInstance: AppDatabase? = null
-
-        /** Used to synchronise setting [dbInstance] from multiple threads. */
         private val DB_LOCK = Any()
 
         /**

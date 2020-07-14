@@ -27,12 +27,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
 
-    /** The ViewModel to interact with data. */
     private lateinit var viewModel: MainViewModel
-
-    /** The adapter for displaying retrieved data. */
     private lateinit var mainAdapter: MainAdapter
-
     private val TAG = "MainActivity"
 
 
@@ -50,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    /** Initialise the View Model for this activity. */
     private fun setupViewModel() {
         val appRepository = AppRepository(AppDatabase(this))
         val viewModelProviderFactory =
@@ -61,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             .get(MainViewModel::class.java)
     }
 
-    /** Setup the UI. */
     private fun setupUI() {
         mainAdapter = MainAdapter()
         recViewMain.apply {
@@ -76,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**  Subscribe to observable data and define View behaviour. */
     private fun setupObservers() {
         viewModel.featureCategories.observe(this, Observer { response ->
             when (response) {
