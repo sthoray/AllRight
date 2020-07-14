@@ -25,6 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 
+        @Volatile
         private var dbInstance: AppDatabase? = null
         private val DB_LOCK = Any()
 
@@ -41,11 +42,6 @@ abstract class AppDatabase : RoomDatabase() {
             dbInstance ?: createDatabase(context).also { dbInstance = it }
         }
 
-        /**
-         * Create a new Room database for this project.
-         *
-         * @return a new Room [AppDatabase]
-         */
         private fun createDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
