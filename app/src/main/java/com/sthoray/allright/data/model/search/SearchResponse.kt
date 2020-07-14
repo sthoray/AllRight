@@ -9,6 +9,6 @@ package com.sthoray.allright.data.model.search
  * @property meta the search response metadata
  */
 data class SearchResponse(
-    val data: List<Listing>,
+    val data: MutableList<Listing>,
     val meta: SearchResponseMetadata
 )

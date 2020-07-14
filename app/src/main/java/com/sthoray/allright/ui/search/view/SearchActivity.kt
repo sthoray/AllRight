@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AbsListView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.AppDatabase
 import com.sthoray.allright.data.repository.AppRepository
@@ -20,8 +22,6 @@ import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 /**
  * Activity for viewing search results.
@@ -41,6 +41,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val TAG = "SearchActivity"
 
+
     /**
      * Set up ViewModel, UI, and observers when the activity is created.
      *
@@ -53,13 +54,11 @@ class SearchActivity : AppCompatActivity() {
         setupUI()
         setupObservers()
 
-        // Bad implementation but works for now (try rotating the device)
-        newSearch(
-            intent.getIntExtra(
-                MainActivity.CATEGORY_ID_KEY,
-                0   // search all categories
-            )
+        viewModel.searchRequest.categoryId = intent.getIntExtra(
+            MainActivity.CATEGORY_ID_KEY,
+            0   // search all categories
         )
+        viewModel.searchListings() // Bad idea (try rotating the device)
     }
 
 
@@ -71,12 +70,54 @@ class SearchActivity : AppCompatActivity() {
             .get(SearchViewModel::class.java)
     }
 
+    // Booleans to help with pagination
+    private var isLoading = false
+    private var isLastPage = false
+    private var isScrolling = false
+
+    /**
+     * Scroll listener to manage paging.
+     *
+     * Once the last item in the recycler view has been reached more listings
+     * are requested from the ViewModel.
+     */
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+
+            val isNotLoadingNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBeginning = firstVisibleItemPosition >= 0
+            val isTotalMoreThanVisible =
+                totalItemCount >= viewModel.searchListingsResponse!!.meta.pagination.perPage
+            val shouldPaginate = isNotLoadingNotLastPage && isAtLastItem &&
+                    isNotAtBeginning && isTotalMoreThanVisible && isScrolling
+
+            if (shouldPaginate) {
+                viewModel.searchListings()
+                isScrolling = false
+            }
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                isScrolling = true
+            }
+        }
+    }
+
     /** Setup the UI. */
     private fun setupUI() {
         searchAdapter = SearchAdapter()
         recViewSearch.apply {
             adapter = searchAdapter
             layoutManager = LinearLayoutManager(context)
+            addOnScrollListener(this@SearchActivity.scrollListener)
             addItemDecoration(
                 DividerItemDecoration(
                     context,
@@ -97,14 +138,16 @@ class SearchActivity : AppCompatActivity() {
         viewModel.searchListings.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
-                    removeProgressBar()
+                    hideProgressBar()
                     response.data?.let { listingResponse ->
-                        val listings = listingResponse.data
-                        searchAdapter.differ.submitList(listings)
+                        // Not sure why differ is not working when providing a MutableList
+                        searchAdapter.differ.submitList(listingResponse.data.toList())
+                        isLastPage =
+                            viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
                     }
                 }
                 is Resource.Error -> {
-                    removeProgressBar()
+                    hideProgressBar()
                     response.message?.let { message ->
                         Log.e(TAG, "An error occurred: $message")
                     }
@@ -118,21 +161,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showProgressBar() {
         progBarSearchPagination.visibility = View.VISIBLE
+        isLoading = true
     }
 
-    private fun removeProgressBar() {
+    private fun hideProgressBar() {
         progBarSearchPagination.visibility = View.GONE
-    }
-
-
-    /**
-     * Search with a given query.
-     *
-     * @param categoryId the category's id to search in
-     */
-    private fun newSearch(categoryId: Int) {
-        MainScope().launch {
-            viewModel.searchListings("", categoryId)
-        }
+        isLoading = false
     }
 }
