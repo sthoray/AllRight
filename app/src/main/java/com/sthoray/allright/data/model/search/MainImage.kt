@@ -1,14 +1,14 @@
-package com.sthoray.allright.data.model
+package com.sthoray.allright.data.model.search
 
 import com.google.gson.annotations.SerializedName
 
 /**
- * Model for a main image.
+ * Model for main images.
  *
- * Contains URLs for an items' main image and its thumbnail.
+ * Contains a listing's main and thumbnail image urls.
  *
  * @property largeUrl the fully qualified url for the main image
- * @property thumbUrl the fully qualified url for the thumbnail
+ * @property thumbUrl the fully qualified url for the thumbnail image
  */
 data class MainImage(
     @SerializedName("large_url")

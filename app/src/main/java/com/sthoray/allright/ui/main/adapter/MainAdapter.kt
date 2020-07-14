@@ -1,87 +1,71 @@
 package com.sthoray.allright.ui.main.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.FeatureCategory
-import com.sthoray.allright.ui.search.view.SearchActivity
+import com.sthoray.allright.data.model.main.FeatureCategory
+import com.sthoray.allright.utils.Constants.Companion.BASE_URL
 import kotlinx.android.synthetic.main.item_layout_main.view.*
 
 /**
- * Adapter for populating the RecyclerView in Main Activity.
- *
- * @property featuredCategories the array containing [FeatureCategory]s
+ * Adapter for adapting Featured Categories in Main Activity.
  */
-class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
-    RecyclerView.Adapter<MainAdapter.FeatureCategoryViewHolder>() {
+class MainAdapter : RecyclerView.Adapter<MainAdapter.FeatureCategoryViewHolder>() {
 
-    /**
-     * Responsible for displaying a single featured categories and providing an on
-     * click listener.
-     */
-    class FeatureCategoryViewHolder(itemView: View, private var category: FeatureCategory? = null) : RecyclerView.ViewHolder(itemView) {
 
-        companion object {
+    /** Responsible for displaying a single category. */
+    inner class FeatureCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-            /** The key for the selected categoryId. */
-            const val CATEGORY_ID_KEY = "CATEGORY_ID"
+
+    private val differCallback = object : DiffUtil.ItemCallback<FeatureCategory>() {
+
+        override fun areItemsTheSame(oldItem: FeatureCategory, newItem: FeatureCategory): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        /**
-         * Create OnClickListener for each itemView.
-         *
-         * When an itemView is tapped, that category will be used to start
-         * searching in using a new activity.
-         */
-        init {
-            itemView.setOnClickListener {
-                val intent = Intent(itemView.context, SearchActivity::class.java)
-                intent.putExtra(CATEGORY_ID_KEY, category?.id)
-                itemView.context.startActivity(intent)
-            }
-        }
-
-        /**
-         * Associate this view holder with a category.
-         *
-         * Update all views within this view holder with the given category
-         * information.
-         *
-         * @param category the category to display
-         */
-        fun bind(category: FeatureCategory) {
-            this.category = category
-            itemView.apply {
-                textViewCategoryName.text = category.name
-                textViewListingCount.text = category.listingCount.toString()
-                imageViewCategoryImage.load("https://allgoods.co.nz/" + category.imagePath)
-            }
+        override fun areContentsTheSame(
+            oldItem: FeatureCategory,
+            newItem: FeatureCategory
+        ): Boolean {
+            return oldItem == newItem
         }
     }
+
+    /** Calculate the difference between two lists. */
+    val differ = AsyncListDiffer(this, differCallback)
+
 
     /**
      * Inflate the view holder with a layout upon creation.
      *
      * @param parent the parent ViewGroup of this ViewHolder
      * @param viewType the id of the viewType
+     *
+     * @return a new [FeatureCategoryViewHolder]
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeatureCategoryViewHolder =
-        FeatureCategoryViewHolder(
-            LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.item_layout_main, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeatureCategoryViewHolder {
+        return FeatureCategoryViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.item_layout_main,
+                parent,
+                false
+            )
         )
+    }
 
     /**
      * Return the number of items to display in this ViewHolder.
      *
-     * @return the size of the list to display
+     * @return the size of the current list
      */
-    override fun getItemCount(): Int = featuredCategories.size
+    override fun getItemCount(): Int {
+        return differ.currentList.size
+    }
 
     /**
      * Bind the data found at [position] to the [holder].
@@ -90,18 +74,27 @@ class MainAdapter(private val featuredCategories: ArrayList<FeatureCategory>) :
      * @param position the index of the data to bind
      */
     override fun onBindViewHolder(holder: FeatureCategoryViewHolder, position: Int) {
-        holder.bind(featuredCategories[position])
+        val category = differ.currentList[position]
+        holder.itemView.apply {
+            textViewCategoryName.text = category.name
+            textViewListingCount.text = category.listingCount.toString()
+            imageViewCategoryImage.load(BASE_URL + category.imagePath)
+
+            setOnClickListener {
+                onItemClickListener?.let { it(category) }
+            }
+        }
     }
 
+
+    private var onItemClickListener: ((FeatureCategory) -> Unit)? = null
+
     /**
-     * Add featured categories to this adapter clearing out any existing ones.
+     * Set on click listener for an item.
      *
-     * @param featuredCategories the List of [FeatureCategory]s to add
+     * @param listener the onclick listener lambda function
      */
-    fun addFeaturedCategories(featuredCategories: List<FeatureCategory>) {
-        this.featuredCategories.apply {
-            clear()
-            addAll(featuredCategories)
-        }
+    fun setOnItemClickListener(listener: (FeatureCategory) -> Unit) {
+        onItemClickListener = listener
     }
 }

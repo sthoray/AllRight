@@ -1,5 +1,7 @@
-package com.sthoray.allright.data.model
+package com.sthoray.allright.data.model.main
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -13,8 +15,8 @@ import com.google.gson.annotations.SerializedName
  * @property webPath the url path to browse the category in a web browser
  */
 data class FeatureCategory(
-    val name: String,
     val id: Int,
+    val name: String,
     val icon: String,
     @SerializedName("listing_count")
     val listingCount: Int,

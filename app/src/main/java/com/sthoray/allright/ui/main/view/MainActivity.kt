@@ -1,20 +1,21 @@
 package com.sthoray.allright.ui.main.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sthoray.allright.R
-import com.sthoray.allright.data.api.ApiHelper
-import com.sthoray.allright.data.api.RetrofitBuilder
-import com.sthoray.allright.data.model.FeatureCategory
-import com.sthoray.allright.ui.base.ViewModelFactory
+import com.sthoray.allright.data.db.AppDatabase
+import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.main.adapter.MainAdapter
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
-import com.sthoray.allright.utils.Status
+import com.sthoray.allright.ui.base.ViewModelProviderFactory
+import com.sthoray.allright.ui.search.view.SearchActivity
+import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -25,11 +26,11 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 class MainActivity : AppCompatActivity() {
 
-    /** The ViewModel that this View subscribes to. */
-    private lateinit var viewModel: MainViewModel
 
-    /** The adapter for updating views. */
-    private lateinit var adapter: MainAdapter
+    private lateinit var viewModel: MainViewModel
+    private lateinit var mainAdapter: MainAdapter
+    private val TAG = "MainActivity"
+
 
     /**
      * Set up ViewModel, UI, and observers when the activity is created.
@@ -44,57 +45,65 @@ class MainActivity : AppCompatActivity() {
         setupObservers()
     }
 
-    /**
-     * Initialise the View Model for this activity.
-     */
+
     private fun setupViewModel() {
-        viewModel = ViewModelProviders.of(
-            this,
-            ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
-        ).get(MainViewModel::class.java)
+        val appRepository = AppRepository(AppDatabase(this))
+        val viewModelProviderFactory =
+            ViewModelProviderFactory(
+                appRepository
+            )
+        viewModel = ViewModelProvider(this, viewModelProviderFactory)
+            .get(MainViewModel::class.java)
     }
 
-    /**
-     * Setup the UI to its initial state.
-     */
     private fun setupUI() {
-        adapter = MainAdapter(arrayListOf()) // set to empty ArrayList
-        recyclerView.layoutManager = GridLayoutManager(this, 3)
-        recyclerView.adapter = adapter
+        mainAdapter = MainAdapter()
+        recViewMain.apply {
+            adapter = mainAdapter
+            layoutManager = GridLayoutManager(context, 3)
+        }
+
+        mainAdapter.setOnItemClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            intent.putExtra(CATEGORY_ID_KEY, it.id)
+            this.startActivity(intent)
+        }
     }
 
-    /**
-     * Define View behaviour based on the [Status] of the fetched data.
-     */
     private fun setupObservers() {
-        viewModel.getFeaturedCategories().observe(this, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.GONE
-                        resource.data?.let { featuredCategories ->
-                            retrieveList(featuredCategories)
-                        }
+        viewModel.featureCategories.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    removeProgressBar()
+                    response.data?.let { featureCategoriesResponse ->
+                        val categories = featureCategoriesResponse.categories.values.toList()
+                        mainAdapter.differ.submitList(categories)
                     }
-                    Status.ERROR -> {
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                }
+                is Resource.Error -> {
+                    removeProgressBar()
+                    response.message?.let { message ->
+                        Log.e(TAG, "An error occurred: $message")
                     }
-                    Status.LOADING -> {
-                        progressBar.visibility = View.VISIBLE
-                        recyclerView.visibility = View.GONE
-                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
                 }
             }
         })
     }
 
-    private fun retrieveList(featuredCategories: List<FeatureCategory>) {
-        adapter.apply {
-            addFeaturedCategories(featuredCategories)
-            notifyDataSetChanged()
-        }
+    private fun showProgressBar() {
+        progBarMainPagination.visibility = View.VISIBLE
+    }
+
+    private fun removeProgressBar() {
+        progBarMainPagination.visibility = View.GONE
+    }
+
+    companion object {
+
+        /** The key for the selected categoryId. */
+        const val CATEGORY_ID_KEY = "CATEGORY_ID"
     }
 }

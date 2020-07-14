@@ -1,23 +1,26 @@
 package com.sthoray.allright.ui.search.view
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
+import android.widget.AbsListView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
-import com.sthoray.allright.data.api.ApiHelper
-import com.sthoray.allright.data.api.RetrofitBuilder
-import com.sthoray.allright.data.model.SearchItem
-import com.sthoray.allright.data.model.SearchMeta
-import com.sthoray.allright.ui.base.ViewModelFactory
-import com.sthoray.allright.ui.main.adapter.MainAdapter
+import com.sthoray.allright.data.db.AppDatabase
+import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.ui.base.ViewModelProviderFactory
+import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.search.adapter.SearchAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
-import com.sthoray.allright.utils.Status
+import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
+import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_search.*
 
 /**
@@ -29,11 +32,11 @@ import kotlinx.android.synthetic.main.activity_search.*
  */
 class SearchActivity : AppCompatActivity() {
 
-    /** The ViewModel that this View subscribes to. */
-    private lateinit var viewModel: SearchViewModel
 
-    /** The adapter for updating views. */
-    private lateinit var adapter: SearchAdapter
+    private lateinit var viewModel: SearchViewModel
+    private lateinit var searchAdapter: SearchAdapter
+    private val TAG = "SearchActivity"
+
 
     /**
      * Set up ViewModel, UI, and observers when the activity is created.
@@ -45,82 +48,111 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         setupViewModel()
         setupUI()
-        setupSearchRequest()
         setupObservers()
+
+        viewModel.searchRequest.categoryId = intent.getIntExtra(
+            MainActivity.CATEGORY_ID_KEY,
+            0   // search all categories
+        )
+        viewModel.searchListings() // Bad idea (try rotating the device)
     }
 
-    /**
-     * Initialise the View Model for this activity.
-     */
+
     private fun setupViewModel() {
-        viewModel = ViewModelProviders.of(
-            this,
-            ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
-        ).get(SearchViewModel::class.java)
+        val appRepository = AppRepository(AppDatabase(this))
+        val viewModelProviderFactory = ViewModelProviderFactory(appRepository)
+        viewModel = ViewModelProvider(this, viewModelProviderFactory)
+            .get(SearchViewModel::class.java)
     }
 
-    /**
-     * Modify the search request to match the intent.
-     */
-    private fun setupSearchRequest() {
-        viewModel.setCategory(
-            intent.getIntExtra(
-                MainAdapter.FeatureCategoryViewHolder.CATEGORY_ID_KEY,
-                0
-            )
-        )
+    // Booleans to help with pagination
+    private var isLoading = false
+    private var isLastPage = false
+    private var isScrolling = false
+
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+
+            val isNotLoadingNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBeginning = firstVisibleItemPosition >= 0
+            val isTotalMoreThanVisible =
+                totalItemCount >= viewModel.searchListingsResponse!!.meta.pagination.perPage
+            val shouldPaginate = isNotLoadingNotLastPage && isAtLastItem &&
+                    isNotAtBeginning && isTotalMoreThanVisible && isScrolling
+
+            if (shouldPaginate) {
+                viewModel.searchListings()
+                isScrolling = false
+            }
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                isScrolling = true
+            }
+        }
     }
 
-    /**
-     * Setup the UI to its initial state.
-     */
     private fun setupUI() {
-        adapter = SearchAdapter(arrayListOf())
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                recyclerView.context,
-                (recyclerView.layoutManager as LinearLayoutManager).orientation
+        searchAdapter = SearchAdapter()
+        recViewSearch.apply {
+            adapter = searchAdapter
+            layoutManager = LinearLayoutManager(context)
+            addOnScrollListener(this@SearchActivity.scrollListener)
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    (layoutManager as LinearLayoutManager).orientation
+                )
             )
-        )
-        recyclerView.adapter = adapter
+        }
+
+        searchAdapter.setOnItemClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(BASE_PRODUCT_URL + it.id)
+            this.startActivity(intent)
+        }
     }
 
-    /**
-     * Define View behaviour based on the [Status] of the fetched data.
-     */
     private fun setupObservers() {
-        viewModel.search().observe(this, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.GONE
-                        resource.data?.let { searchResponse ->
-                            retrieveList(
-                                searchResponse.data,
-                                searchResponse.meta
-                            )
-                        }
+        viewModel.searchListings.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { listingResponse ->
+                        // Not sure why differ is not working when providing a MutableList
+                        searchAdapter.differ.submitList(listingResponse.data.toList())
+                        isLastPage =
+                            viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
                     }
-                    Status.ERROR -> {
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                }
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        Log.e(TAG, "An error occurred: $message")
                     }
-                    Status.LOADING -> {
-                        progressBar.visibility = View.VISIBLE
-                        recyclerView.visibility = View.GONE
-                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
                 }
             }
         })
     }
 
-    private fun retrieveList(searchItems: List<SearchItem>, searchMeta: SearchMeta) {
-        adapter.apply {
-            addItems(searchItems, searchMeta)
-            notifyDataSetChanged()
-        }
+    private fun showProgressBar() {
+        progBarSearchPagination.visibility = View.VISIBLE
+        isLoading = true
+    }
+
+    private fun hideProgressBar() {
+        progBarSearchPagination.visibility = View.GONE
+        isLoading = false
     }
 }
