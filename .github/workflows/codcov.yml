@@ -21,7 +21,7 @@ jobs:
         with:
           api-level: 30
           target: google_apis
-          script: ./gradlew connectedAndroidTest
+          script: ./gradlew jacocoTestReport connectedAndroidTest
 
       - name: Upload coverage reports
         run: bash <(curl -s https://codecov.io/bash)
