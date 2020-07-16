@@ -6,8 +6,7 @@ package com.sthoray.allright.utils
  * @property key the AllGoods API sort key
  */
 enum class SortOrder(val key: String) {
-
-    /** Sort listings by best match. */
+    
     BEST("best_match"),
     TRENDING("most_popular"),
     NEW_LISTINGS("created_at"),
