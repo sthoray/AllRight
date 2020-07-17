@@ -16,10 +16,10 @@ import com.sthoray.allright.utils.SortOrder
  * @property fastShipping 1 if fast shipping is required, else 0
  * @property freeShipping 1 if free shipping is required, else 0
  * @property location the location to search around
- * @property maxPrice the maximum price of the listings
- * Client side casts max price to an int, but the server side API accepts float values
- * @property minPrice the minimum price of the listings
- * Client side casts min price to an int, but the server side API accepts float values
+ * @property maxPrice the maximum price of the listings.
+ * Client side casts max price to an int, but the server side API accepts float values.
+ * @property minPrice the minimum price of the listings.
+ * Client side casts min price to an int, but the server side API accepts float values.
  * @property pageNumber the page to fetch
  * @property products 1 if store 'products' should be included, else 0
  * @property propertyFilters a list of search property filters
