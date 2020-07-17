@@ -36,6 +36,9 @@ data class SearchRequest(
     @SerializedName("free_shipping")
     var freeShipping: Int = 0,
     var location: Any = Any(),
+    var max_price: Float? = null,   // Client side casts max price and min price to an int
+                             // but the server side accepts float values
+    var min_price: Float? = null,
     @SerializedName("page")
     var pageNumber: Int = 1,
     var products: Int = 1,
