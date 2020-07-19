@@ -9,7 +9,7 @@ package com.sthoray.allright.data.model.listing
  * @property cost the cost of the shipping option
  */
 data class ShippingOption(
-    val id:Int,
+    val id: Int,
     val name: String,
     val description: String,
     val cost: Float

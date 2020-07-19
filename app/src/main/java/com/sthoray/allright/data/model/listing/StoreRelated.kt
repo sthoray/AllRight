@@ -7,10 +7,11 @@ import com.google.gson.annotations.SerializedName
  * from which the product came.
  *
  * @property id the id.
- * @property store_id the id of the store.
+ * @property storeId the id of the store.
  */
-data class StoreRelated (
+data class StoreRelated(
     val id: Int,
-    val store_id: Int
+    @SerializedName("store_id")
+    val storeId: Int
 
 )
