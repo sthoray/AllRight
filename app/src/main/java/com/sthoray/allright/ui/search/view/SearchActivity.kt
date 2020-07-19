@@ -16,6 +16,7 @@ import com.sthoray.allright.R
 import com.sthoray.allright.data.db.AppDatabase
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
+import com.sthoray.allright.ui.listing.view.ListingActivity
 import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.search.adapter.SearchAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
@@ -115,9 +116,17 @@ class SearchActivity : AppCompatActivity() {
         }
 
         searchAdapter.setOnItemClickListener {
+            /*
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(BASE_PRODUCT_URL + it.id)
             this.startActivity(intent)
+            */
+
+
+            val intent = Intent(this, ListingActivity::class.java)
+            this.startActivity(intent)
+
+
         }
     }
 
