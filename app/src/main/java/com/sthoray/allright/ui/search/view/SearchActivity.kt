@@ -116,7 +116,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         searchAdapter.setOnItemClickListener {
-            /*
+            /* This used to just redirect to the appropriate webpage
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(BASE_PRODUCT_URL + it.id)
             this.startActivity(intent)
@@ -124,6 +124,7 @@ class SearchActivity : AppCompatActivity() {
 
 
             val intent = Intent(this, ListingActivity::class.java)
+            intent.data = Uri.parse(BASE_PRODUCT_URL + it.id)
             this.startActivity(intent)
 
 
