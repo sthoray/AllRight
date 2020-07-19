@@ -3,7 +3,7 @@ package com.sthoray.allright.ui.listing.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sthoray.allright.data.model.search.Listing
+import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Resource
 import kotlinx.coroutines.launch
@@ -34,9 +34,8 @@ class ListingViewModel(
      */
     fun getListing(listingId: Int) = viewModelScope.launch {
         listing.postValue(Resource.Loading())
-        // Uncomment (and delete this line) when model is merged in
-        //val response = appRepository.getListing(listingId)
-        //listing.postValue(handleListingResponse(response))
+        val response = appRepository.getListing(listingId)
+        listing.postValue(handleListingResponse(response))
     }
 
     private fun handleListingResponse(
