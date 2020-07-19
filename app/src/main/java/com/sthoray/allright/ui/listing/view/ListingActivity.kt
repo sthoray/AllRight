@@ -24,7 +24,7 @@ class ListingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listing)
-        // currently causes the app to crash    setupViewModel()
+        setupViewModel()
         setupUI()
     }
 

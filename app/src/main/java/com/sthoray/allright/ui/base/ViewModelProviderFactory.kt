@@ -3,6 +3,7 @@ package com.sthoray.allright.ui.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 
@@ -24,12 +25,19 @@ class ViewModelProviderFactory(
      * @return T a newly created ViewModel
      */
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return MainViewModel(appRepository) as T
-        } else if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return SearchViewModel(appRepository) as T
+        when {
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+                @Suppress("UNCHECKED_CAST")
+                return MainViewModel(appRepository) as T
+            }
+            modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
+                @Suppress("UNCHECKED_CAST")
+                return SearchViewModel(appRepository) as T
+            }
+            modelClass.isAssignableFrom(ListingViewModel::class.java) -> {
+                @Suppress("UNCHECKED_CAST")
+                return ListingViewModel(appRepository) as T
+            }
         }
         throw IllegalArgumentException("Unknown class name")
     }
