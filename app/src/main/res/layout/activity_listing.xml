@@ -7,18 +7,16 @@
     tools:context=".ui.listing.view.ListingActivity">
 
 
-
     <TextView
         android:id="@+id/textViewName"
-        android:layout_width="140dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="147dp"
+        android:layout_height="158dp"
+        android:layout_marginStart="132dp"
+        android:text="Title Goes Here"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="h,16:9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.215"
         tools:ignore="ContentDescription"
         tools:text="Product Name" />
 
@@ -27,10 +25,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@android:string/unknownName"
-        app:layout_constraintStart_toStartOf="@+id/textViewName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Subtitle" />
 
+    <ImageView
+        android:id="@+id/imageViewProductImage"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="292dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        tools:ignore="ContentDescription"
+        tools:srcCompat="@tools:sample/avatars" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
