@@ -4,4 +4,6 @@
     <string name="search_label">Search</string>
     
     <string name="format_price">$%.2f</string>
+
+    <string name="listing_label">Listing</string>
 </resources>
