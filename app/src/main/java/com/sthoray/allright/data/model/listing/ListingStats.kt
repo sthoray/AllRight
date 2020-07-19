@@ -6,20 +6,20 @@ import com.google.gson.annotations.SerializedName
  * Model for product stats.
  *
  * @property id the id.
- * @property product_Id the id of the product.
- * @property desktop_Views to count desktop views of the product.
- * @property mobile_Views to count mobile views of the product
- * @property tablet_Views to count tablet views of the product
+ * @property productId the id of the product.
+ * @property desktopViews to count desktop views of the product.
+ * @property mobileViews to count mobile views of the product
+ * @property tabletViews to count tablet views of the product
  */
 data class ListingStats(
     val id: Int,
     @SerializedName("product_id")
-    val product_Id: Int,
+    val productId: Int,
     @SerializedName("desktop_views")
-    val desktop_Views: Int,
+    val desktopViews: Int,
     @SerializedName("mobile_views")
-    val mobile_Views: Int,
+    val mobileViews: Int,
     @SerializedName("tablet_views")
-    val tablet_Views: Int
+    val tabletViews: Int
 
 )
