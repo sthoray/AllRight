@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">AllRight</string>
-
     <string name="search_label">Search</string>
-    
+
+    <!-- Format strings-->
     <string name="format_price">$%.2f</string>
+
+    <!-- Menu items -->
+    <string name="title_home">Home</string>
+    <string name="title_browse">Browse</string>
+    <string name="title_profile">Profile</string>
 </resources>
