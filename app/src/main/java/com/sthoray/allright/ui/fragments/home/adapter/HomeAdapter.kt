@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.main.adapter
+package com.sthoray.allright.ui.fragments.home.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_layout_main.view.*
 /**
  * Adapter for adapting Featured Categories in Main Activity.
  */
-class MainAdapter : RecyclerView.Adapter<MainAdapter.FeatureCategoryViewHolder>() {
+class HomeAdapter : RecyclerView.Adapter<HomeAdapter.FeatureCategoryViewHolder>() {
 
 
     /** Responsible for displaying a single category. */

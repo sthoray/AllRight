@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.main.viewmodel
+package com.sthoray.allright.ui.fragments.home.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +17,7 @@ import retrofit2.Response
  *
  * @property appRepository the data repository to interact with
  */
-class MainViewModel(
+class HomeViewModel(
     private val appRepository: AppRepository
 ) : ViewModel() {
 

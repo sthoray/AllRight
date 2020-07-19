@@ -3,7 +3,7 @@ package com.sthoray.allright.ui.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.data.repository.AppRepository
-import com.sthoray.allright.ui.main.viewmodel.MainViewModel
+import com.sthoray.allright.ui.fragments.home.viewmodel.HomeViewModel
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 
 /**
@@ -24,9 +24,11 @@ class ViewModelProviderFactory(
      * @return T a newly created ViewModel
      */
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return MainViewModel(appRepository) as T
+            return HomeViewModel(
+                appRepository
+            ) as T
         } else if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return SearchViewModel(appRepository) as T
