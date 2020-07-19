@@ -37,6 +37,6 @@ interface AllGoodsApi {
      * @return a [Listing] response.
      */
     @GET("product/{productId}")
-    suspend fun getListing(@Path("productId") productId: Int): Listing
+    suspend fun getListing(@Path("productId") listingId: Int): Listing
 
 }
