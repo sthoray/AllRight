@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
  * @property categoryName the name of the category.
  * @property categoryIcon the icon for the category.
  */
-data class ListingCategory (
+data class ListingCategory(
     val id: Int,
     @SerializedName("name")
     val categoryName: String,

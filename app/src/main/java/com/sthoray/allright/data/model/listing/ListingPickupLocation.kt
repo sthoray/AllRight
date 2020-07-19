@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
  * @property pickUpSuburb the suburb address.
  * @property pickUpCity city from where the product will be picked up.
  */
-data class ListingPickupLocation (
+data class ListingPickupLocation(
     val id: Int,
     @SerializedName("suburb")
     val pickUpSuburb: String,

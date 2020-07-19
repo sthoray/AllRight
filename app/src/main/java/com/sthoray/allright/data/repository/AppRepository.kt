@@ -25,6 +25,6 @@ class AppRepository(
         RetrofitInstance.api.searchForListings(searchRequest)
 
     /** Get the listing */
-    suspend fun getListing(listingId: Int) =
-        RetrofitInstance.api.getListing(listingId)
+    suspend fun getListing(productId: Int) =
+        RetrofitInstance.api.getListing(productId)
 }
