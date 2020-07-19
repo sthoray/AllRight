@@ -19,6 +19,12 @@ import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_home.*
 
+/**
+ * Fragment for the home page.
+ *
+ * Contains featured categories. More content will be added to this
+ * fragment (e.g. recent searches) in the future.
+ */
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var viewModel: HomeViewModel
