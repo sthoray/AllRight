@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  * Model for the product or listing or item.
  *
  * There is quite a few properties, some properties might not be necessary.
- * 
+ *
  * @property id the id of the listing
  * @property shipping the type of shipping offered
  * @property startPrice the starting price of the listing
