@@ -2,9 +2,14 @@ package com.sthoray.allright.ui.main.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.sthoray.allright.R
+import com.sthoray.allright.data.db.AppDatabase
+import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.ui.base.ViewModelProviderFactory
+import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -22,6 +27,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Main activity's shared view model.
+     *
+     * By setting up an activity level view model and accessing it in
+     * each main fragment, we can reduce the number of API calls.
+     */
+    lateinit var viewModel: MainViewModel
+
+    /**
      * Set up navigation bar.
      *
      * @param savedInstanceState If non-null, this activity is being re-constructed
@@ -31,6 +44,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setupViewModel()
+        setupBottomNav()
+    }
+
+    private fun setupViewModel() {
+        val appRepository = AppRepository(AppDatabase(this))
+        val viewModelProviderFactory = ViewModelProviderFactory(appRepository)
+        viewModel = ViewModelProvider(this, viewModelProviderFactory).get(MainViewModel::class.java)
+    }
+
+    private fun setupBottomNav() {
         bottomNavigationView.setupWithNavController(
             navigationHostFragment.findNavController()
         )

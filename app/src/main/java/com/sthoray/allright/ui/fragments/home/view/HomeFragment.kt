@@ -6,15 +6,11 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sthoray.allright.R
-import com.sthoray.allright.data.db.AppDatabase
-import com.sthoray.allright.data.repository.AppRepository
-import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.fragments.home.adapter.HomeAdapter
-import com.sthoray.allright.ui.fragments.home.viewmodel.HomeViewModel
 import com.sthoray.allright.ui.main.view.MainActivity
+import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -27,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var mainAdapter: HomeAdapter
     private val TAG = "HomeFragment"
 
@@ -40,28 +36,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewModel()
-        setupUI()
+        viewModel = (activity as MainActivity).viewModel
+
+        setupRecyclerView()
+        setOnClickListeners()
         setupObservers()
     }
 
-    private fun setupViewModel() {
-        val appRepository = AppRepository(AppDatabase(requireContext()))
-        val viewModelProviderFactory =
-            ViewModelProviderFactory(
-                appRepository
-            )
-        viewModel = ViewModelProvider(this, viewModelProviderFactory)
-            .get(HomeViewModel::class.java)
-    }
-
-    private fun setupUI() {
+    private fun setupRecyclerView() {
         mainAdapter = HomeAdapter()
         recViewFeaturedCategories.apply {
             adapter = mainAdapter
             layoutManager = GridLayoutManager(context, 3)
         }
+    }
 
+    private fun setOnClickListeners() {
         mainAdapter.setOnItemClickListener {
             val intent = Intent(context, SearchActivity::class.java)
             intent.putExtra(MainActivity.CATEGORY_ID_KEY, it.id)

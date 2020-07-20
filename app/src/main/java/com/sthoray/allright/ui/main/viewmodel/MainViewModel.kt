@@ -1,5 +1,6 @@
-package com.sthoray.allright.ui.fragments.home.viewmodel
+package com.sthoray.allright.ui.main.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,23 +11,23 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 /**
- * View model for the Main activity.
+ * View model for the main activity.
  *
- * Uses LiveData to expose observables when interacting with the Model. These
- * can be observed by the View.
- *
- * @property appRepository the data repository to interact with
+ * Stores data for the fragments contained in this activity. This is a work
+ * around to prevent data being fetched every time a fragment is switched to.
  */
-class HomeViewModel(
-    private val appRepository: AppRepository
+class MainViewModel(
+    val appRepository: AppRepository
 ) : ViewModel() {
+
 
     /** Featured categories response. */
     val featureCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> =
         MutableLiveData()
 
-    /** Make the network request on initialisation. */
+    /** Make network requests on initialisation. */
     init {
+        Log.i("MainViewModel", "Init VM")
         getFeaturedCategories()
     }
 
@@ -46,4 +47,6 @@ class HomeViewModel(
         }
         return Resource.Error(response.message())
     }
+
+
 }

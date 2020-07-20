@@ -10,7 +10,7 @@ import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.main.FeatureCategory
 import com.sthoray.allright.utils.Constants.Companion.BASE_URL
-import kotlinx.android.synthetic.main.item_layout_main.view.*
+import kotlinx.android.synthetic.main.item_layout_featured_category.view.*
 
 /**
  * Adapter for adapting Featured Categories in Main Activity.
@@ -51,7 +51,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.FeatureCategoryViewHolder>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeatureCategoryViewHolder {
         return FeatureCategoryViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_layout_main,
+                R.layout.item_layout_featured_category,
                 parent,
                 false
             )
