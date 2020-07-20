@@ -22,19 +22,29 @@ class MainViewModel(
 
 
     /** Featured categories response. */
-    val featureCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> =
-        MutableLiveData()
+    val featureCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> = MutableLiveData()
+
+    // TODO: Change this to a suitable data model
+    /** Top level categories response. */
+    val topLevelCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> = MutableLiveData()
 
     /** Make network requests on initialisation. */
     init {
-        Log.i("MainViewModel", "Init VM")
         getFeaturedCategories()
+        getTopLevelCategories()
     }
 
     private fun getFeaturedCategories() = viewModelScope.launch {
         featureCategories.postValue(Resource.Loading())
         val response = appRepository.getFeatureCategories()
         featureCategories.postValue(handleFeatureCategoriesResponse(response))
+    }
+
+    private fun getTopLevelCategories() = viewModelScope.launch {
+        topLevelCategories.postValue(Resource.Loading())
+        // TODO Change this to an appropriate method
+        val response = appRepository.getFeatureCategories()
+        topLevelCategories.postValue(handleTopLevelCategoriesResponse(response))
     }
 
     private fun handleFeatureCategoriesResponse(
@@ -48,5 +58,15 @@ class MainViewModel(
         return Resource.Error(response.message())
     }
 
-
+    // TODO Change this to use suitable data models
+    private fun handleTopLevelCategoriesResponse(
+        response: Response<FeatureCategoriesResponse>
+    ): Resource<FeatureCategoriesResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { responseBody ->
+                return Resource.Success(responseBody)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 }

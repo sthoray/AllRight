@@ -28,7 +28,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val TAG = "HomeFragment"
 
     /**
-     * Set up ViewModel, UI, and observers when the fragment view is created.
+     * Set up ViewModel, UI, and observers.
      *
      * @param view The View returned by onCreateView.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
@@ -37,7 +37,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
-
         setupRecyclerView()
         setOnClickListeners()
         setupObservers()
