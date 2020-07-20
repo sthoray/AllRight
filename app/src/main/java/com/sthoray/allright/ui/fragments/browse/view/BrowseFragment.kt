@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
 import com.sthoray.allright.ui.fragments.browse.adapter.BrowseAdapter
@@ -48,6 +49,12 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
         recyclerViewTopLevelCategories.apply {
             adapter = mainAdapter
             layoutManager = LinearLayoutManager(context)
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    (layoutManager as LinearLayoutManager).orientation
+                )
+            )
         }
     }
 
