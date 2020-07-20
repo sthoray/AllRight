@@ -10,6 +10,7 @@ import com.sthoray.allright.R
 import com.sthoray.allright.data.model.main.FeatureCategory
 import kotlinx.android.synthetic.main.item_layout_top_level_category.view.*
 
+/** Adapter for adapting top level categories into a RecyclerView. */
 class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHolder>() {
 
     /** Responsible for displaying a single top level category. */
