@@ -1,10 +1,6 @@
 package com.sthoray.allright.data.model.search
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
-import com.sthoray.allright.data.db.Converters
 
 /**
  * Model for listings.
@@ -23,12 +19,7 @@ import com.sthoray.allright.data.db.Converters
  * @property shippingOptions a list of [ShippingOption]s
  * @property mainImage the listing [MainImage]
  */
-@Entity(
-    tableName = "listings"
-)
-@TypeConverters(Converters::class)
 data class Listing(
-    @PrimaryKey
     val id: Int,
     @SerializedName("name")
     val productName: String,

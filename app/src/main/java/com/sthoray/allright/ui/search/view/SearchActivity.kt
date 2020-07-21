@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
-import com.sthoray.allright.data.db.AppDatabase
+import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.main.view.MainActivity
@@ -59,7 +59,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun setupViewModel() {
-        val appRepository = AppRepository(AppDatabase(this))
+        val appRepository = AppRepository(SearchHistoryDatabase(this))
         val viewModelProviderFactory = ViewModelProviderFactory(appRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(SearchViewModel::class.java)
