@@ -1,5 +1,5 @@
 package com.sthoray.allright.data.model.search
-
+import com.sthoray.allright.data.model.shared.Listing
 /**
  * Model for search responses.
  *

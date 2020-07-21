@@ -1,7 +1,13 @@
-package com.sthoray.allright.data.model.listing
+package com.sthoray.allright.data.model.shared
 
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
+import com.sthoray.allright.data.db.Converters
+import com.sthoray.allright.data.model.listing.*
+import com.sthoray.allright.data.model.search.MainImage
 
 /**
  * Model for the product or listing or item.
@@ -13,7 +19,7 @@ import com.google.gson.annotations.SerializedName
  * @property startPrice the starting price of the listing
  * @property buyNow the buy now price of the listing
  * @property currentPrice the current auction price of the listing
- * @property listingMainImage the main image of the listing, which has its own data class.
+ * @property mainImage the main image of the listing, which has its own data class.
  * @property productName the name of the listing
  * @property locationName the location name of the listing
  * @property listingRelated list of [ListingRelated].
@@ -30,7 +36,12 @@ import com.google.gson.annotations.SerializedName
  * @property listingPickupLocation location for the product pickup.
  * @property listingImages details about all images related to the product.
  */
+@Entity(
+    tableName = "listings"
+)
+@TypeConverters(Converters::class)
 data class Listing(
+    @PrimaryKey
     val id: Int,
     val shipping: Int,
     @SerializedName("start_price")
@@ -40,7 +51,7 @@ data class Listing(
     @SerializedName("current_price")
     val currentPrice: Float?,
     @SerializedName("main_image")
-    val listingMainImage: ListingMainImage,
+    val mainImage: MainImage,
     @SerializedName("name")
     val productName: String,
     @SerializedName("location_name")
@@ -48,29 +59,30 @@ data class Listing(
     @SerializedName("related")
     val listingRelated: List<ListingRelated>,
     @SerializedName("store_related")
-    val storeRelated: List<StoreRelated>,
-
+    val storeRelated: List<StoreRelated>?,
     @SerializedName("description")
-    val listingDescription: String,
+    val listingDescription: String?,
     @SerializedName("stats")
-    val listingStats: ListingStats,
+    val listingStats: ListingStats?,
+    @SerializedName("shipping")
+    val shippingType: Int,
     @SerializedName("shipping_options")
     val shippingOptions: List<ShippingOption>,
     @SerializedName("categories")
     val listingCategories: List<ListingCategory>,
     @SerializedName("brand_title")
-    val brandTitle: String,
+    val brandTitle: String?,
     @SerializedName("out_of_stock")
-    val checkInStock: Boolean,
+    val checkInStock: Boolean?,
     @SerializedName("reserve_met")
-    val checkReserveMet: Boolean,
+    val checkReserveMet: Boolean?,
     @SerializedName("no_reserve")
-    val checkReservePrice: Boolean,
+    val checkReservePrice: Boolean?,
     @SerializedName("manager")
-    val listingManager: ListingManager,
+    val listingManager: ListingManager?,
     @SerializedName("pickupLocation")
-    val listingPickupLocation: ListingPickupLocation,
+    val listingPickupLocation: ListingPickupLocation?,
 
     @SerializedName("images")
-    val listingImages: List<ListingImage>
+    val listingImages: List<ListingImage>?
 )

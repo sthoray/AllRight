@@ -4,14 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.sthoray.allright.data.model.main.FeatureCategory
-import com.sthoray.allright.data.model.search.Listing
+import com.sthoray.allright.data.model.shared.Listing
 
 /**
  * Room database class for this app.
  */
 @Database(
-    entities = [Listing::class],
+    entities = [],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {

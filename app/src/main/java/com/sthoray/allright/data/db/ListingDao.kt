@@ -2,7 +2,7 @@ package com.sthoray.allright.data.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.sthoray.allright.data.model.search.Listing
+import com.sthoray.allright.data.model.shared.Listing
 
 /**
  * Defines interactions for [Listing]s in a Room database.
