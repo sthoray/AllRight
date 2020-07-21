@@ -1,13 +1,16 @@
 package com.sthoray.allright.data.model.search
 
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import com.sthoray.allright.utils.SortOrder
 
 /**
  * Model for search requests.
  *
- * Default values represent a search without any filters. Nullable properties
- * must be specified when searching the AllGoods API without queries.
+ * Default values represent a search without any filters. Search requests may be saved
+ * in the local Room database. The primary key is a composite key using the [searchQuery]
+ * and [categoryId]. This should allow the history to combine very similar requests
+ * by updating existing entries while allowing many distinctly different queries.
  *
  * @property searchQuery the query to search for
  * @property auctions 1 if auctions are required, else 0
@@ -27,6 +30,10 @@ import com.sthoray.allright.utils.SortOrder
  * @property sortBy the sort order of the returned results
  * @property useRegion the region to return results from
  */
+@Entity(
+    tableName = "search_history",
+    primaryKeys = ["searchQuery", "categoryId"]
+)
 data class SearchRequest(
     @SerializedName("q")
     var searchQuery: String = "",
@@ -39,7 +46,7 @@ data class SearchRequest(
     var fastShipping: Int = 0,
     @SerializedName("free_shipping")
     var freeShipping: Int = 0,
-    var location: Any = Any(),
+    var location: Location = Location(null),
     @SerializedName("max_price")
     var maxPrice: Float? = null,
     @SerializedName("min_price")
@@ -47,7 +54,7 @@ data class SearchRequest(
     @SerializedName("page")
     var pageNumber: Int = 1,
     var products: Int = 1,
-    var propertyFilters: List<Any> = emptyList(),
+    var propertyFilters: List<PropertyFilter> = emptyList(),
     var showRestricted: Boolean = true,
     @SerializedName("sort_by")
     var sortBy: String = SortOrder.BEST.key,

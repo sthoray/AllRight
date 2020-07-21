@@ -4,28 +4,28 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.sthoray.allright.data.model.search.Listing
+import androidx.room.TypeConverters
+import com.sthoray.allright.data.model.search.SearchRequest
 
-/**
- * Room database class for this app.
- */
+/** Room database for the search history. */
 @Database(
-    entities = [Listing::class],
+    entities = [SearchRequest::class],
     version = 1
 )
-abstract class AppDatabase : RoomDatabase() {
+@TypeConverters(SearchRequestConverters::class)
+abstract class SearchHistoryDatabase : RoomDatabase() {
 
     /**
-     * Get a listing DAO.
+     * Get a search history data access object.
      *
-     * @return a [ListingDao]
+     * @return a [SearchHistoryDao]
      */
-    abstract fun getListingDao(): ListingDao
+    abstract fun getSearchDao(): SearchHistoryDao
 
     companion object {
 
         @Volatile
-        private var dbInstance: AppDatabase? = null
+        private var dbInstance: SearchHistoryDatabase? = null
         private val DB_LOCK = Any()
 
         /**
@@ -34,7 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
          * This ensures that we only use one instance of the database throughout
          * the app.
          *
-         * @return the existing [AppDatabase], else a new one
+         * @return the existing [SearchHistoryDatabase], else a new one
          */
         operator fun invoke(context: Context) = dbInstance ?: synchronized(DB_LOCK) {
             // Create a database if it still does not exist once accessed
@@ -44,7 +44,7 @@ abstract class AppDatabase : RoomDatabase() {
         private fun createDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                AppDatabase::class.java,
+                SearchHistoryDatabase::class.java,
                 "allright.db"
             ).build()
     }
