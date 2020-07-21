@@ -1,26 +1,14 @@
 package com.sthoray.allright.ui.search.view
 
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.AbsListView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
-import com.sthoray.allright.ui.main.view.MainActivity
-import com.sthoray.allright.ui.search.adapter.ResultsAdapter
+import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
-import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
-import com.sthoray.allright.utils.Resource
 
 /**
  * Activity for viewing search results.
@@ -50,13 +38,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         setupViewModel()
-
-
-        viewModel.searchRequest.categoryId = intent.getIntExtra(
-            MainActivity.CATEGORY_ID_KEY,
-            0   // search all categories
-        )
-        viewModel.searchListings() // Bad idea (try rotating the device)
+        setupSearchRequest(intent.getIntExtra(CATEGORY_ID_KEY, 0))
     }
 
     private fun setupViewModel() {
@@ -64,5 +46,9 @@ class SearchActivity : AppCompatActivity() {
         val viewModelProviderFactory = ViewModelProviderFactory(appRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(SearchViewModel::class.java)
+    }
+
+    private fun setupSearchRequest(categoryId: Int) {
+        viewModel.initSearch(categoryId)
     }
 }
