@@ -3,6 +3,7 @@ package com.sthoray.allright.data.model.listing
 
 import com.google.gson.annotations.SerializedName
 import com.sthoray.allright.data.model.shared.Category
+import com.sthoray.allright.data.model.shared.MainImage
 
 /**
  * Model for the product or listing or item.
@@ -14,7 +15,7 @@ import com.sthoray.allright.data.model.shared.Category
  * @property startPrice the starting price of the listing
  * @property buyNow the buy now price of the listing
  * @property currentPrice the current auction price of the listing
- * @property listingMainImage the main image of the listing, which has its own data class.
+ * @property mainImage the main image of the listing, which has its own data class.
  * @property productName the name of the listing
  * @property locationName the location name of the listing
  * @property listingRelated list of [ListingRelated].
@@ -41,7 +42,7 @@ data class Listing(
     @SerializedName("current_price")
     val currentPrice: Float?,
     @SerializedName("main_image")
-    val listingMainImage: ListingMainImage,
+    val mainImage: MainImage,
     @SerializedName("name")
     val productName: String,
     @SerializedName("location_name")

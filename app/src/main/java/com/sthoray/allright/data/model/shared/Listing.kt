@@ -1,7 +1,7 @@
 package com.sthoray.allright.data.model.shared
 
-import com.sthoray.allright.data.model.search.MainImage
 import com.sthoray.allright.data.model.search.ShippingOption
+import com.sthoray.allright.data.model.shared.MainImage
 
 
 import com.google.gson.annotations.SerializedName

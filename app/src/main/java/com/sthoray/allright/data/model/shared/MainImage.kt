@@ -1,4 +1,4 @@
-package com.sthoray.allright.data.model.listing
+package com.sthoray.allright.data.model.shared
 
 
 import com.google.gson.annotations.SerializedName
@@ -13,11 +13,10 @@ import com.google.gson.annotations.SerializedName
  * @property thumbUrl the fully qualified url for the thumbnail
  * @property number is image number.
  */
-data class ListingMainImage(
+data class MainImage(
     val id: Int,
     @SerializedName("large_url")
     val largeUrl: String,
     @SerializedName("thumb_url")
-    val thumbUrl: String,
-    val number: Int
+    val thumbUrl: String
 )
