@@ -1,5 +1,6 @@
 package com.sthoray.allright.data.api
 
+import com.sthoray.allright.data.model.browse.TopLevelCategoriesResponse
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchRequest
@@ -19,6 +20,13 @@ interface AllGoodsApi {
      */
     @GET("categoryFeaturePanel")
     suspend fun getFeatureCategories(): Response<FeatureCategoriesResponse>
+
+    /**
+     * Get the top level categories.
+     *
+     * @return a [TopLevelCategoriesResponse] response
+     */
+    suspend fun getTopLevelCategories(): Response<TopLevelCategoriesResponse>
 
     /**
      * Search for listings.
