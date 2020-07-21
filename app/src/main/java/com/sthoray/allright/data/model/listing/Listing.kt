@@ -2,6 +2,7 @@ package com.sthoray.allright.data.model.listing
 
 
 import com.google.gson.annotations.SerializedName
+import com.sthoray.allright.data.model.shared.Category
 
 /**
  * Model for the product or listing or item.
@@ -21,7 +22,7 @@ import com.google.gson.annotations.SerializedName
  * @property listingDescription the description of  the product or listing
  * @property listingStats is a class for product stats.
  * @property shippingOptions a list of [ShippingOption]s
- * @property listingCategories a list of [ListingCategory].
+ * @property listingCategories a list of [Category].
  * @property brandTitle the title of the brand for the product.
  * @property checkInStock to check if the item is in stock.
  * @property checkReserveMet to check if the reserve price has met.
@@ -57,7 +58,7 @@ data class Listing(
     @SerializedName("shipping_options")
     val shippingOptions: List<ShippingOption>,
     @SerializedName("categories")
-    val listingCategories: List<ListingCategory>,
+    val listingCategories: List<Category>,
     @SerializedName("brand_title")
     val brandTitle: String,
     @SerializedName("out_of_stock")
