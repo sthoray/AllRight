@@ -71,9 +71,8 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
-                    response.data?.let { topLevelCategoriesResponse ->
-                        val categories = topLevelCategoriesResponse.categories.values.toList()
-                        mainAdapter.differ.submitList(categories)
+                    response.data?.let { topLevelCategories ->
+                        mainAdapter.differ.submitList(topLevelCategories)
                     }
                 }
                 is Resource.Error -> {

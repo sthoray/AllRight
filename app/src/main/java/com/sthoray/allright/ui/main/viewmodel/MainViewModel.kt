@@ -1,9 +1,9 @@
 package com.sthoray.allright.ui.main.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sthoray.allright.data.model.browse.TopLevelCategory
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Resource
@@ -24,9 +24,8 @@ class MainViewModel(
     /** Featured categories response. */
     val featureCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> = MutableLiveData()
 
-    // TODO: Change this to a suitable data model
     /** Top level categories response. */
-    val topLevelCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> = MutableLiveData()
+    val topLevelCategories: MutableLiveData<Resource<List<TopLevelCategory>>> = MutableLiveData()
 
     /** Make network requests on initialisation. */
     init {
@@ -42,8 +41,7 @@ class MainViewModel(
 
     private fun getTopLevelCategories() = viewModelScope.launch {
         topLevelCategories.postValue(Resource.Loading())
-        // TODO Change this to an appropriate method
-        val response = appRepository.getFeatureCategories()
+        val response = appRepository.getTopLevelCategories()
         topLevelCategories.postValue(handleTopLevelCategoriesResponse(response))
     }
 
@@ -58,10 +56,9 @@ class MainViewModel(
         return Resource.Error(response.message())
     }
 
-    // TODO Change this to use suitable data models
     private fun handleTopLevelCategoriesResponse(
-        response: Response<FeatureCategoriesResponse>
-    ): Resource<FeatureCategoriesResponse> {
+        response: Response<List<TopLevelCategory>>
+    ): Resource<List<TopLevelCategory>> {
         if (response.isSuccessful) {
             response.body()?.let { responseBody ->
                 return Resource.Success(responseBody)

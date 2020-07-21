@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
+import com.sthoray.allright.data.model.browse.TopLevelCategory
 import com.sthoray.allright.data.model.main.FeatureCategory
 import kotlinx.android.synthetic.main.item_layout_top_level_category.view.*
 
@@ -16,16 +17,15 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHol
     /** Responsible for displaying a single top level category. */
     inner class TopLevelCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    // TODO: Change this to use a suitable model (1)
-    private val differCallback = object : DiffUtil.ItemCallback<FeatureCategory>() {
+    private val differCallback = object : DiffUtil.ItemCallback<TopLevelCategory>() {
 
-        override fun areItemsTheSame(oldItem: FeatureCategory, newItem: FeatureCategory): Boolean {
+        override fun areItemsTheSame(oldItem: TopLevelCategory, newItem: TopLevelCategory): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: FeatureCategory,
-            newItem: FeatureCategory
+            oldItem: TopLevelCategory,
+            newItem: TopLevelCategory
         ): Boolean {
             return oldItem == newItem
         }
@@ -83,16 +83,14 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHol
         }
     }
 
-    // TODO Change this to use a suitable model (2)
-    private var onItemClickListener: ((FeatureCategory) -> Unit)? = null
+    private var onItemClickListener: ((TopLevelCategory) -> Unit)? = null
 
-    // TODO Change this to use a suitable model (3)
     /**
     * Set the on click listener for an itemView.
     *
     * @param listener the onclick listener lambda function
     */
-    fun setOnItemClickListener(listener: (FeatureCategory) -> Unit) {
+    fun setOnItemClickListener(listener: (TopLevelCategory) -> Unit) {
         onItemClickListener = listener
     }
 }
