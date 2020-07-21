@@ -1,4 +1,8 @@
-package com.sthoray.allright.data.model.search
+package com.sthoray.allright.data.model.shared
+
+import com.sthoray.allright.data.model.search.MainImage
+import com.sthoray.allright.data.model.search.ShippingOption
+
 
 import com.google.gson.annotations.SerializedName
 
@@ -10,6 +14,7 @@ import com.google.gson.annotations.SerializedName
  * marketplaces. This means some properties are nullable.
  *
  * @property id the listing id
+ * @property shipping the type of shipping offered
  * @property productName the listing name
  * @property locationName the listing location
  * @property startPrice the listing start price
@@ -21,12 +26,13 @@ import com.google.gson.annotations.SerializedName
  */
 data class Listing(
     val id: Int,
+    val shipping: Int,
     @SerializedName("name")
     val productName: String,
     @SerializedName("location_name")
     val locationName: String,
     @SerializedName("start_price")
-    val startPrice: Float?,
+    val startPrice: Float,
     @SerializedName("buy_now")
     val buyNowPrice: Float?,
     @SerializedName("current_price")
