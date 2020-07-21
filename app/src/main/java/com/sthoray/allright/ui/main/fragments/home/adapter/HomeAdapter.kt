@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.fragments.home.adapter
+package com.sthoray.allright.ui.main.fragments.home.adapter
 
 import android.view.LayoutInflater
 import android.view.View

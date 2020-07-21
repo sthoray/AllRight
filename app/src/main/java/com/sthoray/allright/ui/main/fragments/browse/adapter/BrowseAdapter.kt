@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.fragments.browse.adapter
+package com.sthoray.allright.ui.main.fragments.browse.adapter
 
 import android.view.LayoutInflater
 import android.view.View

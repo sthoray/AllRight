@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.fragments.browse.view
+package com.sthoray.allright.ui.main.fragments.browse.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
-import com.sthoray.allright.ui.fragments.browse.adapter.BrowseAdapter
+import com.sthoray.allright.ui.main.fragments.browse.adapter.BrowseAdapter
 import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity

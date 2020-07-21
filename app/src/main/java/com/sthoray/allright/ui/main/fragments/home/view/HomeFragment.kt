@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.fragments.home.view
+package com.sthoray.allright.ui.main.fragments.home.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sthoray.allright.R
-import com.sthoray.allright.ui.fragments.home.adapter.HomeAdapter
+import com.sthoray.allright.ui.main.fragments.home.adapter.HomeAdapter
 import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity
