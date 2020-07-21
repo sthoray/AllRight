@@ -44,7 +44,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupRecyclerView() {
         mainAdapter = HomeAdapter()
-        recViewFeaturedCategories.apply {
+        recyclerViewFeaturedCategories.apply {
             adapter = mainAdapter
             layoutManager = GridLayoutManager(context, 3)
         }
@@ -82,10 +82,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun showProgressBar() {
-        progBarFeaturedCategories.visibility = View.VISIBLE
+        progressBarFeaturedCategories.visibility = View.VISIBLE
     }
 
     private fun removeProgressBar() {
-        progBarFeaturedCategories.visibility = View.GONE
+        progressBarFeaturedCategories.visibility = View.GONE
     }
 }
