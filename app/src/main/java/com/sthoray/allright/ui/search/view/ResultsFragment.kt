@@ -74,7 +74,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         // Not sure why differ is not working when providing a MutableList
                         resultsAdapter.differ.submitList(listingResponse.data.toList())
                         isLastPage =
-                            viewModel.searchRequest?.pageNumber == listingResponse.meta.pagination.totalPages
+                            viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
                     }
                 }
                 is Resource.Error -> {
