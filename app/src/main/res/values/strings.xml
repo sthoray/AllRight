@@ -13,4 +13,5 @@
 
     <!-- Search fragments -->
     <string name="title_results">Search Results</string>
+    <string name="title_filters">Search Filters</string>
 </resources>
