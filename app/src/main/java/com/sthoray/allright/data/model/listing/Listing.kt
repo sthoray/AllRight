@@ -59,5 +59,5 @@ data class Listing(
     val pickups: Int,
     val pickupLocation: PickupLocation?,
     @SerializedName("images")
-    val images: List<Image?>
+    val images: List<Image>
 )
