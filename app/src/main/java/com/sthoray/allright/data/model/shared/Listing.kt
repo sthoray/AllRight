@@ -14,7 +14,6 @@ import com.google.gson.annotations.SerializedName
  * marketplaces. This means some properties are nullable.
  *
  * @property id the listing id
- * @property shipping the type of shipping offered
  * @property productName the listing name
  * @property locationName the listing location
  * @property startPrice the listing start price
@@ -26,7 +25,6 @@ import com.google.gson.annotations.SerializedName
  */
 data class Listing(
     val id: Int,
-    val shipping: Int,
     @SerializedName("name")
     val productName: String,
     @SerializedName("location_name")
