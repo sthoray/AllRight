@@ -7,8 +7,16 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 
+/**
+ * Internet utils class
+ */
 class Internet {
     companion object {
+        /**
+         * Checks if the application has a connection to the Internet
+         *@param viewModel The view model, used to get the connectivity service
+         *@return whether the application has a connection to the Internet
+         */
         fun hasConnection(viewModel: AndroidViewModel) : Boolean {
             val connectivityManager = viewModel.getApplication<Application>().getSystemService(
                 Context.CONNECTIVITY_SERVICE
