@@ -1,9 +1,9 @@
 package com.sthoray.allright.ui.search.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import com.sthoray.allright.R
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
@@ -32,6 +32,53 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as SearchActivity).viewModel
-        viewModel.searchRequestDraft = viewModel.searchRequest
+        showCurrentFilters()
+        setupApplyFiltersBtn(view)
     }
+
+    private fun showCurrentFilters() {
+        viewModel.apply {
+            resetDraftRequest()
+
+            // Current marketplace
+            if (isMall()) {
+                rgMarketplace.check(rbMarketplaceMall.id)
+            } else {
+                rgMarketplace.check(rbMarketplaceSecondhand.id)
+            }
+
+            // TODO: Set sort order
+
+            // Checkbox options
+            searchRequest.apply {
+                cbFastShipping.isChecked = fastShipping != 0
+                cbFreeShipping.isChecked = freeShipping != 0
+                cbBrandNew.isChecked = brandNew != 0
+            }
+        }
+    }
+
+    private fun setupApplyFiltersBtn(view: View) {
+        btnApplyFilters.setOnClickListener {
+            viewModel.apply {
+                // Set marketplace
+                val marketplace = view.findViewById<RadioButton>(rgMarketplace.checkedRadioButtonId)
+                val isMall = marketplace.text.toString() == getString(R.string.marketplace_mall)
+                draftMarketplace(isMall)
+
+                // TODO: Set sort order
+
+                // Checkbox options
+                draftBinaryFilters(
+                    cbFreeShipping.isChecked,
+                    cbFastShipping.isChecked,
+                    cbBrandNew.isChecked
+                )
+            }
+
+            Log.d(TAG, "Applying filters")
+            viewModel.applyDraftAndSearch()
+        }
+    }
+
 }

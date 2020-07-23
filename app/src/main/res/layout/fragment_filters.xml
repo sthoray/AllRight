@@ -7,18 +7,18 @@
     tools:context=".ui.search.view.SearchActivity">
 
     <TextView
-        android:id="@+id/textViewMarketplace"
+        android:id="@+id/tvMarketplace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/marketplace_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBottom_toBottomOf="@+id/radioGroupMarketplace"
+        app:layout_constraintBottom_toBottomOf="@+id/rgMarketplace"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/radioGroupMarketplace" />
+        app:layout_constraintTop_toTopOf="@+id/rgMarketplace" />
 
     <RadioGroup
-        android:id="@+id/radioGroupMarketplace"
+        android:id="@+id/rgMarketplace"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -26,18 +26,18 @@
         android:layout_marginEnd="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewMarketplace"
+        app:layout_constraintStart_toEndOf="@+id/tvMarketplace"
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/radioBtnMarketplaceMall"
+            android:id="@+id/rbMarketplaceMall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/marketplace_mall" />
 
         <RadioButton
-            android:id="@+id/radioBtnMarketplaceSecondhand"
+            android:id="@+id/rbMarketplaceSecondhand"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -46,7 +46,7 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/textViewSortBy"
+        android:id="@+id/tvSortBy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -65,11 +65,11 @@
         android:layout_marginEnd="16dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewSortBy"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupMarketplace" />
+        app:layout_constraintStart_toEndOf="@+id/tvSortBy"
+        app:layout_constraintTop_toBottomOf="@+id/rgMarketplace" />
 
     <CheckBox
-        android:id="@+id/checkBoxFreeShipping"
+        android:id="@+id/cbFreeShipping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -79,24 +79,24 @@
         app:layout_constraintTop_toBottomOf="@+id/spinnerSortBy" />
 
     <CheckBox
-        android:id="@+id/checkBoxFastShipping"
+        android:id="@+id/cbFastShipping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fast_shipping_title"
-        app:layout_constraintBottom_toBottomOf="@+id/checkBoxFreeShipping"
-        app:layout_constraintEnd_toStartOf="@+id/checkBoxBrandNew"
-        app:layout_constraintStart_toEndOf="@+id/checkBoxFreeShipping"
-        app:layout_constraintTop_toTopOf="@+id/checkBoxFreeShipping" />
+        app:layout_constraintBottom_toBottomOf="@+id/cbFreeShipping"
+        app:layout_constraintEnd_toStartOf="@+id/cbBrandNew"
+        app:layout_constraintStart_toEndOf="@+id/cbFreeShipping"
+        app:layout_constraintTop_toTopOf="@+id/cbFreeShipping" />
 
     <CheckBox
-        android:id="@+id/checkBoxBrandNew"
+        android:id="@+id/cbBrandNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="@string/brand_new_title"
-        app:layout_constraintBottom_toBottomOf="@+id/checkBoxFreeShipping"
+        app:layout_constraintBottom_toBottomOf="@+id/cbFreeShipping"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/checkBoxFreeShipping" />
+        app:layout_constraintTop_toTopOf="@+id/cbFreeShipping" />
 
     <Button
         android:id="@+id/btnApplyFilters"

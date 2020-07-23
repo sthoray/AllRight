@@ -24,7 +24,6 @@ class SearchViewModel(
 
     /** The search request to search for. */
     lateinit var searchRequest: SearchRequest
-    lateinit var searchRequestDraft: SearchRequest
 
     /** Search listings data. */
     val searchListings: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
@@ -44,6 +43,7 @@ class SearchViewModel(
     fun initSearch(categoryId: Int) {
         if (!::searchRequest.isInitialized) {
             searchRequest = SearchRequest(categoryId = categoryId)
+            searchRequestDraft = searchRequest
             searchListings()
         }
     }
@@ -72,5 +72,65 @@ class SearchViewModel(
             }
         }
         return Resource.Error(response.message())
+    }
+
+
+    private lateinit var searchRequestDraft: SearchRequest
+
+    /** Make the draft search request active, clear the last search, then search. */
+    fun applyDraftAndSearch() {
+        searchRequest = searchRequestDraft
+        searchRequest.pageNumber = 1
+        searchListingsResponse = null
+        searchListings()
+    }
+
+    /**
+     * Reset the draft [SearchRequest] to the active [searchRequest].
+     *
+     * The draft search request lets us work on a copy of the current [searchRequest].
+     * This can be useful for setting filters as a user might want to discard all
+     * their changes and return to the original request.
+     */
+    fun resetDraftRequest() {
+        searchRequestDraft = searchRequest
+    }
+
+    private fun Boolean.toInt() = if (this) 1 else 0
+
+    /**
+     * Set [searchRequestDraft]s binary filters.
+     *
+     * @param freeShipping True if listings should have free shipping, else false.
+     * @param fastShipping True if products should have fast shipping, else false.
+     * @param brandNew True if products should be brand new, else false.
+     */
+    fun draftBinaryFilters(freeShipping: Boolean, fastShipping: Boolean, brandNew: Boolean) {
+        searchRequestDraft.freeShipping = freeShipping.toInt()
+        searchRequestDraft.fastShipping = fastShipping.toInt()
+        searchRequestDraft.brandNew = brandNew.toInt()
+    }
+
+    /**
+     * Set [searchRequestDraft]s marketplace.
+     *
+     * This currently may set incorrect options depending on the search
+     * category. For example, if we are searching for vehicles different
+     * rules apply.
+     *
+     * @param isMall True if the marketplace is "mall", false if it is "secondhand".
+     */
+    fun draftMarketplace(isMall: Boolean) {
+        searchRequestDraft.auctions = (!isMall).toInt()
+        searchRequestDraft.products = isMall.toInt()
+    }
+
+    /**
+     * Check what market place we are searching in.
+     *
+     * @return True if the marketplace is "mall" and "false" if it is "secondhand".
+     */
+    fun isMall(): Boolean {
+        return (searchRequest.auctions == 0) && (searchRequest.products == 1)
     }
 }
