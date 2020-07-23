@@ -1,7 +1,5 @@
 package com.sthoray.allright.data.model.shared
 
-import com.sthoray.allright.data.model.search.ShippingOption
-
 
 import com.google.gson.annotations.SerializedName
 import com.sthoray.allright.data.model.listing.*
@@ -31,7 +29,7 @@ import com.sthoray.allright.data.model.listing.*
  * @property reservePrice to check if the item has a reserve price.
  * @property manager
  * @property pickupLocation location of the product.
- * @property images list of all images for that listing [Image].
+ * @property images list of all images for that listing [Image]
  */
 data class Listing(
     val id: Int,
@@ -74,8 +72,6 @@ data class Listing(
     val pickupLocation: pickpLocation?,
     @SerializedName("images")
     val images: List<Image?>
-
-
 
 
 )

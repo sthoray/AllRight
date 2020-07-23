@@ -1,4 +1,4 @@
-package com.sthoray.allright.data.model.listing
+package com.sthoray.allright.data.model.shared
 
 /**
  * Model for a shipping option.
