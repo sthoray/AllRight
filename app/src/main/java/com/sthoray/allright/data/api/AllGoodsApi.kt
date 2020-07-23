@@ -1,7 +1,7 @@
 package com.sthoray.allright.data.api
 
-import com.sthoray.allright.data.model.shared.Category
-import com.sthoray.allright.data.model.shared.Listing
+import com.sthoray.allright.data.model.listing.Category
+import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse

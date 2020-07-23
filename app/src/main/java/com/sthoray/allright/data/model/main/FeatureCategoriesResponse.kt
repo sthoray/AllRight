@@ -1,6 +1,6 @@
 package com.sthoray.allright.data.model.main
 
-import com.sthoray.allright.data.model.shared.Category
+import com.sthoray.allright.data.model.listing.Category
 
 /**
  * Model representing a category feature panel.

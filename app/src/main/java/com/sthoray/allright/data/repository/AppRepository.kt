@@ -2,7 +2,7 @@ package com.sthoray.allright.data.repository
 
 import com.sthoray.allright.data.api.RetrofitInstance
 import com.sthoray.allright.data.db.SearchHistoryDatabase
-import com.sthoray.allright.data.model.shared.Listing
+import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.search.SearchRequest
 
 /**

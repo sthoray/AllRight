@@ -3,7 +3,7 @@ package com.sthoray.allright.ui.main.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sthoray.allright.data.model.shared.Category
+import com.sthoray.allright.data.model.listing.Category
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Resource

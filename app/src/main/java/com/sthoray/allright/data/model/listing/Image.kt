@@ -3,14 +3,14 @@ package com.sthoray.allright.data.model.listing
 import com.google.gson.annotations.SerializedName
 
 /**
- * Model for all the images of the product.
+ * Model for listing images.
  *
- * Contains URLs for an items' main image and its thumbnail.
+ * Contains URLs for an items' image and its thumbnail.
  *
- * @property id the id of the image.
- * @property largeUrl the fully qualified url for the main image
- * @property thumbUrl the fully qualified url for the thumbnail
- * @property number is image number.
+ * @property id The id of the image.
+ * @property largeUrl the fully qualified url to the full sized image.
+ * @property thumbUrl the fully qualified url to the image's thumbnail.
+ * @property number The position that this image should be displayed in the listing details activity.
  */
 data class Image(
     val id: Int,

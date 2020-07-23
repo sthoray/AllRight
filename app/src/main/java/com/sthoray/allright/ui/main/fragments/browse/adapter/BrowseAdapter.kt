@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.shared.Category
+import com.sthoray.allright.data.model.listing.Category
 
 import kotlinx.android.synthetic.main.item_layout_top_level_category.view.*
 
