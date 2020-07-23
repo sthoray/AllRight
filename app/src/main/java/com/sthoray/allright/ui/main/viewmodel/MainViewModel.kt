@@ -1,5 +1,7 @@
 package com.sthoray.allright.ui.main.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,8 +19,9 @@ import retrofit2.Response
  * around to prevent data being fetched every time a fragment is switched to.
  */
 class MainViewModel(
-    val appRepository: AppRepository
-) : ViewModel() {
+    app: Application,
+    private val appRepository: AppRepository
+) : AndroidViewModel(app) {
 
 
     /** Featured categories response. */
