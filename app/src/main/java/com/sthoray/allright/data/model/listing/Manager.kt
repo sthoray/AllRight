@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
  * @property managerName .
  * @property linkToWebsite .
  */
-data class ListingManager(
+data class Manager(
     val id: Int,
     @SerializedName("name")
     val managerName: String,

@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName
  * @property mobileViews to count mobile views of the product
  * @property tabletViews to count tablet views of the product
  */
-data class ListingStats(
+data class Stats(
     val id: Int,
     @SerializedName("product_id")
     val productId: Int,

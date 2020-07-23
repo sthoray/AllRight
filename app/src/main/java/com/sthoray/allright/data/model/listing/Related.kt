@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
  * @property longitude the longitude of the product.
  * @property latitude the latitude of the product.
  */
-data class ListingRelated(
+data class Related(
     val id: Int,
     @SerializedName("store_id")
     val storeId: Int,

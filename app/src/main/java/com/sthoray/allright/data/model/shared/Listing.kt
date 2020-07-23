@@ -1,17 +1,15 @@
 package com.sthoray.allright.data.model.shared
 
 import com.sthoray.allright.data.model.search.ShippingOption
-import com.sthoray.allright.data.model.shared.MainImage
 
 
 import com.google.gson.annotations.SerializedName
+import com.sthoray.allright.data.model.listing.*
 
 /**
  * Model for listings.
  *
- * This model (currently) does not contain all possible properties. The same
- * properties are not always used in both "Mall" and "Second hand"
- * marketplaces. This means some properties are nullable.
+ * This model might still be missing a few properties.
  *
  * @property id the listing id
  * @property productName the listing name
@@ -22,6 +20,18 @@ import com.google.gson.annotations.SerializedName
  * @property shippingType the type of shipping offered
  * @property shippingOptions a list of [ShippingOption]s
  * @property mainImage the listing [MainImage]
+ * @property related properties related to that specific listing [Related].
+ * @property storeRelated properties related to the store where the listing came from [StoreRelated].
+ *@property description details of the listing.
+ * @property stats stats about the listing.
+ * @property categories
+ * @property brandTitle for the tile of the brand of the product.
+ * @property outOfStock to check if the product is out of stock.
+ * @property reserveMet to check if the reserve price has met.
+ * @property reservePrice to check if the item has a reserve price.
+ * @property manager
+ * @property pickupLocation location of the product.
+ * @property images list of all images for that listing [Image].
  */
 data class Listing(
     val id: Int,
@@ -40,5 +50,32 @@ data class Listing(
     @SerializedName("shipping_options")
     val shippingOptions: List<ShippingOption>,
     @SerializedName("main_image")
-    val mainImage: MainImage
+    val mainImage: MainImage,
+    @SerializedName("related")
+    val related: List<Related?>,
+    @SerializedName("store_related")
+    val storeRelated: List<StoreRelated?>,
+    val description: String?,
+    @SerializedName("stats")
+    val stats: Stats?,
+    @SerializedName("categories")
+    val categories: List<Category?>,
+    @SerializedName("brand_title")
+    val brandTitle: String?,
+    @SerializedName("out_of_stock")
+    val outOfStock: Boolean?,
+    @SerializedName("reserve_met")
+    val reserveMet: Boolean?,
+    @SerializedName("no_reserve")
+    val reservePrice: Boolean?,
+    @SerializedName("manager")
+    val manager: Manager,
+    @SerializedName("pickupLocation")
+    val pickupLocation: pickpLocation?,
+    @SerializedName("images")
+    val images: List<Image?>
+
+
+
+
 )

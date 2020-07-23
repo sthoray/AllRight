@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName
  * @property thumbUrl the fully qualified url for the thumbnail
  * @property number is image number.
  */
-data class ListingImage(
+data class Image(
     val id: Int,
     @SerializedName("large_url")
     val largeUrl: String,
