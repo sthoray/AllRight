@@ -32,10 +32,6 @@ class Internet {
                     else -> false
                 }
             } else {
-                /** TODO
-                 * remove use of deprecated without removing internet
-                 * checking for devices pre Marshmallow (API 23)
-                 */
                 connectivityManager.activeNetworkInfo?.run {
                     return when(type){
                         ConnectivityManager.TYPE_WIFI -> true
