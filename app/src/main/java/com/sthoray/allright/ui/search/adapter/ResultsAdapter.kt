@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_layout_search.view.*
 /**
  * Adapter for adapting listings into a RecyclerView.
  */
-class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ListingViewHolder>() {
+class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() {
 
 
     /** Responsible for displaying a single listing. */

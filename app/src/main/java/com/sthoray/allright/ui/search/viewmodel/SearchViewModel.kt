@@ -22,9 +22,8 @@ class SearchViewModel(
     private val appRepository: AppRepository
 ) : ViewModel() {
 
-
-    /** The search request to perform. */
-    var searchRequest = SearchRequest()
+    /** The search request to search for. */
+    lateinit var searchRequest: SearchRequest
 
     /** Search listings data. */
     val searchListings: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
@@ -32,6 +31,21 @@ class SearchViewModel(
     /** Last search listings response. */
     var searchListingsResponse: SearchResponse? = null
 
+    /**
+     * Initialise [searchRequest] and perform the first search.
+     *
+     * If [searchRequest] needs to be initialised (e.g. when the activity
+     * has been created from an intent for the first time) then the first
+     * search must also be performed to fetch the first page.
+     *
+     * @param categoryId The ID of the category to begin the search in.
+     */
+    fun initSearch(categoryId: Int) {
+        if (!::searchRequest.isInitialized) {
+            searchRequest = SearchRequest(categoryId = categoryId)
+            searchListings()
+        }
+    }
 
     /** Search AllGoods for listings. */
     fun searchListings() = viewModelScope.launch {
