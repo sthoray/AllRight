@@ -69,7 +69,7 @@ class SearchViewModel(
     private suspend fun safeSearchCall(){
         searchListings.postValue(Resource.Loading())
         try {
-            if (Internet.hasConnection(this)) {
+            if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.searchListings(searchRequest)
                 searchListings.postValue(handleSearchListingsResponse(response))
             } else {

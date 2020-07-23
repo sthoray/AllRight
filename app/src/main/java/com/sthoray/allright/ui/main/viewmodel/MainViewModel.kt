@@ -51,7 +51,7 @@ class MainViewModel(
     private suspend fun safeGetFeaturedCategoriesCall(){
         featureCategories.postValue(Resource.Loading())
         try {
-            if (Internet.hasConnection(this)) {
+            if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.getFeatureCategories()
                 featureCategories.postValue(handleFeatureCategoriesResponse(response))
             } else {
@@ -67,7 +67,7 @@ class MainViewModel(
     private suspend fun safeGetTopLevelCategoriesCall(){
         topLevelCategories.postValue(Resource.Loading())
         try {
-            if (Internet.hasConnection(this)) {
+            if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.getTopLevelCategories()
                 topLevelCategories.postValue(handleTopLevelCategoriesResponse(response))
             } else {
