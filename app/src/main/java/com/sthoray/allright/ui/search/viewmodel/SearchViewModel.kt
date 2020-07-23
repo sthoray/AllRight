@@ -24,6 +24,7 @@ class SearchViewModel(
 
     /** The search request to search for. */
     lateinit var searchRequest: SearchRequest
+    lateinit var searchRequestDraft: SearchRequest
 
     /** Search listings data. */
     val searchListings: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()

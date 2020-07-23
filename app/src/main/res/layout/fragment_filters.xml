@@ -3,18 +3,110 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.search.view.SearchActivity">
 
-    <!-- TODO: Create filters layout -->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewMarketplace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_filters"
+        android:layout_marginStart="16dp"
+        android:text="@string/marketplace_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="@+id/radioGroupMarketplace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/radioGroupMarketplace" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupMarketplace"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewMarketplace"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/radioBtnMarketplaceMall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/marketplace_mall" />
+
+        <RadioButton
+            android:id="@+id/radioBtnMarketplaceSecondhand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/marketplace_secondhand" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textViewSortBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/sort_by_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerSortBy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerSortBy" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinnerSortBy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewSortBy"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupMarketplace" />
+
+    <CheckBox
+        android:id="@+id/checkBoxFreeShipping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/free_shipping_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSortBy" />
+
+    <CheckBox
+        android:id="@+id/checkBoxFastShipping"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fast_shipping_title"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxFreeShipping"
+        app:layout_constraintEnd_toStartOf="@+id/checkBoxBrandNew"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxFreeShipping"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxFreeShipping" />
+
+    <CheckBox
+        android:id="@+id/checkBoxBrandNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/brand_new_title"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBoxFreeShipping"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/checkBoxFreeShipping" />
+
+    <Button
+        android:id="@+id/btnApplyFilters"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/btn_title_apply_filters"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

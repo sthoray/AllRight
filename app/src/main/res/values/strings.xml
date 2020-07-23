@@ -15,4 +15,40 @@
     <!-- Search fragments -->
     <string name="title_results">Search Results</string>
     <string name="title_filters">Search Filters</string>
+
+    <!-- Filters -->
+    <string name="btn_title_apply_filters">Apply Filters</string>
+
+    <string name="marketplace_title">Marketplace:</string>
+    <string name="marketplace_mall">Mall</string>
+    <string name="marketplace_secondhand">Secondhand</string>
+
+    <string name="sort_by_title">Sort:</string>
+    <string-array name="sort_by_item_mall">
+        <item>Best match</item>
+        <item>Popularity</item>
+        <item>Price + Shipping: Lowest first</item>
+        <item>Price: Lowest first</item>
+        <item>Price: Highest first</item>
+        <item>New arrivals</item>
+        <item>Sale value</item>
+        <item>A-Z</item>
+    </string-array>
+    <string-array name="sort_by_item_secondhand">
+        <item>Best match</item>
+        <item>Trending</item>
+        <item>New listings</item>
+        <item>Closing soon</item>
+        <item>Most bids</item>
+        <item>Buy Now: Highest first</item>
+        <item>Buy Now: Lowest first</item>
+        <item>Price: Lowest first</item>
+        <item>Price: Highest first</item>
+        <item>A-Z</item>
+    </string-array>
+
+    <string name="free_shipping_title">Free Shipping</string>
+    <string name="fast_shipping_title">Fast Shipping</string> <!-- mall only -->
+    <string name="brand_new_title">Brand New Only</string> <!-- mall only -->
+
 </resources>
