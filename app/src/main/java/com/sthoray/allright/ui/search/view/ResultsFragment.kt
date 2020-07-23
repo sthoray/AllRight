@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as SearchActivity).viewModel
         setupRecyclerView()
+        setupFab()
         setOnClickListeners()
         setupObservers()
     }
@@ -54,6 +56,14 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 )
             )
             addOnScrollListener(this@ResultsFragment.scrollListener)
+        }
+    }
+
+    private fun setupFab() {
+        extendedFabFilter.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_navigation_results_to_navigation_filters
+            )
         }
     }
 
