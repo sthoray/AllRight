@@ -1,9 +1,12 @@
 package com.sthoray.allright.ui.main.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.data.model.browse.TopLevelCategory
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
@@ -11,6 +14,7 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 
 /**
  * View model for the main activity.
@@ -37,17 +41,44 @@ class MainViewModel(
     }
 
     private fun getFeaturedCategories() = viewModelScope.launch {
-        featureCategories.postValue(Resource.Loading())
-        val response = appRepository.getFeatureCategories()
-        featureCategories.postValue(handleFeatureCategoriesResponse(response))
+        safeGetFeaturedCategoriesCall()
     }
 
     private fun getTopLevelCategories() = viewModelScope.launch {
-        topLevelCategories.postValue(Resource.Loading())
-        val response = appRepository.getTopLevelCategories()
-        topLevelCategories.postValue(handleTopLevelCategoriesResponse(response))
+        safeGetTopLevelCategoriesCall()
     }
-
+    private suspend fun safeGetFeaturedCategoriesCall(){
+        featureCategories.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = appRepository.getFeatureCategories()
+                featureCategories.postValue(handleFeatureCategoriesResponse(response))
+            } else {
+                featureCategories.postValue(Resource.Error("No internet connection"))
+            }
+        } catch (t : Throwable) {
+            when (t){
+                is IOException -> featureCategories.postValue(Resource.Error("Network Failure"))
+                else -> featureCategories.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
+    private suspend fun safeGetTopLevelCategoriesCall(){
+        topLevelCategories.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = appRepository.getTopLevelCategories()
+                topLevelCategories.postValue(handleTopLevelCategoriesResponse(response))
+            } else {
+                topLevelCategories.postValue(Resource.Error("No internet connection"))
+            }
+        } catch (t : Throwable) {
+            when (t){
+                is IOException -> topLevelCategories.postValue(Resource.Error("Network Failure"))
+                else -> topLevelCategories.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
     private fun handleFeatureCategoriesResponse(
         response: Response<FeatureCategoriesResponse>
     ): Resource<FeatureCategoriesResponse> {
@@ -68,5 +99,31 @@ class MainViewModel(
             }
         }
         return Resource.Error(response.message())
+    }
+    private fun hasInternetConnection() : Boolean {
+        val connectivityManager = getApplication<Application>().getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            val activeNetwork = connectivityManager.activeNetwork ?: return false
+            val capabilities = connectivityManager
+                .getNetworkCapabilities(activeNetwork) ?: return false
+            return when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            connectivityManager.activeNetworkInfo?.run {
+                return when(type){
+                    ConnectivityManager.TYPE_WIFI -> true
+                    ConnectivityManager.TYPE_MOBILE -> true
+                    ConnectivityManager.TYPE_ETHERNET -> true
+                    else -> false
+                }
+            }
+        }
+        return false
     }
 }
