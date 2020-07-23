@@ -96,6 +96,9 @@ class SearchViewModel(
                 else -> false
             }
         } else {
+            /** TODO remove use of deprecated without
+             *  TODO removing internet checking for devices pre Marshmallow (API 23)
+             */
             connectivityManager.activeNetworkInfo?.run {
                 return when(type){
                     TYPE_WIFI -> true
