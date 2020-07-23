@@ -1,5 +1,6 @@
 package com.sthoray.allright.ui.base
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.data.repository.AppRepository
@@ -12,6 +13,7 @@ import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
  * @property appRepository the repository to access
  */
 class ViewModelProviderFactory(
+    private val app: Application,
     private val appRepository: AppRepository
 ) : ViewModelProvider.Factory {
 
@@ -29,7 +31,7 @@ class ViewModelProviderFactory(
             return MainViewModel(appRepository) as T
         } else if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SearchViewModel(appRepository) as T
+            return SearchViewModel(app, appRepository) as T
         }
         throw IllegalArgumentException("Unknown class name")
     }

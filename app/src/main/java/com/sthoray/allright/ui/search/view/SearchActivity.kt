@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AbsListView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -60,7 +61,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         val appRepository = AppRepository(SearchHistoryDatabase(this))
-        val viewModelProviderFactory = ViewModelProviderFactory(appRepository)
+        val viewModelProviderFactory = ViewModelProviderFactory(application, appRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(SearchViewModel::class.java)
     }
@@ -131,11 +132,17 @@ class SearchActivity : AppCompatActivity() {
                         searchAdapter.differ.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
+                        // TODO make below commented code work for all pages after first page
+                    /*if (isLastPage){
+                        recViewSearch.setPadding(0, 0, 0, 0)
+                    }*/
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
+                        Toast.makeText(this, "An error occurred: $message",
+                        Toast.LENGTH_LONG).show()
                         Log.e(TAG, "An error occurred: $message")
                     }
                 }
