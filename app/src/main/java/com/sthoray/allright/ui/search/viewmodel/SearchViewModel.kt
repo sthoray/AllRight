@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -68,7 +69,7 @@ class SearchViewModel(
     private suspend fun safeSearchCall(){
         searchListings.postValue(Resource.Loading())
         try {
-            if (hasInternetConnection()) {
+            if (Internet.hasConnection(this)) {
                 val response = appRepository.searchListings(searchRequest)
                 searchListings.postValue(handleSearchListingsResponse(response))
             } else {
@@ -96,8 +97,9 @@ class SearchViewModel(
                 else -> false
             }
         } else {
-            /** TODO remove use of deprecated without
-             *  TODO removing internet checking for devices pre Marshmallow (API 23)
+            /** TODO
+             * remove use of deprecated without removing internet
+             * checking for devices pre Marshmallow (API 23)
              */
             connectivityManager.activeNetworkInfo?.run {
                 return when(type){

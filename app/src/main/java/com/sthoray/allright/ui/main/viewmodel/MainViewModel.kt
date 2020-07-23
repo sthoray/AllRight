@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.data.model.browse.TopLevelCategory
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -50,7 +51,7 @@ class MainViewModel(
     private suspend fun safeGetFeaturedCategoriesCall(){
         featureCategories.postValue(Resource.Loading())
         try {
-            if (hasInternetConnection()) {
+            if (Internet.hasConnection(this)) {
                 val response = appRepository.getFeatureCategories()
                 featureCategories.postValue(handleFeatureCategoriesResponse(response))
             } else {
@@ -66,7 +67,7 @@ class MainViewModel(
     private suspend fun safeGetTopLevelCategoriesCall(){
         topLevelCategories.postValue(Resource.Loading())
         try {
-            if (hasInternetConnection()) {
+            if (Internet.hasConnection(this)) {
                 val response = appRepository.getTopLevelCategories()
                 topLevelCategories.postValue(handleTopLevelCategoriesResponse(response))
             } else {
