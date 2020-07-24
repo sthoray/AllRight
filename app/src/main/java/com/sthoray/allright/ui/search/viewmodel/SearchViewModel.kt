@@ -3,7 +3,6 @@ package com.sthoray.allright.ui.search.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sthoray.allright.R
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
@@ -77,26 +76,21 @@ class SearchViewModel(
     }
 
 
-    /** The draft search request when selecting filters. */
-    lateinit var searchRequestDraft: SearchRequest
-
-    /** Make the draft search request active, clear the last search, then search. */
-    fun applyDraftAndSearch() {
-        searchRequest = searchRequestDraft
-        searchRequest.pageNumber = 1
-        searchListingsResponse = null
-        searchListings()
-    }
-
     /**
-     * Reset the draft [SearchRequest] to the active [searchRequest].
+     * The draft search request when selecting filters.
      *
      * The draft search request lets us work on a copy of the current [searchRequest].
      * This can be useful for setting filters as a user might want to discard all
      * their changes and return to the original request.
      */
-    fun resetDraftRequest() {
-        searchRequestDraft = searchRequest
+    lateinit var searchRequestDraft: SearchRequest
+
+    /** Make the draft search request active, clear the last search, then begin searching. */
+    fun applyFiltersAndSearch() {
+        searchRequest = searchRequestDraft.copy()
+        searchRequest.pageNumber = 1
+        searchListingsResponse = null
+        searchListings()
     }
 
     private fun Boolean.toInt() = if (this) 1 else 0
@@ -108,7 +102,7 @@ class SearchViewModel(
      * @param fastShipping True if products should have fast shipping, else false.
      * @param brandNew True if products should be brand new, else false.
      */
-    fun draftBinaryFilters(freeShipping: Boolean, fastShipping: Boolean, brandNew: Boolean) {
+    fun setDraftBinaryFilters(freeShipping: Boolean, fastShipping: Boolean, brandNew: Boolean) {
         searchRequestDraft.freeShipping = freeShipping.toInt()
         searchRequestDraft.fastShipping = fastShipping.toInt()
         searchRequestDraft.brandNew = brandNew.toInt()
@@ -123,27 +117,20 @@ class SearchViewModel(
      *
      * @param isMall True if the marketplace is "mall", false if it is "secondhand".
      */
-    fun draftMarketplace(isMall: Boolean) {
+    fun setDraftMarketplace(isMall: Boolean) {
         searchRequestDraft.auctions = (!isMall).toInt()
         searchRequestDraft.products = isMall.toInt()
     }
 
     /**
-     * Check what market place we are searching in.
+     * Check what market place the [searchRequest] will search.
+     *
+     * @param searchRequest The [SearchRequest] to check.
      *
      * @return True if the marketplace is "mall" and "false" if it is "secondhand".
      */
-    fun isMall(): Boolean {
+    fun isMall(searchRequest: SearchRequest): Boolean {
         return (searchRequest.auctions == 0) && (searchRequest.products == 1)
-    }
-
-    /**
-     * Check what market place the draft is searching in.
-     *
-     * @return True if the marketplace is "mall" and "false" if it is "secondhand".
-     */
-    fun isDraftMall(): Boolean {
-        return (searchRequestDraft.auctions == 0) && (searchRequestDraft.products == 1)
     }
 
     /** List of [SortOrder] option for the AllGoods mall marketplace. */

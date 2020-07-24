@@ -40,9 +40,10 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         viewModel = (activity as SearchActivity).viewModel
         setupRecyclerView()
         setupFab()
-        setOnClickListeners()
+        setListingOnClickListeners()
         setupObservers()
     }
+
 
     private fun setupRecyclerView() {
         resultsAdapter = ResultsAdapter()
@@ -61,13 +62,14 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private fun setupFab() {
         extendedFabFilter.setOnClickListener {
+            viewModel.searchRequestDraft = viewModel.searchRequest.copy()
             findNavController().navigate(
                 R.id.action_navigation_results_to_navigation_filters
             )
         }
     }
 
-    private fun setOnClickListeners() {
+    private fun setListingOnClickListeners() {
         resultsAdapter.setOnItemClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(Constants.BASE_PRODUCT_URL + it.id)
@@ -100,10 +102,12 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         })
     }
 
+
     // Pagination
     private var isLoading = false
     private var isLastPage = false
     private var isScrolling = false
+
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
