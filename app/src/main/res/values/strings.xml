@@ -24,28 +24,20 @@
     <string name="marketplace_secondhand">Secondhand</string>
 
     <string name="sort_by_title">Sort:</string>
-    <string-array name="sort_by_item_mall">
-        <item>Best match</item>
-        <item>Popularity</item>
-        <item>Price + Shipping: Lowest first</item>
-        <item>Price: Lowest first</item>
-        <item>Price: Highest first</item>
-        <item>New arrivals</item>
-        <item>Sale value</item>
-        <item>A-Z</item>
-    </string-array>
-    <string-array name="sort_by_item_secondhand">
-        <item>Best match</item>
-        <item>Trending</item>
-        <item>New listings</item>
-        <item>Closing soon</item>
-        <item>Most bids</item>
-        <item>Buy Now: Highest first</item>
-        <item>Buy Now: Lowest first</item>
-        <item>Price: Lowest first</item>
-        <item>Price: Highest first</item>
-        <item>A-Z</item>
-    </string-array>
+    <string name="sort_by_best">Best Match</string>
+    <string name="sort_by_popular">Popularity</string>
+    <string name="sort_by_trending">Trending</string>
+    <string name="sort_by_price_shipped_lowest">Price + Shipping: Lowest first</string>
+    <string name="sort_by_price_lowest">Price: Lowest first</string>
+    <string name="sort_by_price_highest">Price: Highest first</string>
+    <string name="sort_by_buy_now_lowest">Buy Now: Lowest first</string>
+    <string name="sort_by_buy_now_highest">Buy Now: Highest first</string>
+    <string name="sort_by_new_products">New Arrivals</string>
+    <string name="sort_by_new_listings">New Listings</string>
+    <string name="sort_by_sale">Sale Value</string>
+    <string name="sort_by_alphabetical">A-Z</string>
+    <string name="sort_by_closing_soon">Closing soon</string>
+    <string name="sort_by_most_bids">Most bids</string>
 
     <string name="free_shipping_title">Free Shipping</string>
     <string name="fast_shipping_title">Fast Shipping</string> <!-- mall only -->
