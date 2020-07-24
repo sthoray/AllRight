@@ -31,14 +31,14 @@
 
         <RadioButton
             android:id="@+id/rbMarketplaceMall"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/marketplace_mall" />
 
         <RadioButton
             android:id="@+id/rbMarketplaceSecondhand"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/marketplace_secondhand" />
@@ -82,21 +82,21 @@
         android:id="@+id/cbFastShipping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:text="@string/fast_shipping_title"
         app:layout_constraintBottom_toBottomOf="@+id/cbFreeShipping"
-        app:layout_constraintEnd_toStartOf="@+id/cbBrandNew"
-        app:layout_constraintStart_toEndOf="@+id/cbFreeShipping"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cbFreeShipping" />
 
     <CheckBox
         android:id="@+id/cbBrandNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/brand_new_title"
-        app:layout_constraintBottom_toBottomOf="@+id/cbFreeShipping"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cbFreeShipping" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbFreeShipping" />
 
     <Button
         android:id="@+id/btnApplyFilters"
