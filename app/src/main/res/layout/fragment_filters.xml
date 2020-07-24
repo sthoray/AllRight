@@ -52,12 +52,12 @@
         android:layout_marginStart="16dp"
         android:text="@string/sort_by_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBottom_toBottomOf="@+id/spinnerSortBy"
+        app:layout_constraintBottom_toBottomOf="@+id/spSortBy"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinnerSortBy" />
+        app:layout_constraintTop_toTopOf="@+id/spSortBy" />
 
     <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/spinnerSortBy"
+        android:id="@+id/spSortBy"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -76,7 +76,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/free_shipping_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSortBy" />
+        app:layout_constraintTop_toBottomOf="@+id/spSortBy" />
 
     <CheckBox
         android:id="@+id/cbFastShipping"

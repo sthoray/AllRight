@@ -3,10 +3,12 @@ package com.sthoray.allright.ui.search.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sthoray.allright.R
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Resource
+import com.sthoray.allright.utils.SortOrder
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -75,7 +77,8 @@ class SearchViewModel(
     }
 
 
-    private lateinit var searchRequestDraft: SearchRequest
+    /** The draft search request when selecting filters. */
+    lateinit var searchRequestDraft: SearchRequest
 
     /** Make the draft search request active, clear the last search, then search. */
     fun applyDraftAndSearch() {
@@ -133,4 +136,39 @@ class SearchViewModel(
     fun isMall(): Boolean {
         return (searchRequest.auctions == 0) && (searchRequest.products == 1)
     }
+
+    /**
+     * Check what market place the draft is searching in.
+     *
+     * @return True if the marketplace is "mall" and "false" if it is "secondhand".
+     */
+    fun isDraftMall(): Boolean {
+        return (searchRequestDraft.auctions == 0) && (searchRequestDraft.products == 1)
+    }
+
+    /** List of [SortOrder] option for the AllGoods mall marketplace. */
+    val sortOrdersMall = listOf(
+        SortOrder.BEST,
+        SortOrder.POPULAR,
+        SortOrder.PRICE_SHIPPED_LOWEST,
+        SortOrder.PRICE_LOWEST,
+        SortOrder.PRICE_HIGHEST,
+        SortOrder.NEW_PRODUCTS,
+        SortOrder.SALE,
+        SortOrder.ALPHABETICAL
+    )
+
+    /** List of [SortOrder] option for the AllGoods secondhand marketplace. */
+    val sortOrdersSecondhand = listOf(
+        SortOrder.BEST,
+        SortOrder.TRENDING,
+        SortOrder.NEW_LISTINGS,
+        SortOrder.CLOSING_SOON,
+        SortOrder.MOST_BIDS,
+        SortOrder.BUY_NOW_LOWEST,
+        SortOrder.BUY_NOW_HIGHEST,
+        SortOrder.PRICE_LOWEST,
+        SortOrder.PRICE_HIGHEST,
+        SortOrder.ALPHABETICAL
+    )
 }
