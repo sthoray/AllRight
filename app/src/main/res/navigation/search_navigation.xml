@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_nav_graph"
+    app:startDestination="@id/navigation_results">
+
+    <fragment
+        android:id="@+id/navigation_results"
+        android:name="com.sthoray.allright.ui.search.view.ResultsFragment"
+        android:label="@string/title_results"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_navigation_results_to_navigation_filters"
+            app:destination="@id/navigation_filters" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_filters"
+        android:name="com.sthoray.allright.ui.search.view.FiltersFragment"
+        android:label="@string/title_filters"
+        tools:layout="@layout/fragment_filters" />
+
+</navigation>

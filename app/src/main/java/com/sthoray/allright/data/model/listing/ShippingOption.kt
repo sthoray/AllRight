@@ -1,16 +1,14 @@
 package com.sthoray.allright.data.model.listing
 
 /**
- * Model for a shipping option.
- * Still some attributes missing.
- * @property id the id.
- * @property name the name.
- * @property description the description of the shipping option
- * @property cost the cost of the shipping option
+ * Model for shipping options.
+ *
+ * This model excludes some properties.
+ *
+ * @property description The shipping option's description.
+ * @property cost The shipping option's cost.
  */
 data class ShippingOption(
-    val id: Int,
-    val name: String,
     val description: String,
     val cost: Float
 )

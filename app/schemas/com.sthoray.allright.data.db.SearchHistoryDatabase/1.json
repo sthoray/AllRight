@@ -1,0 +1,119 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "4d5785fa3321e11f3144fcc2346ba9ce",
+    "entities": [
+      {
+        "tableName": "search_history",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`searchQuery` TEXT NOT NULL, `auctions` INTEGER NOT NULL, `brandNew` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, `fastShipping` INTEGER NOT NULL, `freeShipping` INTEGER NOT NULL, `location` TEXT NOT NULL, `maxPrice` REAL, `minPrice` REAL, `pageNumber` INTEGER NOT NULL, `products` INTEGER NOT NULL, `propertyFilters` TEXT NOT NULL, `showRestricted` INTEGER NOT NULL, `sortBy` TEXT NOT NULL, `useRegion` INTEGER NOT NULL, PRIMARY KEY(`searchQuery`, `categoryId`))",
+        "fields": [
+          {
+            "fieldPath": "searchQuery",
+            "columnName": "searchQuery",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "auctions",
+            "columnName": "auctions",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brandNew",
+            "columnName": "brandNew",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "categoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fastShipping",
+            "columnName": "fastShipping",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "freeShipping",
+            "columnName": "freeShipping",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "location",
+            "columnName": "location",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxPrice",
+            "columnName": "maxPrice",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "minPrice",
+            "columnName": "minPrice",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pageNumber",
+            "columnName": "pageNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "products",
+            "columnName": "products",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "propertyFilters",
+            "columnName": "propertyFilters",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "showRestricted",
+            "columnName": "showRestricted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sortBy",
+            "columnName": "sortBy",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "useRegion",
+            "columnName": "useRegion",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "searchQuery",
+            "categoryId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4d5785fa3321e11f3144fcc2346ba9ce')"
+    ]
+  }
+}
