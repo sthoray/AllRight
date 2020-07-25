@@ -126,6 +126,13 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 viewModel.searchListings()
                 isScrolling = false
             }
+
+            val sensitivity = 13 // This may not be right yet
+            if (dy < -sensitivity) {
+                extendedFabFilter.extend()
+            } else if (dy > sensitivity) {
+                extendedFabFilter.shrink()
+            }
         }
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
