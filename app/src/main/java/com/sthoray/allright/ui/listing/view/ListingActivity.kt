@@ -11,6 +11,8 @@ import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.adapter.ListingAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.main.adapter.MainAdapter
+import com.sthoray.allright.ui.main.view.MainActivity
+import com.sthoray.allright.ui.search.view.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -25,6 +27,13 @@ class ListingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listing)
         setupViewModel()
+        viewModel.getListing(
+            intent.getIntExtra(
+                SearchActivity.LISTING_ID_KEY,
+                0
+            )
+
+        )
         setupUI()
     }
 
