@@ -1,5 +1,6 @@
 package com.sthoray.allright.ui.listing.view
 
+import android.icu.text.AlphabeticIndex
 import android.os.Bundle
 import android.widget.ImageView
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
+import com.sthoray.allright.data.model.listing.Image
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
@@ -54,10 +56,6 @@ class ListingActivity : AppCompatActivity() {
             this.startActivity(intent)
         } */
 
-        carouselView.apply {
-            pageCount = sampleImages.size
-            setImageListener(imageListener)
-        }
 
     }
 
@@ -76,6 +74,14 @@ class ListingActivity : AppCompatActivity() {
                     response.data?.let { listing ->
                         textViewTitle.text = listing.productName
                         textViewDescription.text = listing.description
+
+                        carouselView.apply {
+                            val imageUrls = createImageUrlList(listing.images)
+                            pageCount = listing.images.size
+                            setImageListener(imageListener)
+
+
+                        }
                     }
                 }
                 is Resource.Error -> {
@@ -89,6 +95,14 @@ class ListingActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun createImageUrlList(images: List<Image>): ArrayList<String> {
+        val imageList: ArrayList<String> = arrayListOf()
+        for (image in images) {
+            imageList.add(image.largeUrl)
+        }
+        return imageList
     }
 
     private fun showProgressBar() {
