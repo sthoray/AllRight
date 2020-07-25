@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.browse.TopLevelCategory
-import com.sthoray.allright.data.model.main.FeatureCategory
+import com.sthoray.allright.data.model.listing.Category
+
 import kotlinx.android.synthetic.main.item_layout_top_level_category.view.*
 
 /** Adapter for adapting top level categories into a RecyclerView. */
@@ -17,15 +17,15 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHol
     /** Responsible for displaying a single top level category. */
     inner class TopLevelCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    private val differCallback = object : DiffUtil.ItemCallback<TopLevelCategory>() {
+    private val differCallback = object : DiffUtil.ItemCallback<Category>() {
 
-        override fun areItemsTheSame(oldItem: TopLevelCategory, newItem: TopLevelCategory): Boolean {
+        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: TopLevelCategory,
-            newItem: TopLevelCategory
+            oldItem: Category,
+            newItem: Category
         ): Boolean {
             return oldItem == newItem
         }
@@ -83,14 +83,14 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHol
         }
     }
 
-    private var onItemClickListener: ((TopLevelCategory) -> Unit)? = null
+    private var onItemClickListener: ((Category) -> Unit)? = null
 
     /**
     * Set the on click listener for an itemView.
     *
     * @param listener the onclick listener lambda function
     */
-    fun setOnItemClickListener(listener: (TopLevelCategory) -> Unit) {
+    fun setOnItemClickListener(listener: (Category) -> Unit) {
         onItemClickListener = listener
     }
 }

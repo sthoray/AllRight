@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.main.FeatureCategory
+import com.sthoray.allright.data.model.listing.Category
 import com.sthoray.allright.utils.Constants.Companion.BASE_URL
 import kotlinx.android.synthetic.main.item_layout_featured_category.view.*
 
@@ -22,15 +22,15 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.FeatureCategoryViewHolder>(
     inner class FeatureCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
-    private val differCallback = object : DiffUtil.ItemCallback<FeatureCategory>() {
+    private val differCallback = object : DiffUtil.ItemCallback<Category>() {
 
-        override fun areItemsTheSame(oldItem: FeatureCategory, newItem: FeatureCategory): Boolean {
+        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: FeatureCategory,
-            newItem: FeatureCategory
+            oldItem: Category,
+            newItem: Category
         ): Boolean {
             return oldItem == newItem
         }
@@ -87,14 +87,14 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.FeatureCategoryViewHolder>(
     }
 
 
-    private var onItemClickListener: ((FeatureCategory) -> Unit)? = null
+    private var onItemClickListener: ((Category) -> Unit)? = null
 
     /**
      * Set on click listener for an item.
      *
      * @param listener the onclick listener lambda function
      */
-    fun setOnItemClickListener(listener: (FeatureCategory) -> Unit) {
+    fun setOnItemClickListener(listener: (Category) -> Unit) {
         onItemClickListener = listener
     }
 }
