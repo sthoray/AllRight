@@ -1,28 +1,14 @@
 package com.sthoray.allright.ui.search.view
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.AbsListView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
-import com.sthoray.allright.ui.main.view.MainActivity
-import com.sthoray.allright.ui.search.adapter.SearchAdapter
+import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
-import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
-import com.sthoray.allright.utils.Resource
-import kotlinx.android.synthetic.main.activity_search.*
 
 /**
  * Activity for viewing search results.
@@ -34,30 +20,26 @@ import kotlinx.android.synthetic.main.activity_search.*
 class SearchActivity : AppCompatActivity() {
 
 
-    private lateinit var viewModel: SearchViewModel
-    private lateinit var searchAdapter: SearchAdapter
-    private val TAG = "SearchActivity"
-
+    /**
+     * Search activity's share view model.
+     *
+     * By creating an activity level view model and accessing it in
+     * each main fragment, we can reduce the number of API calls.
+     */
+    lateinit var viewModel: SearchViewModel
 
     /**
-     * Set up ViewModel, UI, and observers when the activity is created.
+     * Set up ViewModel.
      *
-     * @param savedInstanceState and data saved if the activity is being re-initialized
+     * @param savedInstanceState If non-null, this activity is being re-constructed
+     * from a previous saved state as given here.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         setupViewModel()
-        setupUI()
-        setupObservers()
-
-        viewModel.searchRequest.categoryId = intent.getIntExtra(
-            MainActivity.CATEGORY_ID_KEY,
-            0   // search all categories
-        )
-        viewModel.searchListings() // Bad idea (try rotating the device)
+        setupSearchRequest(intent.getIntExtra(CATEGORY_ID_KEY, 0))
     }
-
 
     private fun setupViewModel() {
         val appRepository = AppRepository(SearchHistoryDatabase(this))
@@ -66,102 +48,7 @@ class SearchActivity : AppCompatActivity() {
             .get(SearchViewModel::class.java)
     }
 
-    // Booleans to help with pagination
-    private var isLoading = false
-    private var isLastPage = false
-    private var isScrolling = false
-
-    private val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-            val visibleItemCount = layoutManager.childCount
-            val totalItemCount = layoutManager.itemCount
-
-            val isNotLoadingNotLastPage = !isLoading && !isLastPage
-            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
-            val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible =
-                totalItemCount >= viewModel.searchListingsResponse!!.meta.pagination.perPage
-            val shouldPaginate = isNotLoadingNotLastPage && isAtLastItem &&
-                    isNotAtBeginning && isTotalMoreThanVisible && isScrolling
-
-            if (shouldPaginate) {
-                viewModel.searchListings()
-                isScrolling = false
-            }
-        }
-
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                isScrolling = true
-            }
-        }
-    }
-
-    private fun setupUI() {
-        searchAdapter = SearchAdapter()
-        recViewSearch.apply {
-            adapter = searchAdapter
-            layoutManager = LinearLayoutManager(context)
-            addOnScrollListener(this@SearchActivity.scrollListener)
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    (layoutManager as LinearLayoutManager).orientation
-                )
-            )
-        }
-
-        searchAdapter.setOnItemClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(BASE_PRODUCT_URL + it.id)
-            this.startActivity(intent)
-        }
-    }
-
-    private fun setupObservers() {
-        viewModel.searchListings.observe(this, Observer { response ->
-            when (response) {
-                is Resource.Success -> {
-                    hideProgressBar()
-                    response.data?.let { listingResponse ->
-                        // Not sure why differ is not working when providing a MutableList
-                        searchAdapter.differ.submitList(listingResponse.data.toList())
-                        isLastPage =
-                            viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
-                        // TODO make below commented code work for all pages after first page
-                        /*if (isLastPage){
-                            recViewSearch.setPadding(0, 0, 0, 0)
-                        }*/
-                    }
-                }
-                is Resource.Error -> {
-                    hideProgressBar()
-                    response.message?.let { message ->
-                        Toast.makeText(
-                            this, "An error occurred: $message",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        Log.e(TAG, "An error occurred: $message")
-                    }
-                }
-                is Resource.Loading -> {
-                    showProgressBar()
-                }
-            }
-        })
-    }
-
-    private fun showProgressBar() {
-        progBarSearchPagination.visibility = View.VISIBLE
-        isLoading = true
-    }
-
-    private fun hideProgressBar() {
-        progBarSearchPagination.visibility = View.GONE
-        isLoading = false
+    private fun setupSearchRequest(categoryId: Int) {
+        viewModel.initSearch(categoryId)
     }
 }

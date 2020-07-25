@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.sthoray.allright.data.model.browse.TopLevelCategory
+import com.sthoray.allright.data.model.listing.Category
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Internet
@@ -29,7 +29,7 @@ class MainViewModel(
     val featureCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> = MutableLiveData()
 
     /** Top level categories response. */
-    val topLevelCategories: MutableLiveData<Resource<List<TopLevelCategory>>> = MutableLiveData()
+    val topLevelCategories: MutableLiveData<Resource<List<Category>>> = MutableLiveData()
 
     /** Make network requests on initialisation. */
     init {
@@ -91,8 +91,8 @@ class MainViewModel(
     }
 
     private fun handleTopLevelCategoriesResponse(
-        response: Response<List<TopLevelCategory>>
-    ): Resource<List<TopLevelCategory>> {
+        response: Response<List<Category>>
+    ): Resource<List<Category>> {
         if (response.isSuccessful) {
             response.body()?.let { responseBody ->
                 return Resource.Success(responseBody)
