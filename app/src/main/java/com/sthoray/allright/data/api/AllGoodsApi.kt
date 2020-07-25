@@ -1,5 +1,6 @@
 package com.sthoray.allright.data.api
 
+import com.sthoray.allright.data.model.listing.Category
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchRequest
@@ -7,34 +8,41 @@ import com.sthoray.allright.data.model.search.SearchResponse
 import retrofit2.Response
 import retrofit2.http.*
 
-/**
- * Defines requests for interacting with the AllGoods API.
- */
+/** Defines requests for interacting with the AllGoods API. */
 interface AllGoodsApi {
 
     /**
      * Get the category feature panel.
      *
-     * @return a [FeatureCategoriesResponse] response
+     * @return A [FeatureCategoriesResponse] response
      */
     @GET("categoryFeaturePanel")
     suspend fun getFeatureCategories(): Response<FeatureCategoriesResponse>
 
     /**
+     * Get the top level categories.
+     *
+     * @return A list of [Category]s.
+     */
+    @GET("category/topLevel")
+    suspend fun getTopLevelCategories(): Response<List<Category>>
+
+    /**
      * Search for listings.
      *
-     * @param searchRequest a search request object
+     * @param searchRequest A search request object.
      *
-     * @return a [SearchResponse] response
+     * @return A [SearchResponse] response.
      */
     @POST("search")
     suspend fun searchForListings(@Body searchRequest: SearchRequest = SearchRequest()): Response<SearchResponse>
 
     /**
-     * Get listing of that id.
+     * Get all information about a listing.
      *
-     * @param listingId id of the product.
-     * @return a [Listing] response.
+     * @param listingId The id of the [Listing] to fetch.
+     *
+     * @return A [Listing] response.
      */
     @GET("product/{productId}")
     suspend fun getListing(@Path("productId") listingId: Int): Response<Listing>

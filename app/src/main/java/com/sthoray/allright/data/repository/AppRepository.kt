@@ -1,30 +1,38 @@
 package com.sthoray.allright.data.repository
 
 import com.sthoray.allright.data.api.RetrofitInstance
-import com.sthoray.allright.data.db.AppDatabase
+import com.sthoray.allright.data.db.SearchHistoryDatabase
+import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.search.SearchRequest
 
 /**
  * Repository for handling all data operations.
  *
- * @property db the database to access
+ * @property historyDatabase The database to access.
  */
 class AppRepository(
-    val db: AppDatabase
+    private val historyDatabase: SearchHistoryDatabase
 ) {
     /** Get the category feature panel. */
     suspend fun getFeatureCategories() =
         RetrofitInstance.api.getFeatureCategories()
 
+    /** Get the top level categories. */
+    suspend fun getTopLevelCategories() = RetrofitInstance.api.getTopLevelCategories()
+
     /**
      * Search for listings.
      *
-     * @param searchRequest the query to search for
+     * @param searchRequest The [SearchRequest] query to search for.
      */
     suspend fun searchListings(searchRequest: SearchRequest) =
         RetrofitInstance.api.searchForListings(searchRequest)
 
-    /** Get the listing */
-    suspend fun getListing(productId: Int) =
-        RetrofitInstance.api.getListing(productId)
+    /**
+     * Get all information about a listing.
+     *
+     * @param listingId The id of the [Listing] to fetch.
+     */
+    suspend fun getListing(listingId: Int) =
+        RetrofitInstance.api.getListing(listingId)
 }

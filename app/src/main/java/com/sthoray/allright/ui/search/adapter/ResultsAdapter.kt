@@ -8,13 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.search.Listing
+import com.sthoray.allright.data.model.listing.Listing
 import kotlinx.android.synthetic.main.item_layout_search.view.*
 
-/**
- * Adapter for adapting listings into a RecyclerView.
- */
-class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ListingViewHolder>() {
+/** Adapter for adapting listings into a RecyclerView. */
+class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() {
 
 
     /** Responsible for displaying a single listing. */

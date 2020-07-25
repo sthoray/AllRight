@@ -6,22 +6,18 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import com.sthoray.allright.R
-import com.sthoray.allright.data.db.AppDatabase
+import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
-import com.sthoray.allright.ui.listing.adapter.ListingAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
-import com.sthoray.allright.ui.main.adapter.MainAdapter
-import com.sthoray.allright.ui.main.view.MainActivity
-import com.sthoray.allright.ui.search.view.SearchActivity
+import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_listing.*
-import kotlinx.android.synthetic.main.activity_main.*
 
-
+/** The listing activity to display information about a listing. */
 class ListingActivity : AppCompatActivity() {
+
 
     private lateinit var viewModel: ListingViewModel
     private val TAG = "ListingActivity"
@@ -33,15 +29,22 @@ class ListingActivity : AppCompatActivity() {
         setupViewModel()
         viewModel.getListing(
             intent.getIntExtra(
-                SearchActivity.LISTING_ID_KEY,
+                LISTING_ID_KEY,
                 0
             )
         )
         setupObservers()
+
+        // TODO: Open website as follows
+        /*resultsAdapter.setOnItemClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(Constants.BASE_PRODUCT_URL + it.id)
+            this.startActivity(intent)
+        } */
     }
 
     private fun setupViewModel() {
-        val appRepository = AppRepository(AppDatabase(this))
+        val appRepository = AppRepository(SearchHistoryDatabase(this))
         val viewModelProviderFactory = ViewModelProviderFactory(appRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(ListingViewModel::class.java)
@@ -49,12 +52,12 @@ class ListingActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         viewModel.listing.observe(this, Observer { response ->
-            when(response) {
+            when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { listing ->
                         textViewTitle.text = listing.productName
-                        textViewDescription.text = listing.listingDescription
+                        textViewDescription.text = listing.description
                     }
                 }
                 is Resource.Error -> {
