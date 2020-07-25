@@ -24,7 +24,7 @@ class SearchActivity : AppCompatActivity() {
         /** The key for a selected listingId. */
         const val LISTING_ID_KEY = "LISTING_ID"
     }
-
+    
     /**
      * Search activity's share view model.
      *
