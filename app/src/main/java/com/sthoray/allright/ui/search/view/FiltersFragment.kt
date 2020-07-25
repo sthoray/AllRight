@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.sthoray.allright.R
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_filters.*
@@ -158,8 +159,8 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
                 cbBrandNew.isChecked
             )
 
-            // TODO: Destroy this fragment and go back to results
             viewModel.applyFiltersAndSearch()
+            findNavController().popBackStack()
         }
     }
 }

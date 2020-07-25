@@ -63,9 +63,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private fun setupFab() {
         extendedFabFilter.setOnClickListener {
             viewModel.searchRequestDraft = viewModel.searchRequest.copy()
-            findNavController().navigate(
-                R.id.action_navigation_results_to_navigation_filters
-            )
+            findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
         }
     }
 
