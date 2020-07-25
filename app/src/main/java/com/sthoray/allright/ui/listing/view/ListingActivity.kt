@@ -54,9 +54,11 @@ class ListingActivity : AppCompatActivity() {
             this.startActivity(intent)
         } */
 
-        val carouselView = findViewById(R.id.carouselView) as CarouselView
-        carouselView.setPageCount(sampleImages.size)
-        carouselView.setImageListener(imageListener)
+        carouselView.apply {
+            pageCount = sampleImages.size
+            setImageListener(imageListener)
+        }
+
     }
 
     private fun setupViewModel() {
@@ -93,14 +95,11 @@ class ListingActivity : AppCompatActivity() {
         progBarListing.visibility = View.VISIBLE
     }
 
-    var imageListener: ImageListener = object : ImageListener {
-        override fun setImageForPosition(position: Int, imageView: ImageView) {
-            // You can use Glide or Picasso here
-            imageView.setImageResource(sampleImages[position])
-        }
-    }
-
     private fun hideProgressBar() {
         progBarListing.visibility = View.GONE
+    }
+
+    private var imageListener: ImageListener = ImageListener { position, imageView ->
+        imageView.setImageResource(sampleImages[position])
     }
 }
