@@ -18,7 +18,7 @@ class Internet {
          *@return whether the application has a connection to the Internet
          */
         fun hasConnection(application: Application) : Boolean {
-            val connectivityManager = AndroidViewModel(application).getApplication<Application>().getSystemService(
+            val connectivityManager = application.getSystemService(
                 Context.CONNECTIVITY_SERVICE
             ) as ConnectivityManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
