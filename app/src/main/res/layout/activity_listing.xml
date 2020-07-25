@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.listing.view.ListingActivity"
-    tools:showIn="@layout/activity_listing">
+    tools:context=".ui.listing.view.ListingActivity">
 
 
 
@@ -15,7 +14,7 @@
         android:layout_width="137dp"
         android:layout_height="48dp"
         android:layout_marginStart="36dp"
-        android:text="Title Goes Here"
+        android:text="@android:string/unknownName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +27,7 @@
         android:layout_width="177dp"
         android:layout_height="182dp"
         android:layout_marginStart="48dp"
-        android:text="Item Specifics go here"
+        android:text="@android:string/unknownName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +40,7 @@
         android:layout_width="177dp"
         android:layout_height="182dp"
         android:layout_marginStart="48dp"
-        android:text="Item Description goes here"
+        android:text="@android:string/unknownName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -49,24 +48,13 @@
         app:layout_constraintVertical_bias="1.0"
         tools:text="Subtitle" />
 
-    <ImageView
-        android:id="@+id/imageViewProductImage"
-        android:layout_width="96dp"
-        android:layout_height="447dp"
-        android:layout_marginStart="292dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        tools:ignore="ContentDescription"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <com.synnapps.carouselview.CarouselView
         android:id="@+id/carouselView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         app:fillColor="#FFFFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:pageColor="#00000000"
         app:radius="6dp"
