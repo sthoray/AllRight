@@ -1,6 +1,7 @@
 package com.sthoray.allright.ui.search.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -48,12 +49,10 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
                 rgMarketplace.check(rbMarketplaceMall.id)
 
-                spSortBy.apply {
-                    for (i in sortOrdersMall.indices) {
-                        if (sortOrdersMall[i].key == searchRequestDraft.sortBy) {
-                            setSelection(i)
-                            break
-                        }
+                for (i in sortOrdersMall.indices) {
+                    if (sortOrdersMall[i].key == searchRequestDraft.sortBy) {
+                        spSortBy.setSelection(i)
+                        break
                     }
                 }
 
@@ -66,13 +65,10 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
                 rgMarketplace.check(rbMarketplaceSecondhand.id)
 
-                spSortBy.apply {
-
-                    for (i in sortOrdersSecondhand.indices) {
-                        if (sortOrdersSecondhand[i].key == searchRequestDraft.sortBy) {
-                            setSelection(i)
-                            break
-                        }
+                for (i in sortOrdersSecondhand.indices) {
+                    if (sortOrdersSecondhand[i].key == searchRequestDraft.sortBy) {
+                        spSortBy.setSelection(i)
+                        break
                     }
                 }
 
@@ -126,7 +122,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     private fun setupSortByBehaviour() {
         spSortBy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
-
+                Log.e(TAG, "spSortBy")
             }
 
             override fun onItemSelected(
