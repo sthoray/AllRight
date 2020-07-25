@@ -16,11 +16,11 @@ class Internet {
          *@param application The current application state
          *@return whether the application has a connection to the Internet
          */
-        fun hasConnection(application: Application) : Boolean {
+        fun hasConnection(application: Application): Boolean {
             val connectivityManager = application.getSystemService(
                 Context.CONNECTIVITY_SERVICE
             ) as ConnectivityManager
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val activeNetwork = connectivityManager.activeNetwork ?: return false
                 val capabilities = connectivityManager
                     .getNetworkCapabilities(activeNetwork) ?: return false
@@ -31,8 +31,9 @@ class Internet {
                     else -> false
                 }
             } else {
+                @Suppress("DEPRECATION")
                 connectivityManager.activeNetworkInfo?.run {
-                    return when(type){
+                    return when (type) {
                         ConnectivityManager.TYPE_WIFI -> true
                         ConnectivityManager.TYPE_MOBILE -> true
                         ConnectivityManager.TYPE_ETHERNET -> true

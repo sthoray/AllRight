@@ -2,12 +2,12 @@ package com.sthoray.allright.ui.search.view
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -133,16 +133,18 @@ class SearchActivity : AppCompatActivity() {
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
                         // TODO make below commented code work for all pages after first page
-                    /*if (isLastPage){
-                        recViewSearch.setPadding(0, 0, 0, 0)
-                    }*/
+                        /*if (isLastPage){
+                            recViewSearch.setPadding(0, 0, 0, 0)
+                        }*/
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(this, "An error occurred: $message",
-                        Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this, "An error occurred: $message",
+                            Toast.LENGTH_LONG
+                        ).show()
                         Log.e(TAG, "An error occurred: $message")
                     }
                 }

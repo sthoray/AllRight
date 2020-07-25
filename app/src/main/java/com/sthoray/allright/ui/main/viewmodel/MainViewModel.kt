@@ -44,7 +44,8 @@ class MainViewModel(
     private fun getTopLevelCategories() = viewModelScope.launch {
         safeGetTopLevelCategoriesCall()
     }
-    private suspend fun safeGetFeaturedCategoriesCall(){
+
+    private suspend fun safeGetFeaturedCategoriesCall() {
         featureCategories.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
@@ -53,14 +54,15 @@ class MainViewModel(
             } else {
                 featureCategories.postValue(Resource.Error("No internet connection"))
             }
-        } catch (t : Throwable) {
-            when (t){
+        } catch (t: Throwable) {
+            when (t) {
                 is IOException -> featureCategories.postValue(Resource.Error("Network Failure"))
                 else -> featureCategories.postValue(Resource.Error("Conversion Error"))
             }
         }
     }
-    private suspend fun safeGetTopLevelCategoriesCall(){
+
+    private suspend fun safeGetTopLevelCategoriesCall() {
         topLevelCategories.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
@@ -69,13 +71,14 @@ class MainViewModel(
             } else {
                 topLevelCategories.postValue(Resource.Error("No internet connection"))
             }
-        } catch (t : Throwable) {
-            when (t){
+        } catch (t: Throwable) {
+            when (t) {
                 is IOException -> topLevelCategories.postValue(Resource.Error("Network Failure"))
                 else -> topLevelCategories.postValue(Resource.Error("Conversion Error"))
             }
         }
     }
+
     private fun handleFeatureCategoriesResponse(
         response: Response<FeatureCategoriesResponse>
     ): Resource<FeatureCategoriesResponse> {
@@ -97,5 +100,5 @@ class MainViewModel(
         }
         return Resource.Error(response.message())
     }
-    
+
 }

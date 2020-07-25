@@ -9,8 +9,6 @@ import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 
 /**
  * Factory class to define how the Main ViewModel should be created.
- *
- *
  */
 class ViewModelProviderFactory(
     private val app: Application,

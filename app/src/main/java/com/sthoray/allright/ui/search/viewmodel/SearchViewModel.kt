@@ -60,7 +60,8 @@ class SearchViewModel(
         }
         return Resource.Error(response.message())
     }
-    private suspend fun safeSearchCall(){
+
+    private suspend fun safeSearchCall() {
         searchListings.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
@@ -69,8 +70,8 @@ class SearchViewModel(
             } else {
                 searchListings.postValue(Resource.Error("No internet connection"))
             }
-        } catch (t : Throwable) {
-            when (t){
+        } catch (t: Throwable) {
+            when (t) {
                 is IOException -> searchListings.postValue(Resource.Error("Network Failure"))
                 else -> searchListings.postValue(Resource.Error("Conversion Error"))
             }
