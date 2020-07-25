@@ -13,7 +13,7 @@ class Internet {
     companion object {
         /**
          * Checks if the application has a connection to the Internet
-         *@param viewModel The view model, used to get the connectivity service
+         *@param application The current application state
          *@return whether the application has a connection to the Internet
          */
         fun hasConnection(application: Application) : Boolean {
