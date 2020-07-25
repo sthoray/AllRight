@@ -1,14 +1,17 @@
 package com.sthoray.allright.ui.search.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 
 /**
  * View model for the Search activity.
@@ -19,8 +22,9 @@ import retrofit2.Response
  * @property appRepository the data repository to interact with
  */
 class SearchViewModel(
+    app: Application,
     private val appRepository: AppRepository
-) : ViewModel() {
+) : AndroidViewModel(app) {
 
     /** The search request to search for. */
     lateinit var searchRequest: SearchRequest
@@ -49,9 +53,7 @@ class SearchViewModel(
 
     /** Search AllGoods for listings. */
     fun searchListings() = viewModelScope.launch {
-        searchListings.postValue(Resource.Loading())
-        val response = appRepository.searchListings(searchRequest)
-        searchListings.postValue(handleSearchListingsResponse(response))
+        safeSearchCall()
     }
 
     private fun handleSearchListingsResponse(
@@ -72,4 +74,22 @@ class SearchViewModel(
         }
         return Resource.Error(response.message())
     }
+
+    private suspend fun safeSearchCall() {
+        searchListings.postValue(Resource.Loading())
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.searchListings(searchRequest)
+                searchListings.postValue(handleSearchListingsResponse(response))
+            } else {
+                searchListings.postValue(Resource.Error("No internet connection"))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> searchListings.postValue(Resource.Error("Network Failure"))
+                else -> searchListings.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
+
 }
