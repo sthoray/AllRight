@@ -1,7 +1,7 @@
 package com.sthoray.allright.ui.search.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
