@@ -8,6 +8,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
+import com.squareup.picasso.Picasso
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Image
@@ -27,13 +29,7 @@ class ListingActivity : AppCompatActivity() {
     private lateinit var viewModel: ListingViewModel
     private val TAG = "ListingActivity"
 
-    var sampleImages = intArrayOf(
-        R.drawable.image_1,
-        R.drawable.image_2
-        //R.drawable.image_3,
-        //R.drawable.image_4,
-        //R.drawable.image_5
-    )
+    var imageUrls: List<String> = listOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,10 +70,11 @@ class ListingActivity : AppCompatActivity() {
                     response.data?.let { listing ->
                         textViewTitle.text = listing.productName
                         textViewDescription.text = listing.description
-
+                        imageUrls = createImageUrlList(listing.images)
+                        Log.d(TAG, imageUrls.toString())
                         carouselView.apply {
-                            val imageUrls = createImageUrlList(listing.images)
-                            pageCount = listing.images.size
+
+                            pageCount = imageUrls.size
                             setImageListener(imageListener)
 
 
@@ -113,7 +110,12 @@ class ListingActivity : AppCompatActivity() {
         progBarListing.visibility = View.GONE
     }
 
-    private var imageListener: ImageListener = ImageListener { position, imageView ->
-        imageView.setImageResource(sampleImages[position])
+
+
+    var imageListener: ImageListener = object : ImageListener {
+        override fun setImageForPosition(position: Int, imageView: ImageView) {
+            Picasso.get().load(imageUrls[position]).into(imageView)
+        }
     }
+
 }
