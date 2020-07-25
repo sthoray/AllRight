@@ -71,7 +71,7 @@ class ListingActivity : AppCompatActivity() {
                     hideProgressBar()
                     response.data?.let { listing ->
                         textViewTitle.text = listing.productName
-                        textViewDescription.text = listing.listingDescription
+                        textViewSubtitle.text = listing.productName
                     }
                 }
                 is Resource.Error -> {
