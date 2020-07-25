@@ -6,13 +6,14 @@ import com.google.gson.annotations.SerializedName
  * Model for the anything which is related to an individual product.
  *
  * @property id the id.
- * @property store_id the id of the store.
+ * @property storeId the id of the store.
  * @property longitude the longitude of the product.
  * @property latitude the latitude of the product.
  */
-data class ListingRelated (
+data class ListingRelated(
     val id: Int,
-    val store_id: Int,
+    @SerializedName("store_id")
+    val storeId: Int,
     @SerializedName("lng")
     val longitude: String,
     @SerializedName("lat")

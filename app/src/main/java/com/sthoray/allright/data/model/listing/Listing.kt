@@ -1,7 +1,6 @@
 package com.sthoray.allright.data.model.listing
 
 
-
 import com.google.gson.annotations.SerializedName
 
 /**
