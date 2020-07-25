@@ -24,7 +24,10 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
 
     /**
-     * Set up ViewModel, UI, and observers.
+     * Setup the filters fragment.
+     *
+     * Shows all available filters for the current marketplace. The current
+     * search parameters are set as the starting point.
      *
      * @param view The View returned by onCreateView.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
@@ -33,49 +36,18 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as SearchActivity).viewModel
-        updateVisibleFilters()
-        setupMarketplaceBehaviour()
-        setupSortByBehaviour()
-        setupApplyFiltersBehaviour()
+        updateFilters()
+        setListeners()
     }
 
 
-    /* Ugh! This is asking to be rewritten. */
-    private fun updateVisibleFilters() {
-        viewModel.apply {
-            //searchRequestDraft = searchRequest
-            if (isMall(searchRequestDraft)) {
-                showMallFilters()
-
-                rgMarketplace.check(rbMarketplaceMall.id)
-
-                for (i in sortOrdersMall.indices) {
-                    if (sortOrdersMall[i].key == searchRequestDraft.sortBy) {
-                        spSortBy.setSelection(i)
-                        break
-                    }
-                }
-
-                cbFastShipping.isChecked = searchRequestDraft.fastShipping != 0
-                cbFreeShipping.isChecked = searchRequestDraft.freeShipping != 0
-                cbBrandNew.isChecked = searchRequestDraft.brandNew != 0
-
-            } else {
-                showSecondhandFilters()
-
-                rgMarketplace.check(rbMarketplaceSecondhand.id)
-
-                for (i in sortOrdersSecondhand.indices) {
-                    if (sortOrdersSecondhand[i].key == searchRequestDraft.sortBy) {
-                        spSortBy.setSelection(i)
-                        break
-                    }
-                }
-
-                cbFastShipping.isChecked = searchRequestDraft.fastShipping != 0
-                cbFreeShipping.isChecked = searchRequestDraft.freeShipping != 0
-                cbBrandNew.isChecked = searchRequestDraft.brandNew != 0
-            }
+    private fun updateFilters() {
+        if (viewModel.isMall(viewModel.searchRequestDraft)) {
+            showMallFilters()
+            setMallFilters()
+        } else {
+            showSecondhandFilters()
+            setSecondhandFilters()
         }
     }
 
@@ -109,17 +81,52 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         cbBrandNew.visibility = View.INVISIBLE
     }
 
-
-    private fun setupMarketplaceBehaviour() {
-        rgMarketplace.setOnCheckedChangeListener { _, id ->
-            viewModel.apply {
-                setDraftMarketplace(id == rbMarketplaceMall.id)
+    private fun setMallFilters() {
+        viewModel.apply {
+            rgMarketplace.check(rbMarketplaceMall.id)
+            for (i in sortOrdersMall.indices) {
+                if (sortOrdersMall[i].key == searchRequestDraft.sortBy) {
+                    spSortBy.setSelection(i)
+                    break
+                }
             }
-            updateVisibleFilters()
+            cbFastShipping.isChecked = searchRequestDraft.fastShipping != 0
+            cbFreeShipping.isChecked = searchRequestDraft.freeShipping != 0
+            cbBrandNew.isChecked = searchRequestDraft.brandNew != 0
         }
     }
 
-    private fun setupSortByBehaviour() {
+    private fun setSecondhandFilters() {
+        viewModel.apply {
+            rgMarketplace.check(rbMarketplaceSecondhand.id)
+            for (i in sortOrdersSecondhand.indices) {
+                if (sortOrdersSecondhand[i].key == searchRequestDraft.sortBy) {
+                    spSortBy.setSelection(i)
+                    break
+                }
+            }
+            cbFastShipping.isChecked = searchRequestDraft.fastShipping != 0
+            cbFreeShipping.isChecked = searchRequestDraft.freeShipping != 0
+            cbBrandNew.isChecked = searchRequestDraft.brandNew != 0
+        }
+    }
+
+
+    private fun setListeners() {
+        setMarketplaceRgListener()
+        setSortBySpListener()
+        setApplyFiltersBtnListener()
+    }
+
+    private fun setMarketplaceRgListener() {
+        rgMarketplace.setOnCheckedChangeListener { _, id ->
+            viewModel.setDraftMarketplace(id == rbMarketplaceMall.id)
+            // Each marketplace has its own set of filters so we must also reconfigure the UI
+            updateFilters()
+        }
+    }
+
+    private fun setSortBySpListener() {
         spSortBy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 Log.e(TAG, "spSortBy")
@@ -142,7 +149,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         }
     }
 
-    private fun setupApplyFiltersBehaviour() {
+    private fun setApplyFiltersBtnListener() {
         btnApplyFilters.setOnClickListener {
             // Check any views that do not automatically update the search request
             viewModel.setDraftBinaryFilters(
