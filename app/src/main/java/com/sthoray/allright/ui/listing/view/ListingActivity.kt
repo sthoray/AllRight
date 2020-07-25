@@ -2,7 +2,10 @@ package com.sthoray.allright.ui.listing.view
 
 import android.os.Bundle
 import android.widget.ImageView
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sthoray.allright.R
@@ -16,6 +19,8 @@ import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.search.view.SearchActivity
 import com.synnapps.carouselview.CarouselView
 import com.synnapps.carouselview.ImageListener
+import com.sthoray.allright.utils.Resource
+import kotlinx.android.synthetic.main.activity_listing.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -45,7 +50,7 @@ class ListingActivity : AppCompatActivity() {
             )
 
         )
-        setupUI()
+        setupObservers()
 
         val carouselView = findViewById(R.id.carouselView) as CarouselView
         carouselView.setPageCount(sampleImages.size)
@@ -59,8 +64,31 @@ class ListingActivity : AppCompatActivity() {
             .get(ListingViewModel::class.java)
     }
 
-    private fun setupUI() {
-        listingAdapter = ListingAdapter()
+    private fun setupObservers() {
+        viewModel.listing.observe(this, Observer { response ->
+            when(response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { listing ->
+                        textViewTitle.text = listing.productName
+                        textViewDescription.text = listing.listingDescription
+                    }
+                }
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message.let { message ->
+                        Log.e(TAG, "An error occurred $message")
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+    private fun showProgressBar() {
+        progBarListing.visibility = View.VISIBLE
     }
 
     var imageListener: ImageListener = object : ImageListener {
@@ -70,4 +98,7 @@ class ListingActivity : AppCompatActivity() {
         }
     }
 
+    private fun hideProgressBar() {
+        progBarListing.visibility = View.GONE
+    }
 }
