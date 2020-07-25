@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.listing.view.ListingActivity">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.listing.view.ListingActivity"
+    tools:showIn="@layout/activity_listing">
+
 
 
     <TextView
@@ -57,6 +60,19 @@
 
         tools:ignore="ContentDescription"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <com.synnapps.carouselview.CarouselView
+        android:id="@+id/carouselView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:fillColor="#FFFFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:pageColor="#00000000"
+        app:radius="6dp"
+        app:slideInterval="3000"
+        app:strokeColor="#FF777777"
+        app:strokeWidth="1dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
