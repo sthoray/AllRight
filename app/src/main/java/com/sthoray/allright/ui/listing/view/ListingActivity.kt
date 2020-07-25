@@ -1,7 +1,10 @@
 package com.sthoray.allright.ui.listing.view
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sthoray.allright.R
@@ -13,13 +16,14 @@ import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.main.adapter.MainAdapter
 import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.search.view.SearchActivity
+import com.sthoray.allright.utils.Resource
+import kotlinx.android.synthetic.main.activity_listing.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class ListingActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ListingViewModel
-    private lateinit var listingAdapter: ListingAdapter
     private val TAG = "ListingActivity"
 
 
@@ -32,9 +36,8 @@ class ListingActivity : AppCompatActivity() {
                 SearchActivity.LISTING_ID_KEY,
                 0
             )
-
         )
-        setupUI()
+        setupObservers()
     }
 
     private fun setupViewModel() {
@@ -44,8 +47,34 @@ class ListingActivity : AppCompatActivity() {
             .get(ListingViewModel::class.java)
     }
 
-    private fun setupUI() {
-        listingAdapter = ListingAdapter()
+    private fun setupObservers() {
+        viewModel.listing.observe(this, Observer { response ->
+            when(response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { listing ->
+                        textViewTitle.text = listing.productName
+                        textViewDescription.text = listing.listingDescription
+                    }
+                }
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message.let { message ->
+                        Log.e(TAG, "An error occurred $message")
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
     }
 
+    private fun showProgressBar() {
+        progBarListing.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progBarListing.visibility = View.GONE
+    }
 }
