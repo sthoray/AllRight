@@ -28,9 +28,6 @@
             android:name=".ui.search.view.SearchActivity"
             android:label="@string/search_label"
             android:launchMode="singleTop">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.view.MainActivity" />
         </activity>
     </application>
 

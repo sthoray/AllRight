@@ -9,6 +9,16 @@
         android:id="@+id/navigation_results"
         android:name="com.sthoray.allright.ui.search.view.ResultsFragment"
         android:label="@string/title_results"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_navigation_results_to_navigation_filters"
+            app:destination="@id/navigation_filters" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_filters"
+        android:name="com.sthoray.allright.ui.search.view.FiltersFragment"
+        android:label="@string/title_filters"
+        tools:layout="@layout/fragment_filters" />
 
 </navigation>

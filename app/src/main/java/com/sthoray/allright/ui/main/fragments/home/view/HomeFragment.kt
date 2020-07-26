@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.sthoray.allright.R
 import com.sthoray.allright.ui.main.fragments.home.adapter.HomeAdapter
 import com.sthoray.allright.ui.main.view.MainActivity
+import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Resource
@@ -47,15 +48,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         mainAdapter = HomeAdapter()
         recyclerViewFeaturedCategories.apply {
             adapter = mainAdapter
-            layoutManager = GridLayoutManager(context, 3)
+            layoutManager = GridLayoutManager(activity, 3)
         }
     }
 
     private fun setOnClickListeners() {
-        mainAdapter.setOnItemClickListener {
-            val intent = Intent(context, SearchActivity::class.java)
-            intent.putExtra(MainActivity.CATEGORY_ID_KEY, it.id)
-            this.startActivity(intent)
+        mainAdapter.setOnItemClickListener { category ->
+            Intent(activity, SearchActivity::class.java).also {
+                it.putExtra(CATEGORY_ID_KEY, category.id)
+                startActivity(it)
+            }
         }
     }
 

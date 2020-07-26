@@ -9,6 +9,7 @@ import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,9 +40,11 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as SearchActivity).viewModel
         setupRecyclerView()
-        setOnClickListeners()
+        setupFab()
+        setListingOnClickListeners()
         setupObservers()
     }
+
 
     private fun setupRecyclerView() {
         resultsAdapter = ResultsAdapter()
@@ -58,7 +61,14 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         }
     }
 
-    private fun setOnClickListeners() {
+    private fun setupFab() {
+        extendedFabFilter.setOnClickListener {
+            viewModel.searchRequestDraft = viewModel.searchRequest.copy()
+            findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
+        }
+    }
+
+    private fun setListingOnClickListeners() {
         resultsAdapter.setOnItemClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(Constants.BASE_PRODUCT_URL + it.id)
@@ -95,10 +105,12 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         })
     }
 
+
     // Pagination
     private var isLoading = false
     private var isLastPage = false
     private var isScrolling = false
+
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -118,6 +130,13 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
             if (shouldPaginate) {
                 viewModel.searchListings()
                 isScrolling = false
+            }
+
+            val sensitivity = 13 // This may not be right yet
+            if (dy < -sensitivity) {
+                extendedFabFilter.extend()
+            } else if (dy > sensitivity) {
+                extendedFabFilter.shrink()
             }
         }
 

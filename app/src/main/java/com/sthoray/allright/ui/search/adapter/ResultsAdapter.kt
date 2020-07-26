@@ -11,9 +11,7 @@ import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Listing
 import kotlinx.android.synthetic.main.item_layout_search.view.*
 
-/**
- * Adapter for adapting listings into a RecyclerView.
- */
+/** Adapter for adapting listings into a RecyclerView. */
 class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() {
 
 

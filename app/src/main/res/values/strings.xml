@@ -2,6 +2,7 @@
     <string name="app_name">AllRight</string>
     <string name="search_label">Search</string>
     <string name="coming_soon_text">Coming soon</string>
+    <string name="extended_fab_filter_content">FILTER</string>
 
     <!-- Format strings-->
     <string name="format_price">$%.2f</string>
@@ -13,4 +14,33 @@
 
     <!-- Search fragments -->
     <string name="title_results">Search Results</string>
+    <string name="title_filters">Search Filters</string>
+
+    <!-- Filters -->
+    <string name="btn_title_apply_filters">Apply Filters</string>
+
+    <string name="marketplace_title">Marketplace:</string>
+    <string name="marketplace_mall">Mall</string>
+    <string name="marketplace_secondhand">Secondhand</string>
+
+    <string name="sort_by_title">Sort:</string>
+    <string name="sort_by_best">Best Match</string>
+    <string name="sort_by_popular">Popularity</string>
+    <string name="sort_by_trending">Trending</string>
+    <string name="sort_by_price_shipped_lowest">Price + Shipping: Lowest first</string>
+    <string name="sort_by_price_lowest">Price: Lowest first</string>
+    <string name="sort_by_price_highest">Price: Highest first</string>
+    <string name="sort_by_buy_now_lowest">Buy Now: Lowest first</string>
+    <string name="sort_by_buy_now_highest">Buy Now: Highest first</string>
+    <string name="sort_by_new_products">New Arrivals</string>
+    <string name="sort_by_new_listings">New Listings</string>
+    <string name="sort_by_sale">Sale Value</string>
+    <string name="sort_by_alphabetical">A-Z</string>
+    <string name="sort_by_closing_soon">Closing soon</string>
+    <string name="sort_by_most_bids">Most bids</string>
+
+    <string name="free_shipping_title">Free Shipping</string>
+    <string name="fast_shipping_title">Fast Shipping</string> <!-- mall only -->
+    <string name="brand_new_title">Brand New Only</string> <!-- mall only -->
+
 </resources>
