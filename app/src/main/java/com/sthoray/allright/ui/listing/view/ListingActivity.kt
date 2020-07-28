@@ -43,7 +43,7 @@ class ListingActivity : AppCompatActivity() {
 
     private fun setupViewModel() {
         val appRepository = AppRepository(SearchHistoryDatabase(this))
-        val viewModelProviderFactory = ViewModelProviderFactory(appRepository)
+        val viewModelProviderFactory = ViewModelProviderFactory(application, appRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(ListingViewModel::class.java)
     }

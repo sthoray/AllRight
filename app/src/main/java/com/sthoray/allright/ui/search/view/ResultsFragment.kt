@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AbsListView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -65,9 +66,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private fun setupFab() {
         extendedFabFilter.setOnClickListener {
             viewModel.searchRequestDraft = viewModel.searchRequest.copy()
-            findNavController().navigate(
-                R.id.action_navigation_results_to_navigation_filters
-            )
+            findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
         }
     }
 
@@ -96,6 +95,10 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                     hideProgressBar()
                     response.message?.let { message ->
                         Log.e(TAG, "An error occurred: $message")
+                        Toast.makeText(
+                            activity, "An error occurred: $message",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
                 is Resource.Loading -> {
@@ -130,6 +133,13 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
             if (shouldPaginate) {
                 viewModel.searchListings()
                 isScrolling = false
+            }
+
+            val sensitivity = 13 // This may not be right yet
+            if (dy < -sensitivity) {
+                extendedFabFilter.extend()
+            } else if (dy > sensitivity) {
+                extendedFabFilter.shrink()
             }
         }
 

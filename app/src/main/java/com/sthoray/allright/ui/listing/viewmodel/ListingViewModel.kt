@@ -1,5 +1,6 @@
 package com.sthoray.allright.ui.listing.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,10 +15,9 @@ import retrofit2.Response
  *
  * Uses LiveData to expose observables when interacting with the Model. These
  * can be observed by the View.
- *
- * @property appRepository the data repository to interact with
  */
 class ListingViewModel(
+    app: Application,
     private val appRepository: AppRepository
 ) : ViewModel() {
 

@@ -1,5 +1,6 @@
 package com.sthoray.allright.ui.base
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.data.repository.AppRepository
@@ -9,10 +10,9 @@ import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 
 /**
  * Factory class to define how the Main ViewModel should be created.
- *
- * @property appRepository the repository to access
  */
 class ViewModelProviderFactory(
+    private val app: Application,
     private val appRepository: AppRepository
 ) : ViewModelProvider.Factory {
 
@@ -28,15 +28,15 @@ class ViewModelProviderFactory(
         when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 @Suppress("UNCHECKED_CAST")
-                return MainViewModel(appRepository) as T
+                return MainViewModel(app, appRepository) as T
             }
             modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
                 @Suppress("UNCHECKED_CAST")
-                return SearchViewModel(appRepository) as T
+                return SearchViewModel(app, appRepository) as T
             }
             modelClass.isAssignableFrom(ListingViewModel::class.java) -> {
                 @Suppress("UNCHECKED_CAST")
-                return ListingViewModel(appRepository) as T
+                return ListingViewModel(app, appRepository) as T
             }
         }
         throw IllegalArgumentException("Unknown class name")
