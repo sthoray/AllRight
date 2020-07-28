@@ -54,8 +54,8 @@ class ListingActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { listing ->
-                        textViewTitle.text = listing.productName
-                        textViewDescription.text = listing.description
+                        tvListingName.text = listing.productName
+                        tvListingDescription.text = listing.description
                         imageUrls = getImageUrls(listing.images)
                     }
                 }
@@ -81,10 +81,18 @@ class ListingActivity : AppCompatActivity() {
     }
 
     private fun showProgressBar() {
-        progBarListing.visibility = View.VISIBLE
+        pbListingDetails.visibility = View.VISIBLE
+        vpProductImages.visibility = View.GONE
+        tvListingName.visibility = View.GONE
+        tvListingSubtitle.visibility = View.GONE
+        tvListingDescription.visibility = View.GONE
     }
 
     private fun hideProgressBar() {
-        progBarListing.visibility = View.GONE
+        pbListingDetails.visibility = View.GONE
+        vpProductImages.visibility = View.VISIBLE
+        tvListingName.visibility = View.VISIBLE
+        tvListingSubtitle.visibility = View.VISIBLE
+        tvListingDescription.visibility = View.VISIBLE
     }
 }
