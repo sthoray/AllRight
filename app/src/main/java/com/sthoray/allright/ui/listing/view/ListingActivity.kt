@@ -1,5 +1,7 @@
 package com.sthoray.allright.ui.listing.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,6 +16,7 @@ import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.adapter.ViewPagerAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
+import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_listing.*
 
@@ -24,24 +27,18 @@ class ListingActivity : AppCompatActivity() {
     private val TAG = "ListingActivity"
     private lateinit var viewModel: ListingViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
-    private lateinit var imageUrls: List<String>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listing)
         setupViewModel()
-        setupObservers()
 
         val listingId = intent.getIntExtra(LISTING_ID_KEY, 0)
         viewModel.getListing(listingId)
+        setVisitListingBtnListener(listingId)
 
-        // TODO: Open website
-        /*resultsAdapter.setOnItemClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(Constants.BASE_PRODUCT_URL + it.id)
-            this.startActivity(intent)
-        } */
+        setupObservers()
     }
 
     private fun setupViewModel() {
@@ -80,12 +77,21 @@ class ListingActivity : AppCompatActivity() {
         vpProductImages.adapter = viewPagerAdapter
     }
 
+    private fun setVisitListingBtnListener(listingId: Int) {
+        btnVisitListing.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("$BASE_PRODUCT_URL$listingId")
+            this.startActivity(intent)
+        }
+    }
+
     private fun showProgressBar() {
         pbListingDetails.visibility = View.VISIBLE
         vpProductImages.visibility = View.GONE
         tvListingName.visibility = View.GONE
         tvListingSubtitle.visibility = View.GONE
         tvListingDescription.visibility = View.GONE
+        btnVisitListing.visibility = View.GONE
     }
 
     private fun hideProgressBar() {
@@ -94,5 +100,6 @@ class ListingActivity : AppCompatActivity() {
         tvListingName.visibility = View.VISIBLE
         tvListingSubtitle.visibility = View.VISIBLE
         tvListingDescription.visibility = View.VISIBLE
+        btnVisitListing.visibility = View.VISIBLE
     }
 }

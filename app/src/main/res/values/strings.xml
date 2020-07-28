@@ -41,6 +41,9 @@
     <string name="sort_by_most_bids">Most bids</string>
 
     <string name="free_shipping_title">Free Shipping</string>
-    <string name="fast_shipping_title">Fast Shipping</string> <!-- mall only -->
-    <string name="brand_new_title">Brand New Only</string> <!-- mall only -->
+    <string name="fast_shipping_title">Fast Shipping</string>
+    <string name="brand_new_title">Brand New Only</string>
+
+    <!-- Listing activity -->
+    <string name="btn_visit_listing">View Listing</string>
 </resources>
