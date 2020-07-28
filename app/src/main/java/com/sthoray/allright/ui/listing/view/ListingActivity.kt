@@ -26,11 +26,11 @@ class ListingActivity : AppCompatActivity() {
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var imageUrls: List<String>
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listing)
         setupViewModel()
-        setupViewPagerAdapter()
         setupObservers()
 
         val listingId = intent.getIntExtra(LISTING_ID_KEY, 0)
@@ -51,19 +51,6 @@ class ListingActivity : AppCompatActivity() {
             .get(ListingViewModel::class.java)
     }
 
-    private fun setupViewPagerAdapter() {
-        // List for testing local images
-        val images = listOf(
-            R.drawable.image_1,
-            R.drawable.image_2,
-            R.drawable.image_3,
-            R.drawable.image_4,
-            R.drawable.image_5
-        )
-        viewPagerAdapter = ViewPagerAdapter(images)
-        vpProductImages.adapter = viewPagerAdapter
-    }
-
     private fun setupObservers() {
         viewModel.listing.observe(this, Observer { response ->
             when (response) {
@@ -72,7 +59,7 @@ class ListingActivity : AppCompatActivity() {
                     response.data?.let { listing ->
                         tvListingName.text = listing.productName
                         tvListingDescription.text = listing.description
-                        imageUrls = getImageUrls(listing.images)
+                        setViewPagerAdapter(listing.images)
                     }
                 }
                 is Resource.Error -> {
@@ -88,12 +75,9 @@ class ListingActivity : AppCompatActivity() {
         })
     }
 
-    private fun getImageUrls(images: List<Image>): List<String> {
-        val imageList = mutableListOf<String>()
-        for (image in images) {
-            imageList.add(image.largeUrl)
-        }
-        return imageList
+    private fun setViewPagerAdapter(images: List<Image>) {
+        viewPagerAdapter = ViewPagerAdapter(images)
+        vpProductImages.adapter = viewPagerAdapter
     }
 
     private fun showProgressBar() {

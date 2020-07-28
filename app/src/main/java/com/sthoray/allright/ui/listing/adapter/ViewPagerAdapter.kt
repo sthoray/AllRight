@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.sthoray.allright.R
+import com.sthoray.allright.data.model.listing.Image
 import kotlinx.android.synthetic.main.item_view_pager_listing_image.view.*
 
 /** Adapter for images in the listing activity. */
 class ViewPagerAdapter(
-    private val images: List<Int>
+    private val images: List<Image>
 ) : RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
 
     /** ViewHolder to represent the type for single item in the view pager. */
@@ -48,7 +50,7 @@ class ViewPagerAdapter(
      * @param position The position of the item within the adapter's data set.
      */
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
-        val image = images[position]
-        holder.itemView.ivListingImage.setImageResource(image)
+        val imageUrl = images[position].largeUrl
+        holder.itemView.ivListingImage.load(imageUrl)
     }
 }
