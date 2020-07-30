@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayoutMediator
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Image
@@ -56,7 +57,7 @@ class ListingActivity : AppCompatActivity() {
                     response.data?.let { listing ->
                         tvListingName.text = listing.productName
                         tvListingDescription.text = listing.description
-                        setViewPagerAdapter(listing.images)
+                        setViewPager(listing.images)
                     }
                 }
                 is Resource.Error -> {
@@ -72,9 +73,13 @@ class ListingActivity : AppCompatActivity() {
         })
     }
 
-    private fun setViewPagerAdapter(images: List<Image>) {
+    private fun setViewPager(images: List<Image>) {
         viewPagerAdapter = ViewPagerAdapter(images)
         vpProductImages.adapter = viewPagerAdapter
+
+        TabLayoutMediator(tlProductImagesIndicator, vpProductImages) { tab, position ->
+            tab.text = "${position + 1}"
+        }.attach()
     }
 
     private fun setVisitListingBtnListener(listingId: Int) {
