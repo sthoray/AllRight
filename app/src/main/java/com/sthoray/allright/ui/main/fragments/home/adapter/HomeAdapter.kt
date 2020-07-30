@@ -76,9 +76,8 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.FeatureCategoryViewHolder>(
     override fun onBindViewHolder(holder: FeatureCategoryViewHolder, position: Int) {
         val category = differ.currentList[position]
         holder.itemView.apply {
-            textViewCategoryName.text = category.name
-            textViewListingCount.text = category.listingCount.toString()
-            imageViewCategoryImage.load(BASE_URL + category.imagePath)
+            tvFeaturedCategoryName.text = category.name
+            ivFeaturedCategory.load(BASE_URL + category.imagePath)
 
             setOnClickListener {
                 onItemClickListener?.let { it(category) }
