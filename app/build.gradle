@@ -99,4 +99,7 @@ dependencies {
 
     // Coil
     implementation 'io.coil-kt:coil:0.11.0'
+
+    // View Pager Dots Indicator
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
 }

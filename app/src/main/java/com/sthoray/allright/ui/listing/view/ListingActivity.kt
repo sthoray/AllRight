@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.tabs.TabLayoutMediator
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Image
@@ -76,10 +75,7 @@ class ListingActivity : AppCompatActivity() {
     private fun setViewPager(images: List<Image>) {
         viewPagerAdapter = ViewPagerAdapter(images)
         vpProductImages.adapter = viewPagerAdapter
-
-        TabLayoutMediator(tlProductImagesIndicator, vpProductImages) { tab, position ->
-            tab.text = "${position + 1}"
-        }.attach()
+        wdiProductImages.setViewPager2(vpProductImages)
     }
 
     private fun setVisitListingBtnListener(listingId: Int) {
@@ -93,6 +89,7 @@ class ListingActivity : AppCompatActivity() {
     private fun showProgressBar() {
         pbListingDetails.visibility = View.VISIBLE
         vpProductImages.visibility = View.GONE
+        wdiProductImages.visibility = View.GONE
         tvListingName.visibility = View.GONE
         tvListingSubtitle.visibility = View.GONE
         tvListingDescription.visibility = View.GONE
@@ -102,6 +99,7 @@ class ListingActivity : AppCompatActivity() {
     private fun hideProgressBar() {
         pbListingDetails.visibility = View.GONE
         vpProductImages.visibility = View.VISIBLE
+        wdiProductImages.visibility = View.VISIBLE
         tvListingName.visibility = View.VISIBLE
         tvListingSubtitle.visibility = View.VISIBLE
         tvListingDescription.visibility = View.VISIBLE
