@@ -54,7 +54,7 @@ class ListingActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { listing ->
-                        tvListingName.text = listing.productName
+                        tvListingName.text = listing.name
                         tvListingDescription.text = listing.description
                         setViewPager(listing.images)
                     }
@@ -74,8 +74,8 @@ class ListingActivity : AppCompatActivity() {
 
     private fun setViewPager(images: List<Image>) {
         viewPagerAdapter = ViewPagerAdapter(images)
-        vpProductImages.adapter = viewPagerAdapter
-        wdiProductImages.setViewPager2(vpProductImages)
+        vpListingImages.adapter = viewPagerAdapter
+        wdiListingImages.setViewPager2(vpListingImages)
     }
 
     private fun setVisitListingBtnListener(listingId: Int) {
@@ -88,8 +88,8 @@ class ListingActivity : AppCompatActivity() {
 
     private fun showProgressBar() {
         pbListingDetails.visibility = View.VISIBLE
-        vpProductImages.visibility = View.GONE
-        wdiProductImages.visibility = View.GONE
+        vpListingImages.visibility = View.GONE
+        wdiListingImages.visibility = View.GONE
         tvListingName.visibility = View.GONE
         tvListingSubtitle.visibility = View.GONE
         tvListingDescription.visibility = View.GONE
@@ -98,8 +98,8 @@ class ListingActivity : AppCompatActivity() {
 
     private fun hideProgressBar() {
         pbListingDetails.visibility = View.GONE
-        vpProductImages.visibility = View.VISIBLE
-        wdiProductImages.visibility = View.VISIBLE
+        vpListingImages.visibility = View.VISIBLE
+        wdiListingImages.visibility = View.VISIBLE
         tvListingName.visibility = View.VISIBLE
         tvListingSubtitle.visibility = View.VISIBLE
         tvListingDescription.visibility = View.VISIBLE

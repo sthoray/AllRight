@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageViewProductImage"
+        android:id="@+id/ivSearchImage"
         android:layout_width="140dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -20,40 +20,40 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textViewProductName"
+        android:id="@+id/tvSearchName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@android:string/unknownName"
-        app:layout_constraintStart_toEndOf="@+id/imageViewProductImage"
-        app:layout_constraintTop_toTopOf="@+id/imageViewProductImage"
+        app:layout_constraintStart_toEndOf="@+id/ivSearchImage"
+        app:layout_constraintTop_toTopOf="@+id/ivSearchImage"
         tools:text="Product Name" />
 
     <TextView
-        android:id="@+id/textViewSubtitle"
+        android:id="@+id/tvSearchSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@android:string/unknownName"
-        app:layout_constraintStart_toStartOf="@+id/textViewProductName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewProductName"
+        app:layout_constraintStart_toStartOf="@+id/tvSearchName"
+        app:layout_constraintTop_toBottomOf="@+id/tvSearchName"
         tools:text="Subtitle" />
 
     <TextView
-        android:id="@+id/textViewPrice0"
+        android:id="@+id/tvSearchPrice0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@android:string/unknownName"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewProductImage"
-        app:layout_constraintStart_toStartOf="@+id/textViewSubtitle"
+        app:layout_constraintBottom_toBottomOf="@+id/ivSearchImage"
+        app:layout_constraintStart_toStartOf="@+id/tvSearchSubtitle"
         tools:text="Price 0" />
 
     <TextView
-        android:id="@+id/textViewPrice1"
+        android:id="@+id/tvSearchPrice1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@android:string/unknownName"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewPrice0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSearchPrice0"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Price 1" />
 
