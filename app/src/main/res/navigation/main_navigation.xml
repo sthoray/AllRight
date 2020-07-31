@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.sthoray.allright.ui.main.fragments.home.view.HomeFragment"
+        android:name="com.sthoray.allright.ui.main.view.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_browse"
-        android:name="com.sthoray.allright.ui.main.fragments.browse.view.BrowseFragment"
+        android:name="com.sthoray.allright.ui.main.view.BrowseFragment"
         android:label="@string/title_browse"
         tools:layout="@layout/fragment_browse" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.sthoray.allright.ui.main.fragments.profile.view.ProfileFragment"
+        android:name="com.sthoray.allright.ui.main.view.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
