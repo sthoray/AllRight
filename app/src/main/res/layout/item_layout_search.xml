@@ -5,56 +5,87 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivSearchImage"
-        android:layout_width="140dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="h,16:9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/tvSearchName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@android:string/unknownName"
-        app:layout_constraintStart_toEndOf="@+id/ivSearchImage"
-        app:layout_constraintTop_toTopOf="@+id/ivSearchImage"
-        tools:text="Product Name" />
-
-    <TextView
-        android:id="@+id/tvSearchSubtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@android:string/unknownName"
-        app:layout_constraintStart_toStartOf="@+id/tvSearchName"
-        app:layout_constraintTop_toBottomOf="@+id/tvSearchName"
-        tools:text="Subtitle" />
-
-    <TextView
-        android:id="@+id/tvSearchPrice0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@android:string/unknownName"
-        app:layout_constraintBottom_toBottomOf="@+id/ivSearchImage"
-        app:layout_constraintStart_toStartOf="@+id/tvSearchSubtitle"
-        tools:text="Price 0" />
-
-    <TextView
-        android:id="@+id/tvSearchPrice1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="@android:string/unknownName"
-        app:layout_constraintBottom_toBottomOf="@+id/tvSearchPrice0"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Price 1" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/ivSearchImage"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:scaleType="center"
+                app:layout_constraintDimensionRatio="w,1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvSearchName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="0dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@android:string/unknownName"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivSearchImage"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Name" />
+
+            <TextView
+                android:id="@+id/tvSearchSubtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="0dp"
+                android:singleLine="true"
+                android:text="@android:string/unknownName"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="?android:attr/textColorSecondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivSearchImage"
+                app:layout_constraintTop_toBottomOf="@+id/tvSearchName"
+                tools:text="Subtitle" />
+
+            <TextView
+                android:id="@+id/tvSearchPrice0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@android:string/unknownName"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                app:layout_constraintBottom_toBottomOf="@+id/ivSearchImage"
+                app:layout_constraintStart_toEndOf="@+id/ivSearchImage"
+                tools:text="Price 0" />
+
+            <TextView
+                android:id="@+id/tvSearchPrice1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:text="@android:string/unknownName"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvSearchPrice0"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Price 1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

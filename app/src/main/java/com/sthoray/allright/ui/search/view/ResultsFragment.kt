@@ -1,7 +1,6 @@
 package com.sthoray.allright.ui.search.view
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -18,7 +17,6 @@ import com.sthoray.allright.ui.listing.view.ListingActivity
 import com.sthoray.allright.ui.search.adapter.ResultsAdapter
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
-import com.sthoray.allright.utils.Constants
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_results.*
 
@@ -53,12 +51,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         recyclerViewListings.apply {
             adapter = resultsAdapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    (layoutManager as LinearLayoutManager).orientation
-                )
-            )
             addOnScrollListener(this@ResultsFragment.scrollListener)
         }
     }
