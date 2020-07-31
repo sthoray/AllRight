@@ -44,7 +44,9 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/extended_fab_filter_content"
         android:text="@string/extended_fab_filter_content"
+        android:textColor="@color/primary_orange_text"
         app:icon="@drawable/ic_filter_24"
+        app:iconTint="@color/primary_orange_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="RtlHardcoded" />

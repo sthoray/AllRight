@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/primary_orange</item>
         <item name="colorPrimaryVariant">@color/primary_orange_dark</item>
         <item name="colorOnPrimary">@color/primary_orange_text</item>
+        <item name="colorSecondary">@color/primary_orange</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
 
