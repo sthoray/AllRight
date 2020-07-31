@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
@@ -48,7 +47,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private fun setupRecyclerView() {
         resultsAdapter = ResultsAdapter()
-        recyclerViewListings.apply {
+        rvResultsListings.apply {
             adapter = resultsAdapter
             layoutManager = LinearLayoutManager(context)
             addOnScrollListener(this@ResultsFragment.scrollListener)
@@ -144,12 +143,19 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     }
 
     private fun showProgressBar() {
-        progressBarListingsPagination.visibility = View.VISIBLE
+        if (resultsAdapter.itemCount == 0) {
+            pbResultsListingsLoading.visibility = View.VISIBLE
+            pbResultsListingsPagination.visibility = View.GONE
+        } else {
+            pbResultsListingsLoading.visibility = View.GONE
+            pbResultsListingsPagination.visibility = View.VISIBLE
+        }
         isLoading = true
     }
 
     private fun hideProgressBar() {
-        progressBarListingsPagination.visibility = View.GONE
+        pbResultsListingsLoading.visibility = View.GONE
+        pbResultsListingsPagination.visibility = View.GONE
         isLoading = false
     }
 }
