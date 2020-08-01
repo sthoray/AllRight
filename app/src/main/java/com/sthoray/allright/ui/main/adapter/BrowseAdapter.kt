@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.main.fragments.browse.adapter
+package com.sthoray.allright.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Category
-
+import com.sthoray.allright.utils.AppIcon
 import kotlinx.android.synthetic.main.item_layout_top_level_category.view.*
 
 /** Adapter for adapting top level categories into a RecyclerView. */
@@ -73,10 +73,12 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHol
     override fun onBindViewHolder(holder: TopLevelCategoryViewHolder, position: Int) {
         val category = differ.currentList[position]
         holder.itemView.apply {
-            textViewCategoryName.text = category.name
-            // TODO Use actual icons instead of the string
-            textViewIcon.text = category.icon
-
+            tvCategoryName.text = category.name
+            for (icon in enumValues<AppIcon>()) {
+                if (icon.key == category.appIcon) {
+                    ivCategoryIcon.setImageResource(icon.resourceId)
+                }
+            }
             setOnClickListener {
                 onItemClickListener?.let { it(category) }
             }
@@ -86,10 +88,10 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHol
     private var onItemClickListener: ((Category) -> Unit)? = null
 
     /**
-    * Set the on click listener for an itemView.
-    *
-    * @param listener the onclick listener lambda function
-    */
+     * Set the on click listener for an itemView.
+     *
+     * @param listener the onclick listener lambda function
+     */
     fun setOnItemClickListener(listener: (Category) -> Unit) {
         onItemClickListener = listener
     }

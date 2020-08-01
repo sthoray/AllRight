@@ -17,8 +17,8 @@ class AppRepository(
     suspend fun getFeatureCategories() =
         RetrofitInstance.api.getFeatureCategories()
 
-    /** Get the top level categories. */
-    suspend fun getTopLevelCategories() = RetrofitInstance.api.getTopLevelCategories()
+    /** Get the second tier categories. */
+    suspend fun getSecondTierCategories() = RetrofitInstance.api.getSecondTierCategories()
 
     /**
      * Search for listings.

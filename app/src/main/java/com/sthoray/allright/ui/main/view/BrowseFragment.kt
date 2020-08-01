@@ -1,38 +1,38 @@
-package com.sthoray.allright.ui.main.fragments.home.view
+package com.sthoray.allright.ui.main.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
-import com.sthoray.allright.ui.main.fragments.home.adapter.HomeAdapter
-import com.sthoray.allright.ui.main.view.MainActivity
+import com.sthoray.allright.ui.main.adapter.BrowseAdapter
 import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Resource
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_browse.*
 
 /**
- * Fragment for the home page.
+ * Fragment for exploring AllGoods through the top level categories.
  *
- * Contains featured categories. More content will be added to this
- * fragment (e.g. recent searches) in the future.
+ * Displays a list of top level categories. Clicking on one of the
+ * categories will launch the search activity to refine the search
+ * query further.
  */
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class BrowseFragment : Fragment(R.layout.fragment_browse) {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var mainAdapter: HomeAdapter
-    private val TAG = "HomeFragment"
+    private lateinit var mainAdapter: BrowseAdapter
+    private val TAG = "BrowseFragment"
 
     /**
-     * Set up ViewModel, UI, and observers.
+     * Setup the ViewModel, UI and observers.
      *
-     * @param view The View returned by onCreateView.
+     * @param view The View returned by [.onCreateView].
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
@@ -45,10 +45,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setupRecyclerView() {
-        mainAdapter = HomeAdapter()
-        recyclerViewFeaturedCategories.apply {
+        mainAdapter = BrowseAdapter()
+        recyclerViewTopLevelCategories.apply {
             adapter = mainAdapter
-            layoutManager = GridLayoutManager(activity, 3)
+            layoutManager = LinearLayoutManager(activity)
+            addItemDecoration(
+                DividerItemDecoration(
+                    activity,
+                    (layoutManager as LinearLayoutManager).orientation
+                )
+            )
         }
     }
 
@@ -62,19 +68,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setupObservers() {
-        viewModel.featureCategories.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.topLevelCategories.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
-                    removeProgressBar()
-                    response.data?.let { featureCategoriesResponse ->
-                        val categories = featureCategoriesResponse.categories.values.toList()
-                        mainAdapter.differ.submitList(categories)
+                    hideProgressBar()
+                    response.data?.let { topLevelCategories ->
+                        mainAdapter.differ.submitList(topLevelCategories)
                     }
                 }
                 is Resource.Error -> {
-                    removeProgressBar()
+                    hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG).show()
                         Log.e(TAG, "An error occurred: $message")
                     }
                 }
@@ -86,10 +90,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun showProgressBar() {
-        progressBarFeaturedCategories.visibility = View.VISIBLE
+        progressBarTopLevelCategories.visibility = View.VISIBLE
     }
 
-    private fun removeProgressBar() {
-        progressBarFeaturedCategories.visibility = View.GONE
+    private fun hideProgressBar() {
+        progressBarTopLevelCategories.visibility = View.GONE
     }
 }

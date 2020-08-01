@@ -1,14 +1,16 @@
 package com.sthoray.allright.ui.listing.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 
 /**
  * View model for the listing activity
@@ -19,7 +21,7 @@ import retrofit2.Response
 class ListingViewModel(
     app: Application,
     private val appRepository: AppRepository
-) : ViewModel() {
+) : AndroidViewModel(app) {
 
     /** The listing to display. */
     val listing: MutableLiveData<Resource<Listing>> = MutableLiveData()
@@ -33,9 +35,24 @@ class ListingViewModel(
      * @param listingId the id of the listing to get
      */
     fun getListing(listingId: Int) = viewModelScope.launch {
+        safeGetListing(listingId)
+    }
+
+    private suspend fun safeGetListing(listingId: Int) {
         listing.postValue(Resource.Loading())
-        val response = appRepository.getListing(listingId)
-        listing.postValue(handleListingResponse(response))
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.getListing(listingId)
+                listing.postValue(handleListingResponse(response))
+            } else {
+                listing.postValue(Resource.Error("No internet connection"))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> listing.postValue(Resource.Error("Network Failure"))
+                else -> listing.postValue(Resource.Error("Conversion Error"))
+            }
+        }
     }
 
     private fun handleListingResponse(

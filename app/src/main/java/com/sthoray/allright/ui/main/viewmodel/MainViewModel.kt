@@ -34,15 +34,15 @@ class MainViewModel(
     /** Make network requests on initialisation. */
     init {
         getFeaturedCategories()
-        getTopLevelCategories()
+        getSecondTierCategories()
     }
 
     private fun getFeaturedCategories() = viewModelScope.launch {
         safeGetFeaturedCategoriesCall()
     }
 
-    private fun getTopLevelCategories() = viewModelScope.launch {
-        safeGetTopLevelCategoriesCall()
+    private fun getSecondTierCategories() = viewModelScope.launch {
+        safeGetSecondTierCategories()
     }
 
     private suspend fun safeGetFeaturedCategoriesCall() {
@@ -62,11 +62,11 @@ class MainViewModel(
         }
     }
 
-    private suspend fun safeGetTopLevelCategoriesCall() {
+    private suspend fun safeGetSecondTierCategories() {
         topLevelCategories.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
-                val response = appRepository.getTopLevelCategories()
+                val response = appRepository.getSecondTierCategories()
                 topLevelCategories.postValue(handleTopLevelCategoriesResponse(response))
             } else {
                 topLevelCategories.postValue(Resource.Error("No internet connection"))
