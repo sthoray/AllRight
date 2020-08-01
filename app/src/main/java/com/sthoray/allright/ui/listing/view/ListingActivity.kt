@@ -56,7 +56,7 @@ class ListingActivity : AppCompatActivity() {
                     response.data?.let { listing ->
                         tvListingName.text = listing.name
                         tvListingDescription.text = listing.description
-                        setViewPager(listing.images)
+                        listing.images?.let { setViewPager(it) }
                     }
                 }
                 is Resource.Error -> {
