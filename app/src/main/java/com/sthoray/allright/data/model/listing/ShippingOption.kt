@@ -5,10 +5,12 @@ package com.sthoray.allright.data.model.listing
  *
  * This model excludes some properties.
  *
+ * @property id The shipping option's ID.
  * @property description The shipping option's description.
  * @property cost The shipping option's cost.
  */
 data class ShippingOption(
-    val description: String,
-    val cost: Float
+    val id: Int?,
+    val description: String?,
+    val cost: Float?
 )

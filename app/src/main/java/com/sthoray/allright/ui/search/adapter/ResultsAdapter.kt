@@ -91,8 +91,8 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
                 context.getString(R.string.format_price),
                 listing.startPrice
             )
-            tvSearchPrice1.text = listing.shippingType.toString()
-            ivSearchImage.load(listing.mainImage.thumbUrl)
+            tvSearchPrice1.text = ""
+            ivSearchImage.load(listing.mainImage?.thumbUrl)
 
             setOnClickListener {
                 onItemClickListener?.let { it(listing) }
