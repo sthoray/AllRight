@@ -61,7 +61,10 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'org.mockito:mockito-android:3.4.6'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13',
+            'org.mockito:mockito-core:2.23.0',
+            'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0',
+            "org.jetbrains.kotlinx:kotlinx-coroutines-test:$KOTLIN_COROUTINES_VERSION"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
