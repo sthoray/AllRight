@@ -29,6 +29,14 @@
             android:label="@string/search_label"
             android:launchMode="singleTop">
         </activity>
+        <activity
+            android:name=".ui.listing.view.ListingActivity"
+            android:label="@string/listing_label"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.listing.view.ListingActivity" />
+        </activity>
     </application>
 
 </manifest>

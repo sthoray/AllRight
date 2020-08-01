@@ -19,7 +19,12 @@ import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
  */
 class SearchActivity : AppCompatActivity() {
 
+    companion object {
 
+        /** The key for a selected listingId. */
+        const val LISTING_ID_KEY = "LISTING_ID"
+    }
+    
     /**
      * Search activity's share view model.
      *

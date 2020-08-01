@@ -85,14 +85,14 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
         val listing = differ.currentList[position]
         holder.itemView.apply {
             // Mall mappings
-            textViewProductName.text = listing.productName
-            textViewSubtitle.text = listing.locationName
-            textViewPrice0.text = String.format(
+            tvSearchName.text = listing.name
+            tvSearchSubtitle.text = listing.locationName
+            tvSearchPrice0.text = String.format(
                 context.getString(R.string.format_price),
                 listing.startPrice
             )
-            textViewPrice1.text = listing.shippingType.toString()
-            imageViewProductImage.load(listing.mainImage.thumbUrl)
+            tvSearchPrice1.text = listing.shippingType.toString()
+            ivSearchImage.load(listing.mainImage.thumbUrl)
 
             setOnClickListener {
                 onItemClickListener?.let { it(listing) }

@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  * This model currently is missing many properties that may be required for the listing activity.
  *
  * @property id The listing id.
- * @property productName The listing name.
+ * @property name The listing name.
  * @property locationName The listing location. Likely the string concatenation of [pickupLocation]s
  * properties if [pickupLocation] is not null. In this case, a property value of null is mapped
  * to "undefined".
@@ -33,7 +33,7 @@ import com.google.gson.annotations.SerializedName
 data class Listing(
     val id: Int,
     @SerializedName("name")
-    val productName: String,
+    val name: String,
     @SerializedName("location_name")
     val locationName: String,
     @SerializedName("start_price")

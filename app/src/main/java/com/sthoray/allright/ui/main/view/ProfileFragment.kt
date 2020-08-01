@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.main.fragments.profile.view
+package com.sthoray.allright.ui.main.view
 
 import androidx.fragment.app.Fragment
 import com.sthoray.allright.R

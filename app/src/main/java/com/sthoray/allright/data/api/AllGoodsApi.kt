@@ -20,12 +20,12 @@ interface AllGoodsApi {
     suspend fun getFeatureCategories(): Response<FeatureCategoriesResponse>
 
     /**
-     * Get the top level categories.
+     * Get the second tier categories.
      *
      * @return A list of [Category]s.
      */
-    @GET("category/topLevel")
-    suspend fun getTopLevelCategories(): Response<List<Category>>
+    @GET("category/secondTier")
+    suspend fun getSecondTierCategories(): Response<List<Category>>
 
     /**
      * Search for listings.

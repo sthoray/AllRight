@@ -1,7 +1,6 @@
 package com.sthoray.allright.ui.search.view
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,13 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
+import com.sthoray.allright.ui.listing.view.ListingActivity
 import com.sthoray.allright.ui.search.adapter.ResultsAdapter
+import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
-import com.sthoray.allright.utils.Constants
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_results.*
 
@@ -48,15 +47,9 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private fun setupRecyclerView() {
         resultsAdapter = ResultsAdapter()
-        recyclerViewListings.apply {
+        rvResultsListings.apply {
             adapter = resultsAdapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    (layoutManager as LinearLayoutManager).orientation
-                )
-            )
             addOnScrollListener(this@ResultsFragment.scrollListener)
         }
     }
@@ -69,10 +62,11 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     }
 
     private fun setListingOnClickListeners() {
-        resultsAdapter.setOnItemClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(Constants.BASE_PRODUCT_URL + it.id)
-            this.startActivity(intent)
+        resultsAdapter.setOnItemClickListener { listing ->
+            Intent(activity, ListingActivity::class.java).also {
+                it.putExtra(LISTING_ID_KEY, listing.id)
+                startActivity(it)
+            }
         }
     }
 
@@ -149,12 +143,19 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     }
 
     private fun showProgressBar() {
-        progressBarListingsPagination.visibility = View.VISIBLE
+        if (resultsAdapter.itemCount == 0) {
+            pbResultsListingsLoading.visibility = View.VISIBLE
+            pbResultsListingsPagination.visibility = View.GONE
+        } else {
+            pbResultsListingsLoading.visibility = View.GONE
+            pbResultsListingsPagination.visibility = View.VISIBLE
+        }
         isLoading = true
     }
 
     private fun hideProgressBar() {
-        progressBarListingsPagination.visibility = View.GONE
+        pbResultsListingsLoading.visibility = View.GONE
+        pbResultsListingsPagination.visibility = View.GONE
         isLoading = false
     }
 }
