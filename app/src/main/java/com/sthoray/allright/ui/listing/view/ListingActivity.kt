@@ -56,6 +56,20 @@ class ListingActivity : AppCompatActivity() {
                     response.data?.let { listing ->
                         tvListingName.text = listing.name
                         tvListingDescription.text = listing.description
+                        tvListingLocation.text = listing.locationName
+                        tvListingStartPrice.text = String.format(
+                            getString(R.string.format_price),
+                            listing.startPrice
+                        )
+                        if (listing.currentPrice != null) {
+                            tvListingCurrentPrice.text = String.format(
+                                getString(R.string.format_price),
+                                listing.currentPrice
+                            )
+                        } else{
+                            tvListingCurrentPrice.visibility = View.GONE
+                            tvListingCurrentPriceTitle.visibility = View.GONE
+                        }
                         listing.images?.let { setViewPager(it) }
                     }
                 }
@@ -91,9 +105,12 @@ class ListingActivity : AppCompatActivity() {
         vpListingImages.visibility = View.GONE
         wdiListingImages.visibility = View.GONE
         tvListingName.visibility = View.GONE
-        tvListingSubtitle.visibility = View.GONE
+        tvListingLocation.visibility = View.GONE
         tvListingDescription.visibility = View.GONE
         btnVisitListing.visibility = View.GONE
+        tvListingCurrentPrice.visibility = View.GONE
+        tvListingCurrentPriceTitle.visibility = View.GONE
+
     }
 
     private fun hideProgressBar() {
@@ -101,8 +118,10 @@ class ListingActivity : AppCompatActivity() {
         vpListingImages.visibility = View.VISIBLE
         wdiListingImages.visibility = View.VISIBLE
         tvListingName.visibility = View.VISIBLE
-        tvListingSubtitle.visibility = View.VISIBLE
+        tvListingLocation.visibility = View.VISIBLE
         tvListingDescription.visibility = View.VISIBLE
         btnVisitListing.visibility = View.VISIBLE
+        tvListingCurrentPrice.visibility = View.VISIBLE
+        tvListingCurrentPriceTitle.visibility = View.VISIBLE
     }
 }
