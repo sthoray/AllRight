@@ -111,6 +111,46 @@
             app:layout_constraintTop_toBottomOf="@+id/tvListingLocation"
             tools:text="Listing description" />
 
+        <TextView
+            android:id="@+id/tvSellerDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/sellers_details_listing"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvListingDescription" />
+
+        <ImageView
+            android:id="@+id/ivSellersImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSellerDetails"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvSellersName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toEndOf="@+id/ivSellersImage"
+            app:layout_constraintTop_toBottomOf="@+id/tvSellerDetails" />
+
+        <TextView
+            android:id="@+id/tvSellersLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toEndOf="@+id/ivSellersImage"
+            app:layout_constraintTop_toBottomOf="@+id/tvSellersName" />
+
+
         <Button
             android:id="@+id/btnVisitListing"
             android:layout_width="0dp"
@@ -124,7 +164,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvListingDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/ivSellersImage" />
 
         <ProgressBar
             android:id="@+id/pbListingDetails"
