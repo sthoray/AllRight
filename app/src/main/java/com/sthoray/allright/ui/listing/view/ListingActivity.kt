@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Image
@@ -70,6 +71,17 @@ class ListingActivity : AppCompatActivity() {
                             tvListingCurrentPrice.visibility = View.GONE
                             tvListingCurrentPriceTitle.visibility = View.GONE
                         }
+
+                        if (listing.manager.avatar == null){
+                            ivSellersImage.load(listing.manager.logo?.thumbUrl)
+                            tvSellersName.text = listing.manager.storeName
+                            tvSellersLocation.text = listing.manager.locationName
+                        } else{
+                            ivSellersImage.load(listing.manager.avatar.thumb)
+                            tvSellersName.text = listing.manager.firstName
+                            tvSellersLocation.text = listing.manager.createdAt
+                        }
+
                         listing.images?.let { setViewPager(it) }
                     }
                 }
@@ -110,6 +122,9 @@ class ListingActivity : AppCompatActivity() {
         btnVisitListing.visibility = View.GONE
         tvListingCurrentPrice.visibility = View.GONE
         tvListingCurrentPriceTitle.visibility = View.GONE
+        ivSellersImage.visibility = View.GONE
+        tvSellersName.visibility = View.GONE
+        tvSellersLocation.visibility = View.GONE
 
     }
 
@@ -123,5 +138,8 @@ class ListingActivity : AppCompatActivity() {
         btnVisitListing.visibility = View.VISIBLE
         tvListingCurrentPrice.visibility = View.VISIBLE
         tvListingCurrentPriceTitle.visibility = View.VISIBLE
+        ivSellersImage.visibility = View.VISIBLE
+        tvSellersName.visibility = View.VISIBLE
+        tvSellersLocation.visibility = View.VISIBLE
     }
 }
