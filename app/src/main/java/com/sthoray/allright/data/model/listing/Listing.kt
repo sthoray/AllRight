@@ -25,21 +25,15 @@ import com.google.gson.annotations.SerializedName
  * @property shippingOptions The list of [ShippingOption]s available for the listing.
  * @property combinedShipping 1 if shipping can be combined with other listings from the same seller, 0 otherwise.
  * @property startPrice The starting price of the listing in the secondhand marketplace. In the Mall, this is the "buy now" purchase price.
- *
  * @property displayPrice The pre-discounted price of a product in the mall marketplace. Often null or the same as [startPrice] when the listing is not discounted.
  * @property brandNew 1 if the listing is a brand new item, 0 otherwise.
  * @property outOfStock True if the product is out of stock, false otherwise.
- *
  * @property buyNowPrice The secondhand listing's buy now price.
  * @property currentPrice The secondhand listing's current auction price.
  * @property reserveMet True if [currentPrice] is greater than the reserve price, false otherwise.
  * @property noReserve True if there is a reserve price, false otherwise.
  * @property expires The time stamp when the secondhand listing will close.
  * @property paymentOptions A list of [PaymentOption]s for secondhand listings.
- *
- * @property locationName The listing location. Likely the string concatenation of [pickupLocation]s
- * properties if [pickupLocation] is not null. In this case, a property value of null is mapped
- * to "undefined".
 
  */
 data class Listing(
@@ -52,7 +46,7 @@ data class Listing(
     val markdownOptions: MarkdownOptions?,
     val categories: List<Category>?,
     @SerializedName("manager")
-    val manager: Manager,
+    val manager: Manager?,
     val pickups: Int?,
     @SerializedName("location_name")
     val locationName: String?,

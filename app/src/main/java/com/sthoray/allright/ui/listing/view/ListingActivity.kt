@@ -8,9 +8,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Image
+import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.adapter.ViewPagerAdapter
@@ -53,11 +55,7 @@ class ListingActivity : AppCompatActivity() {
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
-                    response.data?.let { listing ->
-                        tvListingName.text = listing.name
-                        tvListingDescription.text = listing.description
-                        listing.images?.let { setViewPager(it) }
-                    }
+                    response.data?.let { fillView(it) }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
@@ -86,14 +84,78 @@ class ListingActivity : AppCompatActivity() {
         }
     }
 
+    private fun fillView(listing: Listing) {
+        // Description
+        tvListingName.text = listing.name
+        tvListingDescription.text = listing.description
+        listing.locationName?.let {
+            tvListingLocation.text = it
+            tvListingLocation.visibility = View.VISIBLE
+        }
+
+        // Price
+        if (listing.buyNowPrice == null && listing.currentPrice == null) {
+            // Likely a mall listing
+            tvListingBuyNowPrice.text = String.format(
+                getString(R.string.format_price),
+                listing.startPrice
+            )
+            tvListingBuyNowPriceTitle.visibility = View.VISIBLE
+            tvListingBuyNowPrice.visibility = View.VISIBLE
+        } else {
+            // If bidding has started, currentPrice might be more appropriate
+            // If startPrice == buyNowPrice, tvStartPrice can probably be hidden
+            listing.startPrice?.let {
+                tvListingStartPrice.text = String.format(
+                    getString(R.string.format_price),
+                    it
+                )
+                tvListingStartPriceTitle.visibility = View.VISIBLE
+                tvListingStartPrice.visibility = View.VISIBLE
+            }
+            listing.buyNowPrice?.let {
+                tvListingBuyNowPrice.text = String.format(
+                    getString(R.string.format_price),
+                    it
+                )
+                tvListingBuyNowPriceTitle.visibility = View.VISIBLE
+                tvListingBuyNowPrice.visibility = View.VISIBLE
+            }
+        }
+
+        // Seller's info
+        listing.manager?.let { manager ->
+            if (manager.storeName != null) {
+                ivSellersImage.load(manager.logo?.thumbUrl)
+                tvSellersName.text = manager.storeName
+                tvSellersLocation.text = manager.locationName
+            } else {
+                ivSellersImage.load(manager.avatar?.thumb)
+                tvSellersName.text = manager.firstName
+                tvSellersLocation.text = manager.createdAt
+            }
+        }
+
+        // Images
+        listing.images?.let { setViewPager(it) }
+    }
+
     private fun showProgressBar() {
         pbListingDetails.visibility = View.VISIBLE
         vpListingImages.visibility = View.GONE
         wdiListingImages.visibility = View.GONE
         tvListingName.visibility = View.GONE
-        tvListingSubtitle.visibility = View.GONE
+        tvListingLocation.visibility = View.GONE
         tvListingDescription.visibility = View.GONE
         btnVisitListing.visibility = View.GONE
+        tvListingStartPriceTitle.visibility = View.INVISIBLE // Allows buy now price views be displayed individually
+        tvListingStartPrice.visibility = View.GONE
+        tvListingBuyNowPriceTitle.visibility = View.GONE
+        tvListingBuyNowPrice.visibility = View.GONE
+        tvSellerDetails.visibility = View.GONE
+        ivSellersImage.visibility = View.GONE
+        tvSellersName.visibility = View.GONE
+        tvSellersLocation.visibility = View.GONE
     }
 
     private fun hideProgressBar() {
@@ -101,8 +163,11 @@ class ListingActivity : AppCompatActivity() {
         vpListingImages.visibility = View.VISIBLE
         wdiListingImages.visibility = View.VISIBLE
         tvListingName.visibility = View.VISIBLE
-        tvListingSubtitle.visibility = View.VISIBLE
         tvListingDescription.visibility = View.VISIBLE
         btnVisitListing.visibility = View.VISIBLE
+        tvSellerDetails.visibility = View.VISIBLE
+        ivSellersImage.visibility = View.VISIBLE
+        tvSellersName.visibility = View.VISIBLE
+        tvSellersLocation.visibility = View.VISIBLE
     }
 }

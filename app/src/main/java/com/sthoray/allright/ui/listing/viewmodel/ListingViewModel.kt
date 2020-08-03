@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.data.model.listing.Listing
+import com.sthoray.allright.data.model.search.SearchRequest
+import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
@@ -54,6 +56,7 @@ class ListingViewModel(
             }
         }
     }
+
 
     private fun handleListingResponse(
         response: Response<Listing>
