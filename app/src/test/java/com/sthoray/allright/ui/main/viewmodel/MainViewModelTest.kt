@@ -22,8 +22,6 @@ class MainViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-
-
     }
 
     @ExperimentalCoroutinesApi
