@@ -46,4 +46,7 @@
 
     <!-- Listing activity -->
     <string name="btn_visit_listing">View Listing</string>
+    <string name="title_buy_now_price">Buy Now</string>
+    <string name="title_start_price">Start Price</string>
+    <string name="title_sellers_details">Seller\'s Details</string>
 </resources>
