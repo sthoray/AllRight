@@ -12,6 +12,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+/**
+ * MainViewModel test
+ */
 class MainViewModelTest {
     @ExperimentalCoroutinesApi
     private val testDispatcher = TestCoroutineDispatcher()
