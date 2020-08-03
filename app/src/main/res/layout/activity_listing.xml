@@ -33,44 +33,43 @@
             android:id="@+id/tvListingStartPriceTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/start_price_listing"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vpListingImages" />
+            android:text="@string/title_start_price"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvListingStartPrice"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tvListingStartPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:text="@android:string/unknownName"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tvListingStartPriceTitle"
-            app:layout_constraintStart_toEndOf="@+id/tvListingStartPriceTitle" />
-
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintStart_toEndOf="@+id/tvListingStartPriceTitle"
+            app:layout_constraintTop_toBottomOf="@+id/vpListingImages"
+            tools:text="$49.99" />
 
         <TextView
-            android:id="@+id/tvListingCurrentPriceTitle"
+            android:id="@+id/tvListingBuyNowPriceTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_marginStart="16dp"
-            android:text="@string/current_price_listing"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvListingStartPriceTitle" />
+            android:text="@string/title_buy_now_price"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvListingBuyNowPrice"
+            app:layout_constraintEnd_toEndOf="@+id/tvListingStartPriceTitle" />
 
         <TextView
-            android:id="@+id/tvListingCurrentPrice"
+            android:id="@+id/tvListingBuyNowPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:text="@android:string/unknownName"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tvListingCurrentPriceTitle"
-            app:layout_constraintStart_toEndOf="@+id/tvListingCurrentPriceTitle" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintStart_toEndOf="@+id/tvListingBuyNowPriceTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvListingStartPrice"
+            tools:text="$99.99" />
 
         <TextView
             android:id="@+id/tvListingName"
@@ -80,31 +79,36 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="@android:string/unknownName"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvListingCurrentPriceTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvListingBuyNowPrice"
             tools:text="Listing Name" />
 
         <TextView
             android:id="@+id/tvListingLocation"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@android:string/unknownName"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            app:layout_constraintStart_toStartOf="@+id/tvListingName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvListingName"
-            tools:text="Listing Subtitle" />
+            tools:text="Listing Location" />
 
         <TextView
             android:id="@+id/tvListingDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@android:string/unknownName"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -117,17 +121,18 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/sellers_details_listing"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:text="@string/title_sellers_details"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvListingDescription" />
 
         <ImageView
             android:id="@+id/ivSellersImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="75dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSellerDetails"
             tools:ignore="ContentDescription" />
@@ -136,19 +141,21 @@
             android:id="@+id/tvSellersName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintStart_toEndOf="@+id/ivSellersImage"
-            app:layout_constraintTop_toBottomOf="@+id/tvSellerDetails" />
+            app:layout_constraintTop_toTopOf="@+id/ivSellersImage"
+            tools:text="Sellers Name" />
 
         <TextView
             android:id="@+id/tvSellersLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toEndOf="@+id/ivSellersImage"
-            app:layout_constraintTop_toBottomOf="@+id/tvSellersName" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintStart_toStartOf="@+id/tvSellersName"
+            app:layout_constraintTop_toBottomOf="@+id/tvSellersName"
+            tools:text="Sellers Location" />
 
 
         <Button
@@ -178,6 +185,5 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </ScrollView>
