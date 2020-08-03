@@ -17,12 +17,12 @@ class MainViewModelTest {
     private val testDispatcher = TestCoroutineDispatcher()
     private val application = mockk<Application>()
     private val appRepository = mockk<AppRepository>()
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel = MainViewModel(application, appRepository)
     @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        mainViewModel = MainViewModel(application, appRepository)
+
 
     }
 
