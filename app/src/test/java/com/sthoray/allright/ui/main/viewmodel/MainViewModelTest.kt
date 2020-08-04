@@ -33,7 +33,7 @@ class MainViewModelTest {
         clearMocks(appRepository, application)
     }
 
-    
+
     @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
@@ -48,7 +48,7 @@ class MainViewModelTest {
 
     /**
      * The init function of MainViewModel should call
-     * getFeatueredCategories() and getSecondTierCategories()
+     * getFeaturedCategories() and getSecondTierCategories()
      * This test verifies that the getFeaturedCategories() is called from init
      */
     @Test
@@ -57,7 +57,7 @@ class MainViewModelTest {
     }
     /**
      * The init function of MainViewModel should call
-     * getFeatueredCategories() and getSecondTierCategories()
+     * getFeaturedCategories() and getSecondTierCategories()
      * This test verifies that the getSecondTierCategories() is called from init
      */
     @Test
