@@ -33,13 +33,18 @@ class MainViewModelTest {
         clearMocks(appRepository, application)
     }
 
-
+    /**
+     * Dispatchers.Main not available in unit testing
+     */
     @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
     }
 
+    /**
+     * Clean up Dispatchers.setMain()
+     */
     @ExperimentalCoroutinesApi
     @After
     fun tearDown() {
@@ -65,11 +70,18 @@ class MainViewModelTest {
         verify { mainViewModel.getSecondTierCategories() }
 
     }
+
+    /**
+     * Tests getFeaturedCategories()
+     */
     @Test
     fun getFeatureCategories() {
 
     }
 
+    /**
+     * Tests getSecondTierCategories()
+     */
     @Test
     fun getSecondTierCategories() {
 
