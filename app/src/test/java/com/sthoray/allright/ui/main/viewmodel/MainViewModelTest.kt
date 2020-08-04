@@ -58,7 +58,7 @@ class MainViewModelTest {
      */
     @Test
     fun `verify getFeaturedCategories() called from init`(){
-    verify { mainViewModel.getFeaturedCategories() }
+        verify { mainViewModel.getFeaturedCategories() }
     }
     /**
      * The init function of MainViewModel should call
@@ -68,7 +68,6 @@ class MainViewModelTest {
     @Test
     fun `verify getSecondTierCategories() called from init`(){
         verify { mainViewModel.getSecondTierCategories() }
-
     }
 
     /**
