@@ -25,11 +25,15 @@ class MainViewModelTest {
     private val appRepository = mockk<AppRepository>()
     private val mainViewModel: MainViewModel = MainViewModel(application, appRepository)
 
+    /**
+     * Clearing the mocks to ensure that each test is stateless
+     */
     @BeforeEach
     fun init(){
         clearMocks(appRepository, application)
     }
 
+    
     @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
@@ -42,11 +46,20 @@ class MainViewModelTest {
         Dispatchers.resetMain()
     }
 
+    /**
+     * The init function of MainViewModel should call
+     * getFeatueredCategories() and getSecondTierCategories()
+     * This test verifies that the getFeaturedCategories() is called from init
+     */
     @Test
     fun `verify getFeaturedCategories() called from init`(){
     verify { mainViewModel.getFeaturedCategories() }
     }
-
+    /**
+     * The init function of MainViewModel should call
+     * getFeatueredCategories() and getSecondTierCategories()
+     * This test verifies that the getSecondTierCategories() is called from init
+     */
     @Test
     fun `verify getSecondTierCategories() called from init`(){
         verify { mainViewModel.getSecondTierCategories() }
