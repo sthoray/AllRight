@@ -37,11 +37,11 @@ class MainViewModel(
         getSecondTierCategories()
     }
 
-    private fun getFeaturedCategories() = viewModelScope.launch {
+    fun getFeaturedCategories() = viewModelScope.launch {
         safeGetFeaturedCategoriesCall()
     }
 
-    private fun getSecondTierCategories() = viewModelScope.launch {
+    fun getSecondTierCategories() = viewModelScope.launch {
         safeGetSecondTierCategories()
     }
 
