@@ -29,7 +29,7 @@ class MainViewModelTest {
      * Clearing the mocks to ensure that each test is stateless
      */
     @BeforeEach
-    fun init(){
+    fun init() {
         clearMocks(appRepository, application)
     }
 
@@ -57,16 +57,17 @@ class MainViewModelTest {
      * This test verifies that the getFeaturedCategories() is called from init
      */
     @Test
-    fun `verify getFeaturedCategories() called from init`(){
+    fun `verify getFeaturedCategories() called from init`() {
         verify { mainViewModel.getFeaturedCategories() }
     }
+
     /**
      * The init function of MainViewModel should call
      * getFeaturedCategories() and getSecondTierCategories()
      * This test verifies that the getSecondTierCategories() is called from init
      */
     @Test
-    fun `verify getSecondTierCategories() called from init`(){
+    fun `verify getSecondTierCategories() called from init`() {
         verify { mainViewModel.getSecondTierCategories() }
     }
 
