@@ -24,6 +24,12 @@ class MainViewModelTest {
     private val application = mockk<Application>()
     private val appRepository = mockk<AppRepository>()
     private val mainViewModel: MainViewModel = MainViewModel(application, appRepository)
+
+    @BeforeEach
+    fun init(){
+        clearMocks(appRepository, application)
+    }
+
     @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
@@ -44,6 +50,7 @@ class MainViewModelTest {
     @Test
     fun `verify getSecondTierCategories() called from init`(){
         verify { mainViewModel.getSecondTierCategories() }
+
     }
     @Test
     fun getFeatureCategories() {
