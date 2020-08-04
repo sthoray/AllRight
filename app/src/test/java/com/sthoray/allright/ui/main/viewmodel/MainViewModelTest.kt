@@ -1,12 +1,12 @@
 package com.sthoray.allright.ui.main.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.data.repository.AppRepository
-import io.mockk.*
+import io.mockk.clearMocks
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
