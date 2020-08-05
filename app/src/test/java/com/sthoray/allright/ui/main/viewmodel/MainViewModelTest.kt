@@ -3,6 +3,7 @@ package com.sthoray.allright.ui.main.viewmodel
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import com.google.gson.JsonSyntaxException
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
@@ -17,8 +18,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.ArgumentMatchers.any
 import retrofit2.Response
+import java.io.IOException
 
 @ExperimentalCoroutinesApi
 class MainViewModelTest {
@@ -69,8 +70,8 @@ class MainViewModelTest {
      */
     @Test
     fun getFeaturedCategoriesErrorInternet() {
-            every { Internet.hasConnection(any()) } returns false
-
+            every { Internet.hasConnection(any()) } returns true
+            coEvery { appRepository.getFeatureCategories() } throws IOException()
             val mainViewModel = MainViewModel(app, appRepository)
             verify { Internet.hasConnection(any()) }
             coVerify(exactly = 0) { appRepository.getFeatureCategories() }
@@ -82,4 +83,24 @@ class MainViewModelTest {
 //        assertThat(mainViewModel.featureCategories.value?.data)
 //            .isEqualTo(featureCategoriesResponse)
     }
+    /**
+     * Tests that a "Network Failure" error resource is created when
+     * the AppRepository
+     */
+    @Test
+    fun getFeaturedCategoriesErrorNetworkFailure() {
+        every { Internet.hasConnection(any()) } returns true
+        coEvery { appRepository.getFeatureCategories() } throws IOException()
+
+        val mainViewModel = MainViewModel(app, appRepository)
+
+        verify { Internet.hasConnection(any()) }
+
+        assertThat(mainViewModel.featureCategories.value)
+            .isInstanceOf(Resource.Error::class.java)
+        assertThat(mainViewModel.featureCategories.value?.message)
+            .isEqualTo("Network Failure")
+    }
+   
+
 }
