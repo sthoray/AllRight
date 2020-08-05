@@ -101,6 +101,25 @@ class MainViewModelTest {
         assertThat(mainViewModel.featureCategories.value?.message)
             .isEqualTo("Network Failure")
     }
-   
+    /**
+     *
+     */
+    @Test
+    fun getFeaturedCategoriesErrorConversionFailure(){
+        every { Internet.hasConnection(any()) } returns true
+        coEvery {
+            appRepository.getFeatureCategories()
+        } throws JsonSyntaxException("Mockk exception message")
 
+        val mainViewModel = MainViewModel(app, appRepository)
+
+
+        verify { Internet.hasConnection(any()) }
+
+        assertThat(mainViewModel.featureCategories.value)
+            .isInstanceOf(Resource.Error::class.java)
+        assertThat(mainViewModel.featureCategories.value?.message)
+            .isEqualTo("Conversion Error")
+    }
+    
 }
