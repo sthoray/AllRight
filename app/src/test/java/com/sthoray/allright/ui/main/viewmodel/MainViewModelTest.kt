@@ -55,5 +55,7 @@ class MainViewModelTest {
 
         assertThat(mainViewModel.featureCategories.value)
             .isInstanceOf(Resource.Success::class.java)
+        assertThat(mainViewModel.featureCategories.value?.data)
+            .isEqualTo(featureCategoriesResponse)
     }
 }
