@@ -40,14 +40,14 @@ class MainViewModel(
     /**
      * Gets the categories on the front page of the app
      */
-    fun getFeaturedCategories() = viewModelScope.launch {
+    private fun getFeaturedCategories() = viewModelScope.launch {
         safeGetFeaturedCategoriesCall()
     }
 
     /**
      * Gets the categories on the browse page of the app
      */
-    fun getSecondTierCategories() = viewModelScope.launch {
+    private fun getSecondTierCategories() = viewModelScope.launch {
         safeGetSecondTierCategories()
     }
 
