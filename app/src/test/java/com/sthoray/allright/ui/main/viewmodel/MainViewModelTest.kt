@@ -71,12 +71,12 @@ class MainViewModelTest {
     fun getFeaturedCategoriesErrorInternet() {
         every { Internet.hasConnection(any()) } returns false
 
-        //val mainViewModel = MainViewModel(app, appRepository)
+        val mainViewModel = MainViewModel(app, appRepository)
         verify { Internet.hasConnection(any()) }
         coVerify(exactly = 0){ appRepository.getFeatureCategories() }
 
-//        assertThat(mainViewModel.featureCategories.value)
-//            .isInstanceOf(Resource.Success::class.java)
+        assertThat(mainViewModel.featureCategories.value)
+            .isInstanceOf(Resource.Error::class.java)
 //        assertThat(mainViewModel.featureCategories.value?.data)
 //            .isEqualTo(featureCategoriesResponse)
     }
