@@ -111,6 +111,9 @@ class MainViewModelTest {
                 .isEqualTo("Network Failure")
         }
 
+    /**
+     *
+     */
     @Test
     fun getFeaturedCategoriesErrorConversionFailure() =
         mainCoroutineRule.runBlockingTest {
@@ -128,14 +131,9 @@ class MainViewModelTest {
             assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Conversion Error")
         }
-
-    /**
-     *
-     */
     @Test
     fun getFeaturedCategoriesErrorSetsResourceError() =
         mainCoroutineRule.runBlockingTest {
-
             val errorResponse: Response<FeatureCategoriesResponse> = Response.error(
                 400,
                 "{\"key\":[\"some_stuff\"]}"
@@ -147,14 +145,11 @@ class MainViewModelTest {
 
             val mainViewModel = MainViewModel(app, appRepository)
 
-
             verify { Internet.hasConnection(any()) }
 
             assertThat(mainViewModel.featureCategories.value).isInstanceOf(Resource.Error::class.java)
             assertThat(mainViewModel.featureCategories.value?.message).isEqualTo(errorResponse.message())
         }
-
-
     /**
      * Tests that featured categories correctly
      * posts the correct response to the feature categories LiveData
@@ -235,14 +230,9 @@ class MainViewModelTest {
             assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Conversion Error")
         }
-
-    /**
-     *
-     */
     @Test
     fun getTopLevelCategoriesErrorSetsResourceError() =
         mainCoroutineRule.runBlockingTest {
-
             val errorResponse: Response<List<Category>> = Response.error(
                 400,
                 "{\"key\":[\"some_stuff\"]}"
@@ -253,7 +243,6 @@ class MainViewModelTest {
             coEvery { appRepository.getSecondTierCategories() } returns errorResponse
 
             val mainViewModel = MainViewModel(app, appRepository)
-
 
             verify { Internet.hasConnection(any()) }
 
