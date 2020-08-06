@@ -13,6 +13,8 @@ import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -65,10 +67,14 @@ class ListingViewModelTest {
     fun getListing_withResponseError_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val testId = 9
+            val errorResponse: Response<Listing> = Response.error(
+                400,
+                "{\"key\":[\"some_stuff\"]}"
+                    .toResponseBody("application/json".toMediaTypeOrNull())
+            )
 
             every { Internet.hasConnection(any()) } returns true
-            TODO("Mock a Response.error")
-            // coEvery { appRepository.getListing(eq(testId)) } returns Response.error()
+            coEvery { appRepository.getListing(eq(testId)) } returns errorResponse
 
             val listingViewModel = ListingViewModel(app, appRepository)
             listingViewModel.getListing(testId)
@@ -76,8 +82,7 @@ class ListingViewModelTest {
             verify { Internet.hasConnection(any()) }
 
             assertThat(listingViewModel.listing.value).isInstanceOf(Resource.Error::class.java)
-            TODO("Verify the correct error message is contained")
-            //assertThat(listingViewModel.listing.value?.message).isEqualTo(listing)
+            assertThat(listingViewModel.listing.value?.message).isEqualTo(errorResponse.message())
         }
 
     @Test
