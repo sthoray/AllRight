@@ -14,6 +14,8 @@ import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -109,9 +111,6 @@ class MainViewModelTest {
                 .isEqualTo("Network Failure")
         }
 
-    /**
-     *
-     */
     @Test
     fun getFeaturedCategoriesErrorConversionFailure() =
         mainCoroutineRule.runBlockingTest {
@@ -129,6 +128,32 @@ class MainViewModelTest {
             assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Conversion Error")
         }
+
+    /**
+     *
+     */
+    @Test
+    fun getFeaturedCategoriesErrorSetsResourceError() =
+        mainCoroutineRule.runBlockingTest {
+
+            val errorResponse: Response<FeatureCategoriesResponse> = Response.error(
+                400,
+                "{\"key\":[\"some_stuff\"]}"
+                    .toResponseBody("application/json".toMediaTypeOrNull())
+            )
+
+            every { Internet.hasConnection(any()) } returns true
+            coEvery { appRepository.getFeatureCategories() } returns errorResponse
+
+            val mainViewModel = MainViewModel(app, appRepository)
+
+
+            verify { Internet.hasConnection(any()) }
+
+            assertThat(mainViewModel.featureCategories.value).isInstanceOf(Resource.Error::class.java)
+            assertThat(mainViewModel.featureCategories.value?.message).isEqualTo(errorResponse.message())
+        }
+
 
     /**
      * Tests that featured categories correctly
@@ -209,5 +234,30 @@ class MainViewModelTest {
                 .isInstanceOf(Resource.Error::class.java)
             assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Conversion Error")
+        }
+
+    /**
+     *
+     */
+    @Test
+    fun getTopLevelCategoriesErrorSetsResourceError() =
+        mainCoroutineRule.runBlockingTest {
+
+            val errorResponse: Response<List<Category>> = Response.error(
+                400,
+                "{\"key\":[\"some_stuff\"]}"
+                    .toResponseBody("application/json".toMediaTypeOrNull())
+            )
+
+            every { Internet.hasConnection(any()) } returns true
+            coEvery { appRepository.getSecondTierCategories() } returns errorResponse
+
+            val mainViewModel = MainViewModel(app, appRepository)
+
+
+            verify { Internet.hasConnection(any()) }
+
+            assertThat(mainViewModel.topLevelCategories.value).isInstanceOf(Resource.Error::class.java)
+            assertThat(mainViewModel.topLevelCategories.value?.message).isEqualTo(errorResponse.message())
         }
 }
