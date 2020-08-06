@@ -99,7 +99,8 @@ class ListingViewModelTest {
             coVerify(exactly = 0) { appRepository.getListing(any()) }
 
             assertThat(listingViewModel.listing.value).isInstanceOf(Resource.Error::class.java)
-            assertThat(listingViewModel.listing.value?.message).isEqualTo("No internet connection")
+            assertThat(listingViewModel.listing.value?.message)
+                .isEqualTo("No internet connection")
         }
 
     @Test
@@ -115,8 +116,10 @@ class ListingViewModelTest {
 
             verify { Internet.hasConnection(any()) }
 
-            assertThat(listingViewModel.listing.value).isInstanceOf(Resource.Error::class.java)
-            assertThat(listingViewModel.listing.value?.message).isEqualTo("Network Failure")
+            assertThat(listingViewModel.listing.value)
+                .isInstanceOf(Resource.Error::class.java)
+            assertThat(listingViewModel.listing.value?.message)
+                .isEqualTo("Network Failure")
         }
 
     @Test
@@ -125,14 +128,18 @@ class ListingViewModelTest {
             val testId = 9
 
             every { Internet.hasConnection(any()) } returns true
-            coEvery { appRepository.getListing(eq(testId)) } throws JsonSyntaxException("Mockk exception message")
+            coEvery {
+                appRepository.getListing(eq(testId))
+            } throws JsonSyntaxException("Mockk exception message")
 
             val listingViewModel = ListingViewModel(app, appRepository)
             listingViewModel.getListing(testId)
 
             verify { Internet.hasConnection(any()) }
 
-            assertThat(listingViewModel.listing.value).isInstanceOf(Resource.Error::class.java)
-            assertThat(listingViewModel.listing.value?.message).isEqualTo("Conversion Error")
+            assertThat(listingViewModel.listing.value)
+                .isInstanceOf(Resource.Error::class.java)
+            assertThat(listingViewModel.listing.value?.message)
+                .isEqualTo("Conversion Error")
         }
 }
