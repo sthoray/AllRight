@@ -68,6 +68,7 @@ class MainViewModel(
             if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.getSecondTierCategories()
                 topLevelCategories.postValue(handleTopLevelCategoriesResponse(response))
+
             } else {
                 topLevelCategories.postValue(Resource.Error("No internet connection"))
             }
