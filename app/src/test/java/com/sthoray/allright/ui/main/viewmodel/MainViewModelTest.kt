@@ -111,9 +111,6 @@ class MainViewModelTest {
                 .isEqualTo("Network Failure")
         }
 
-    /**
-     *
-     */
     @Test
     fun getFeaturedCategoriesErrorConversionFailure() =
         mainCoroutineRule.runBlockingTest {
@@ -131,6 +128,7 @@ class MainViewModelTest {
             assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Conversion Error")
         }
+
     @Test
     fun getFeaturedCategoriesErrorSetsResourceError() =
         mainCoroutineRule.runBlockingTest {
@@ -150,6 +148,7 @@ class MainViewModelTest {
             assertThat(mainViewModel.featureCategories.value).isInstanceOf(Resource.Error::class.java)
             assertThat(mainViewModel.featureCategories.value?.message).isEqualTo(errorResponse.message())
         }
+
     /**
      * Tests that featured categories correctly
      * posts the correct response to the feature categories LiveData
@@ -210,9 +209,6 @@ class MainViewModelTest {
                 .isEqualTo("Network Failure")
         }
 
-    /**
-     *
-     */
     @Test
     fun getSecondTierCategoriesErrorConversionFailure() =
         mainCoroutineRule.runBlockingTest {
@@ -230,6 +226,7 @@ class MainViewModelTest {
             assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Conversion Error")
         }
+
     @Test
     fun getSecondTierCategoriesErrorSetsResourceError() =
         mainCoroutineRule.runBlockingTest {
