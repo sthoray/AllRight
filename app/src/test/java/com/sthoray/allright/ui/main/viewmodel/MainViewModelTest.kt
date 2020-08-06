@@ -107,7 +107,6 @@ class MainViewModelTest {
                 .isInstanceOf(Resource.Error::class.java)
             assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Network Failure")
-
         }
 
     /**
@@ -118,16 +117,16 @@ class MainViewModelTest {
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery {
-                appRepository.getSecondTierCategories()
+                appRepository.getFeatureCategories()
             } throws JsonSyntaxException("Mockk exception message")
 
             val mainViewModel = MainViewModel(app, appRepository)
 
             verify { Internet.hasConnection(any()) }
 
-            assertThat(mainViewModel.topLevelCategories.value)
+            assertThat(mainViewModel.featureCategories.value)
                 .isInstanceOf(Resource.Error::class.java)
-            assertThat(mainViewModel.topLevelCategories.value?.message)
+            assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Conversion Error")
         }
 
@@ -149,7 +148,6 @@ class MainViewModelTest {
                 .isInstanceOf(Resource.Success::class.java)
             assertThat(mainViewModel.topLevelCategories.value?.data)
                 .isEqualTo(topLevelCategoriesResponse)
-
         }
 
     /**
@@ -170,7 +168,6 @@ class MainViewModelTest {
                 .isInstanceOf(Resource.Error::class.java)
             assertThat(mainViewModel.topLevelCategories.value?.message)
                 .isEqualTo("No internet connection")
-
         }
 
     /**
@@ -208,9 +205,9 @@ class MainViewModelTest {
 
             verify { Internet.hasConnection(any()) }
 
-            assertThat(mainViewModel.topLevelCategories.value)
+            assertThat(mainViewModel.featureCategories.value)
                 .isInstanceOf(Resource.Error::class.java)
-            assertThat(mainViewModel.topLevelCategories.value?.message)
+            assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Conversion Error")
         }
 }
