@@ -3,6 +3,7 @@ package com.sthoray.allright.ui.search.viewmodel
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.sthoray.allright.data.model.listing.Listing
+import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.TestCoroutineRule
@@ -16,13 +17,13 @@ import org.junit.Before
 
 import org.junit.Assert.*
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.TestRule
 
 @ExperimentalCoroutinesApi
 class SearchViewModelTest {
     @get:Rule
     val testInstantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
-
 
     @get:Rule
     var mainCoroutineRule = TestCoroutineRule()
@@ -32,7 +33,9 @@ class SearchViewModelTest {
 
     @MockK
     private lateinit var appRepository: AppRepository
-    
+
+    @RelaxedMockK
+    private lateinit var searchListing: SearchResponse
 
     @Before
     fun setUp() {
@@ -40,6 +43,10 @@ class SearchViewModelTest {
         mockkObject(Internet)
     }
 
+    @Test
+    fun testInitSearch(){
+
+    }
 
     @After
     fun tearDown() {
