@@ -155,7 +155,7 @@ class MainViewModelTest {
      * posts the correct response to the feature categories LiveData
      */
     @Test
-    fun getTopLevelCategoriesSuccessful() =
+    fun getSecondTierCategoriesSuccessful() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(app) } returns true
             coEvery {
@@ -175,7 +175,7 @@ class MainViewModelTest {
      * the user does not have an internet connection.
      */
     @Test
-    fun getTopLevelCategoriesErrorInternet() =
+    fun getSecondTierCategoriesErrorInternet() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns false
 
@@ -195,7 +195,7 @@ class MainViewModelTest {
      * the AppRepository
      */
     @Test
-    fun getTopLevelCategoriesErrorNetworkFailure() =
+    fun getSecondTierCategoriesErrorNetworkFailure() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery { appRepository.getSecondTierCategories() } throws IOException()
@@ -214,7 +214,7 @@ class MainViewModelTest {
      *
      */
     @Test
-    fun getTopLevelCategoriesErrorConversionFailure() =
+    fun getSecondTierCategoriesErrorConversionFailure() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery {
@@ -231,7 +231,7 @@ class MainViewModelTest {
                 .isEqualTo("Conversion Error")
         }
     @Test
-    fun getTopLevelCategoriesErrorSetsResourceError() =
+    fun getSecondTierCategoriesErrorSetsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val errorResponse: Response<List<Category>> = Response.error(
                 400,
