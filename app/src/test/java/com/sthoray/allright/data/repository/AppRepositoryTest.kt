@@ -21,15 +21,16 @@ class AppRepositoryTest {
 
     @get:Rule
     var mainCoroutineRule = TestCoroutineRule()
+
     @MockK
     private lateinit var searchHistoryDatabase: SearchHistoryDatabase
-
 
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
     }
+
     /**
      * TODO replace assertThat(response.code()).isEqualTo(200)
      *  with coVerify { RetrofitInstance.api.functionName() }
@@ -68,7 +69,6 @@ class AppRepositoryTest {
         val response = appRepository.getListing(listingId)
         assertThat(response.code()).isEqualTo(200)
     }
-
 
 
 }
