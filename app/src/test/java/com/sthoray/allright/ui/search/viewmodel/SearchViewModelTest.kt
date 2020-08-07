@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.google.gson.JsonSyntaxException
-import com.sthoray.allright.data.model.search.Location
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
@@ -19,7 +18,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Before
-
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
@@ -49,6 +47,7 @@ class SearchViewModelTest {
     @RelaxedMockK
     private var searchListingsResponse: SearchResponse? = null
 
+    private val testId = 1
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
@@ -193,8 +192,34 @@ class SearchViewModelTest {
         assertThat(searchViewModel.searchListingsResponse).isNull()
 
         verify { searchViewModel.searchListings() }
-
     }
+    @Test
+    fun initSearchSearchRequestNotInitialised() =
+        mainCoroutineRule.runBlockingTest {
+
+            val searchViewModel = SearchViewModel(app, appRepository)
+
+            searchRequest = SearchRequest(categoryId = testId)
+
+            searchViewModel.initSearch(testId)
+            assertThat(searchRequest).isEqualTo(searchViewModel.searchRequest)
+            assertThat(searchViewModel.searchRequestDraft).isEqualTo(searchViewModel.searchRequest)
+            coVerify {
+                searchViewModel.searchListings()
+            }
+        }
+    @Test
+    fun initSearchRequestIsInitialised() =
+        mainCoroutineRule.runBlockingTest {
+            val searchViewModel = SearchViewModel(app, appRepository)
+            searchRequest = SearchRequest(categoryId = testId)
+
+            searchViewModel.searchRequest = searchRequest
+            verify(exactly = 0) {
+                searchViewModel.searchListings()
+            }
+        }
+
     @After
     fun tearDown() {
     }
