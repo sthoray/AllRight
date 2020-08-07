@@ -30,7 +30,11 @@ class AppRepositoryTest {
     fun setUp() {
         MockKAnnotations.init(this)
     }
-
+    /**
+     * TODO replace assertThat(response.code()).isEqualTo(200)
+     *  with coVerify { RetrofitInstance.api.functionName() }
+     *  for each function
+     */
     @Test
     fun getFeatureCategories() =
         runBlocking {
