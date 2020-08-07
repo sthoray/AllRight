@@ -5,12 +5,10 @@ import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.search.SearchRequest
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class AppRepositoryTest {
 
     @MockK
