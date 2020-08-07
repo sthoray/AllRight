@@ -55,16 +55,21 @@ class SearchViewModelTest {
     fun searchListingsSuccessfulSetsResourceSuccess() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns true
-            coEvery { appRepository.searchListings(searchRequest) } returns Response.success(searchListing)
+            coEvery {
+                appRepository.searchListings(searchRequest)
+            } returns Response.success(searchListing)
 
             val searchViewModel = SearchViewModel(app, appRepository)
             searchViewModel.searchRequest = searchRequest
             searchViewModel.searchListings()
             verify { Internet.hasConnection(any()) }
 
-            assertThat(searchViewModel.searchListings.value).isInstanceOf(Resource.Success::class.java)
-            assertThat(searchViewModel.searchListings.value?.data).isEqualTo(searchListing)
+            assertThat(searchViewModel.searchListings.value)
+                .isInstanceOf(Resource.Success::class.java)
+            assertThat(searchViewModel.searchListings.value?.data)
+                .isEqualTo(searchListing)
         }
+
     @After
     fun tearDown() {
     }
