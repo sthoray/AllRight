@@ -69,7 +69,24 @@ class SearchViewModelTest {
             assertThat(searchViewModel.searchListings.value?.data)
                 .isEqualTo(searchListing)
         }
+    @Test
+    fun searchListingsErrorInternet() =
+        mainCoroutineRule.runBlockingTest {
+            every { Internet.hasConnection(any()) } returns false
+            coEvery {
+                appRepository.searchListings(searchRequest)
+            } returns Response.success(searchListing)
 
+            val searchViewModel = SearchViewModel(app, appRepository)
+            searchViewModel.searchRequest = searchRequest
+            searchViewModel.searchListings()
+            verify { Internet.hasConnection(any()) }
+
+            assertThat(searchViewModel.searchListings.value)
+                .isInstanceOf(Resource.Error::class.java)
+            assertThat(searchViewModel.searchListings.value?.message)
+                .isEqualTo("No internet connection")
+        }
     @After
     fun tearDown() {
     }
