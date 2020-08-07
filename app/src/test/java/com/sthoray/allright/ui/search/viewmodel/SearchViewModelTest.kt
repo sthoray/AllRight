@@ -128,7 +128,7 @@ class SearchViewModelTest {
                 .isEqualTo("Conversion Error")
         }
     @Test
-    fun getListingsErrorSetsResourceError() =
+    fun searchListingsErrorSetsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val errorResponse: Response<SearchResponse> = Response.error(
                 400,
