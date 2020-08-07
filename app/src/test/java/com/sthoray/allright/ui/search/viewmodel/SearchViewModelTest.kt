@@ -4,10 +4,10 @@ import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.google.gson.JsonSyntaxException
+import com.sthoray.allright.data.model.search.Location
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
-import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
 import com.sthoray.allright.utils.TestCoroutineRule
@@ -47,7 +47,7 @@ class SearchViewModelTest {
     private lateinit var draftSearchRequest: SearchRequest
 
     @RelaxedMockK
-    private lateinit var searchListing: SearchResponse
+    private var searchListingsResponse: SearchResponse? = null
 
     @Before
     fun setUp() {
@@ -55,12 +55,12 @@ class SearchViewModelTest {
         mockkObject(Internet)
     }
     @Test
-    fun searchListingsSuccessfulSetsResourceSuccess() =
+    fun searchListingsSuccessfulNullResponseSetsResourceSuccess() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery {
                 appRepository.searchListings(searchRequest)
-            } returns Response.success(searchListing)
+            } returns Response.success(searchListingsResponse)
 
             val searchViewModel = SearchViewModel(app, appRepository)
             searchViewModel.searchRequest = searchRequest
@@ -70,15 +70,17 @@ class SearchViewModelTest {
             assertThat(searchViewModel.searchListings.value)
                 .isInstanceOf(Resource.Success::class.java)
             assertThat(searchViewModel.searchListings.value?.data)
-                .isEqualTo(searchListing)
+                .isEqualTo(searchListingsResponse)
         }
+
+
     @Test
     fun searchListingsErrorInternet() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns false
             coEvery {
                 appRepository.searchListings(searchRequest)
-            } returns Response.success(searchListing)
+            } returns Response.success(searchListingsResponse)
 
             val searchViewModel = SearchViewModel(app, appRepository)
             searchViewModel.searchRequest = searchRequest
@@ -146,6 +148,20 @@ class SearchViewModelTest {
             assertThat(searchViewModel.searchListings.value).isInstanceOf(Resource.Error::class.java)
             assertThat(searchViewModel.searchListings.value?.message).isEqualTo(errorResponse.message())
         }
+    @Test
+    fun setDraftBinaryFilters() {
+        val searchViewModel = SearchViewModel(app, appRepository)
+        searchViewModel.searchRequestDraft = SearchRequest()
+        searchViewModel.setDraftBinaryFilters(
+            freeShipping = true,
+            fastShipping = true,
+            brandNew = true
+        )
+        draftSearchRequest = SearchRequest(freeShipping = 1, fastShipping = 1, brandNew = 1)
+
+        assertThat(searchViewModel.searchRequestDraft).isEqualTo(draftSearchRequest)
+    }
+
     @After
     fun tearDown() {
     }
