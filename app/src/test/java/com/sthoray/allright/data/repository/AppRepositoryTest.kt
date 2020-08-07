@@ -34,6 +34,9 @@ class AppRepositoryTest {
      * TODO replace assertThat(response.code()).isEqualTo(200)
      *  with coVerify { RetrofitInstance.api.functionName() }
      *  for each function
+     *  ...
+     *  The Retrofit Instance test already tests the response code
+     *
      */
     @Test
     fun getFeatureCategories() =
