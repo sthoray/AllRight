@@ -163,6 +163,15 @@ class SearchViewModelTest {
 
         assertThat(searchViewModel.searchRequestDraft).isEqualTo(draftSearchRequest)
     }
+    @Test
+    fun setDraftMarketplace() {
+        val searchViewModel = SearchViewModel(app, appRepository)
+        searchViewModel.searchRequestDraft = SearchRequest()
+        searchViewModel.setDraftMarketplace(isMall = true)
+        draftSearchRequest = SearchRequest(auctions = 0, products = 1)
+
+        assertThat(searchViewModel.searchRequestDraft).isEqualTo(draftSearchRequest)
+    }
 
     @After
     fun tearDown() {
