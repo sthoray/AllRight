@@ -145,8 +145,10 @@ class SearchViewModelTest {
             searchViewModel.searchListings()
             verify { Internet.hasConnection(any()) }
 
-            assertThat(searchViewModel.searchListings.value).isInstanceOf(Resource.Error::class.java)
-            assertThat(searchViewModel.searchListings.value?.message).isEqualTo(errorResponse.message())
+            assertThat(searchViewModel.searchListings.value)
+                .isInstanceOf(Resource.Error::class.java)
+            assertThat(searchViewModel.searchListings.value?.message)
+                .isEqualTo(errorResponse.message())
         }
     @Test
     fun setDraftBinaryFilters() {
