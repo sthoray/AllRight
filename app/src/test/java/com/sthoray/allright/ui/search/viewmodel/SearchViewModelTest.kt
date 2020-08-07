@@ -171,13 +171,13 @@ class SearchViewModelTest {
         draftSearchRequest = SearchRequest(auctions = 0, products = 1)
 
         assertThat(searchViewModel.searchRequestDraft).isEqualTo(draftSearchRequest)
-        assert(searchViewModel.isMall(searchViewModel.searchRequestDraft))
+        assertThat(searchViewModel.isMall(searchViewModel.searchRequestDraft)).isTrue()
     }
     @Test
     fun isMall(){
         draftSearchRequest = SearchRequest(auctions = 0, products = 1)
         val isMall = SearchViewModel(app, appRepository).isMall(draftSearchRequest)
-        assert(isMall)
+        assertThat(isMall).isTrue()
     }
     @Test
     fun applyFiltersAndSearch(){
