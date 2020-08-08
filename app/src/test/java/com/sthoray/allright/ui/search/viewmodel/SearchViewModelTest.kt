@@ -38,6 +38,7 @@ class SearchViewModelTest {
     @MockK
     private lateinit var appRepository: AppRepository
 
+
     @RelaxedMockK
     private lateinit var searchRequest: SearchRequest
 
@@ -48,11 +49,13 @@ class SearchViewModelTest {
     private var searchListingsResponse: SearchResponse? = null
 
     private val testId = 1
+
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
         mockkObject(Internet)
     }
+
     @Test
     fun searchListingsSuccessfulNullResponseSetsResourceSuccess() =
         mainCoroutineRule.runBlockingTest {
@@ -72,6 +75,30 @@ class SearchViewModelTest {
                 .isEqualTo(searchListingsResponse)
         }
 
+    @Test
+    fun searchListingsSuccessfulNonNullResponse() =
+        mainCoroutineRule.runBlockingTest {
+            every { Internet.hasConnection(any()) } returns true
+            coEvery {
+                appRepository.searchListings(searchRequest)
+            } returns Response.success(searchListingsResponse)
+
+            val searchViewModel = SearchViewModel(app, appRepository)
+            searchViewModel.searchRequest = searchRequest
+
+            searchViewModel.searchListings()
+
+            assertThat(searchViewModel.searchListingsResponse).isNotNull()
+
+            searchViewModel.searchListings()
+
+            verify { Internet.hasConnection(any()) }
+
+            assertThat(searchViewModel.searchListings.value)
+                .isInstanceOf(Resource.Success::class.java)
+            assertThat(searchViewModel.searchListings.value?.data)
+                .isEqualTo(searchListingsResponse)
+        }
 
     @Test
     fun searchListingsErrorInternet() =
@@ -91,6 +118,7 @@ class SearchViewModelTest {
             assertThat(searchViewModel.searchListings.value?.message)
                 .isEqualTo("No internet connection")
         }
+
     @Test
     fun searchListingsErrorNetworkFailure() =
         mainCoroutineRule.runBlockingTest {
@@ -109,6 +137,7 @@ class SearchViewModelTest {
             assertThat(searchViewModel.searchListings.value?.message)
                 .isEqualTo("Network Failure")
         }
+
     @Test
     fun searchListingsErrorConversion() =
         mainCoroutineRule.runBlockingTest {
@@ -127,6 +156,7 @@ class SearchViewModelTest {
             assertThat(searchViewModel.searchListings.value?.message)
                 .isEqualTo("Conversion Error")
         }
+
     @Test
     fun searchListingsErrorSetsResourceError() =
         mainCoroutineRule.runBlockingTest {
@@ -149,6 +179,7 @@ class SearchViewModelTest {
             assertThat(searchViewModel.searchListings.value?.message)
                 .isEqualTo(errorResponse.message())
         }
+
     @Test
     fun setDraftBinaryFilters() {
         val searchViewModel = SearchViewModel(app, appRepository)
@@ -162,6 +193,7 @@ class SearchViewModelTest {
 
         assertThat(searchViewModel.searchRequestDraft).isEqualTo(draftSearchRequest)
     }
+
     @Test
     fun setDraftMarketplace() {
         val searchViewModel = SearchViewModel(app, appRepository)
@@ -172,14 +204,16 @@ class SearchViewModelTest {
         assertThat(searchViewModel.searchRequestDraft).isEqualTo(draftSearchRequest)
         assertThat(searchViewModel.isMall(searchViewModel.searchRequestDraft)).isTrue()
     }
+
     @Test
-    fun isMall(){
+    fun isMall() {
         draftSearchRequest = SearchRequest(auctions = 0, products = 1)
         val isMall = SearchViewModel(app, appRepository).isMall(draftSearchRequest)
         assertThat(isMall).isTrue()
     }
+
     @Test
-    fun applyFiltersAndSearch(){
+    fun applyFiltersAndSearch() {
         draftSearchRequest = SearchRequest()
         searchRequest = SearchRequest(pageNumber = 1)
 
@@ -193,6 +227,7 @@ class SearchViewModelTest {
 
         verify { searchViewModel.searchListings() }
     }
+
     @Test
     fun initSearchSearchRequestNotInitialised() =
         mainCoroutineRule.runBlockingTest {
@@ -208,6 +243,7 @@ class SearchViewModelTest {
                 searchViewModel.searchListings()
             }
         }
+
     @Test
     fun initSearchRequestIsInitialised() =
         mainCoroutineRule.runBlockingTest {
