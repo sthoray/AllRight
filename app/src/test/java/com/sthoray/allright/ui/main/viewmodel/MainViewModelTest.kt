@@ -25,6 +25,7 @@ import java.io.IOException
 
 @ExperimentalCoroutinesApi
 class MainViewModelTest {
+
     @get:Rule
     val testInstantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
 
@@ -41,7 +42,7 @@ class MainViewModelTest {
     private lateinit var featureCategoriesResponse: FeatureCategoriesResponse
 
     @RelaxedMockK
-    private lateinit var topLevelCategoriesResponse: List<Category>
+    private lateinit var secondTierCategoriesResponse: List<Category>
 
     @Before
     fun setUp() {
@@ -49,12 +50,8 @@ class MainViewModelTest {
         mockkObject(Internet)
     }
 
-    /**
-     * Tests that featured categories correctly
-     * posts the correct response to the feature categories LiveData
-     */
     @Test
-    fun getFeaturedCategoriesSuccessful() =
+    fun getFeaturedCategories_withResponseSuccess_setsResourceSuccess() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(app) } returns true
             coEvery {
@@ -62,6 +59,8 @@ class MainViewModelTest {
             } returns Response.success(featureCategoriesResponse)
 
             val mainViewModel = MainViewModel(app, appRepository)
+
+            verify(exactly = 2) { Internet.hasConnection(any()) }
 
             assertThat(mainViewModel.featureCategories.value)
                 .isInstanceOf(Resource.Success::class.java)
@@ -149,24 +148,22 @@ class MainViewModelTest {
             assertThat(mainViewModel.featureCategories.value?.message).isEqualTo(errorResponse.message())
         }
 
-    /**
-     * Tests that featured categories correctly
-     * posts the correct response to the feature categories LiveData
-     */
+
     @Test
-    fun getSecondTierCategoriesSuccessful() =
+    fun getSecondTierCategories_withResponseSuccess_setsResourceSuccess() =
         mainCoroutineRule.runBlockingTest {
-            every { Internet.hasConnection(app) } returns true
             coEvery {
                 appRepository.getSecondTierCategories()
-            } returns Response.success(topLevelCategoriesResponse)
+            } returns Response.success(secondTierCategoriesResponse)
 
             val mainViewModel = MainViewModel(app, appRepository)
 
-            assertThat(mainViewModel.topLevelCategories.value)
+            verify(exactly = 2) { Internet.hasConnection(any()) }
+
+            assertThat(mainViewModel.secondTierCategories.value)
                 .isInstanceOf(Resource.Success::class.java)
-            assertThat(mainViewModel.topLevelCategories.value?.data)
-                .isEqualTo(topLevelCategoriesResponse)
+            assertThat(mainViewModel.secondTierCategories.value?.data)
+                .isEqualTo(secondTierCategoriesResponse)
         }
 
     /**
@@ -183,9 +180,9 @@ class MainViewModelTest {
             verify { Internet.hasConnection(any()) }
             coVerify(exactly = 0) { appRepository.getSecondTierCategories() }
 
-            assertThat(mainViewModel.topLevelCategories.value)
+            assertThat(mainViewModel.secondTierCategories.value)
                 .isInstanceOf(Resource.Error::class.java)
-            assertThat(mainViewModel.topLevelCategories.value?.message)
+            assertThat(mainViewModel.secondTierCategories.value?.message)
                 .isEqualTo("No internet connection")
         }
 
@@ -203,9 +200,9 @@ class MainViewModelTest {
 
             verify { Internet.hasConnection(any()) }
 
-            assertThat(mainViewModel.topLevelCategories.value)
+            assertThat(mainViewModel.secondTierCategories.value)
                 .isInstanceOf(Resource.Error::class.java)
-            assertThat(mainViewModel.topLevelCategories.value?.message)
+            assertThat(mainViewModel.secondTierCategories.value?.message)
                 .isEqualTo("Network Failure")
         }
 
@@ -243,7 +240,7 @@ class MainViewModelTest {
 
             verify { Internet.hasConnection(any()) }
 
-            assertThat(mainViewModel.topLevelCategories.value).isInstanceOf(Resource.Error::class.java)
-            assertThat(mainViewModel.topLevelCategories.value?.message).isEqualTo(errorResponse.message())
+            assertThat(mainViewModel.secondTierCategories.value).isInstanceOf(Resource.Error::class.java)
+            assertThat(mainViewModel.secondTierCategories.value?.message).isEqualTo(errorResponse.message())
         }
 }

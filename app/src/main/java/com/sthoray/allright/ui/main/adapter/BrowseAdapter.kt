@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Category
 import com.sthoray.allright.utils.AppIcon
-import kotlinx.android.synthetic.main.item_layout_top_level_category.view.*
+import kotlinx.android.synthetic.main.item_layout_second_tier_category.view.*
 
 /** Adapter for adapting top level categories into a RecyclerView. */
 class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHolder>() {
@@ -46,7 +46,7 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHol
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopLevelCategoryViewHolder {
         return TopLevelCategoryViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_layout_top_level_category,
+                R.layout.item_layout_second_tier_category,
                 parent,
                 false
             )
