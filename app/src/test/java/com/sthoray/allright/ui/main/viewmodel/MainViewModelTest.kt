@@ -60,7 +60,7 @@ class MainViewModelTest {
 
             val mainViewModel = MainViewModel(app, appRepository)
 
-            verify(exactly = 2) { Internet.hasConnection(any()) }
+            verify { Internet.hasConnection(any()) }
 
             assertThat(mainViewModel.featureCategories.value)
                 .isInstanceOf(Resource.Success::class.java)
@@ -68,13 +68,30 @@ class MainViewModelTest {
                 .isEqualTo(featureCategoriesResponse)
         }
 
-
-    /**
-     * Tests that a "No internet connection" error resource is created when
-     * the user does not have an internet connection.
-     */
     @Test
-    fun getFeaturedCategoriesErrorInternet() =
+    fun getFeaturedCategories_withResponseError_setsResourceError() =
+        mainCoroutineRule.runBlockingTest {
+            val errorResponse: Response<FeatureCategoriesResponse> = Response.error(
+                400,
+                "{\"key\":[\"some_stuff\"]}"
+                    .toResponseBody("application/json".toMediaTypeOrNull())
+            )
+
+            every { Internet.hasConnection(any()) } returns true
+            coEvery { appRepository.getFeatureCategories() } returns errorResponse
+
+            val mainViewModel = MainViewModel(app, appRepository)
+
+            verify { Internet.hasConnection(any()) }
+
+            assertThat(mainViewModel.featureCategories.value)
+                .isInstanceOf(Resource.Error::class.java)
+            assertThat(mainViewModel.featureCategories.value?.message)
+                .isEqualTo(errorResponse.message())
+        }
+
+    @Test
+    fun getFeaturedCategories_withoutNetworkConnection_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns false
 
@@ -87,15 +104,10 @@ class MainViewModelTest {
                 .isInstanceOf(Resource.Error::class.java)
             assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("No internet connection")
-
         }
 
-    /**
-     * Tests that a "Network Failure" error resource is created when
-     * the AppRepository
-     */
     @Test
-    fun getFeaturedCategoriesErrorNetworkFailure() =
+    fun getFeaturedCategories_withNetworkFailure_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery { appRepository.getFeatureCategories() } throws IOException()
@@ -111,7 +123,7 @@ class MainViewModelTest {
         }
 
     @Test
-    fun getFeaturedCategoriesErrorConversionFailure() =
+    fun getFeaturedCategories_withConversionError_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery {
@@ -129,36 +141,16 @@ class MainViewModelTest {
         }
 
     @Test
-    fun getFeaturedCategoriesErrorSetsResourceError() =
-        mainCoroutineRule.runBlockingTest {
-            val errorResponse: Response<FeatureCategoriesResponse> = Response.error(
-                400,
-                "{\"key\":[\"some_stuff\"]}"
-                    .toResponseBody("application/json".toMediaTypeOrNull())
-            )
-
-            every { Internet.hasConnection(any()) } returns true
-            coEvery { appRepository.getFeatureCategories() } returns errorResponse
-
-            val mainViewModel = MainViewModel(app, appRepository)
-
-            verify { Internet.hasConnection(any()) }
-
-            assertThat(mainViewModel.featureCategories.value).isInstanceOf(Resource.Error::class.java)
-            assertThat(mainViewModel.featureCategories.value?.message).isEqualTo(errorResponse.message())
-        }
-
-
-    @Test
     fun getSecondTierCategories_withResponseSuccess_setsResourceSuccess() =
         mainCoroutineRule.runBlockingTest {
+            every { Internet.hasConnection(app) } returns true
             coEvery {
                 appRepository.getSecondTierCategories()
             } returns Response.success(secondTierCategoriesResponse)
 
             val mainViewModel = MainViewModel(app, appRepository)
 
-            verify(exactly = 2) { Internet.hasConnection(any()) }
+            verify { Internet.hasConnection(any()) }
 
             assertThat(mainViewModel.secondTierCategories.value)
                 .isInstanceOf(Resource.Success::class.java)
@@ -166,12 +158,30 @@ class MainViewModelTest {
                 .isEqualTo(secondTierCategoriesResponse)
         }
 
-    /**
-     * Tests that a "No internet connection" error resource is created when
-     * the user does not have an internet connection.
-     */
     @Test
-    fun getSecondTierCategoriesErrorInternet() =
+    fun getSecondTierCategories_withResponseError_setsResourceError() =
+        mainCoroutineRule.runBlockingTest {
+            val errorResponse: Response<List<Category>> = Response.error(
+                400,
+                "{\"key\":[\"some_stuff\"]}"
+                    .toResponseBody("application/json".toMediaTypeOrNull())
+            )
+
+            every { Internet.hasConnection(any()) } returns true
+            coEvery { appRepository.getSecondTierCategories() } returns errorResponse
+
+            val mainViewModel = MainViewModel(app, appRepository)
+
+            verify { Internet.hasConnection(any()) }
+
+            assertThat(mainViewModel.secondTierCategories.value)
+                .isInstanceOf(Resource.Error::class.java)
+            assertThat(mainViewModel.secondTierCategories.value?.message)
+                .isEqualTo(errorResponse.message())
+        }
+
+    @Test
+    fun getSecondTierCategories_withoutNetworkConnection_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns false
 
@@ -186,12 +196,8 @@ class MainViewModelTest {
                 .isEqualTo("No internet connection")
         }
 
-    /**
-     * Tests that a "Network Failure" error resource is created when
-     * the AppRepository
-     */
     @Test
-    fun getSecondTierCategoriesErrorNetworkFailure() =
+    fun getSecondTierCategories_withNetworkFailure_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery { appRepository.getSecondTierCategories() } throws IOException()
@@ -207,7 +213,7 @@ class MainViewModelTest {
         }
 
     @Test
-    fun getSecondTierCategoriesErrorConversionFailure() =
+    fun getSecondTierCategories_withConversionError_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery {
@@ -222,25 +228,5 @@ class MainViewModelTest {
                 .isInstanceOf(Resource.Error::class.java)
             assertThat(mainViewModel.featureCategories.value?.message)
                 .isEqualTo("Conversion Error")
-        }
-
-    @Test
-    fun getSecondTierCategoriesErrorSetsResourceError() =
-        mainCoroutineRule.runBlockingTest {
-            val errorResponse: Response<List<Category>> = Response.error(
-                400,
-                "{\"key\":[\"some_stuff\"]}"
-                    .toResponseBody("application/json".toMediaTypeOrNull())
-            )
-
-            every { Internet.hasConnection(any()) } returns true
-            coEvery { appRepository.getSecondTierCategories() } returns errorResponse
-
-            val mainViewModel = MainViewModel(app, appRepository)
-
-            verify { Internet.hasConnection(any()) }
-
-            assertThat(mainViewModel.secondTierCategories.value).isInstanceOf(Resource.Error::class.java)
-            assertThat(mainViewModel.secondTierCategories.value?.message).isEqualTo(errorResponse.message())
         }
 }
