@@ -10,6 +10,7 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.verify
+import io.mockk.verifySequence
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -55,7 +56,33 @@ class InternetTest {
         verify (exactly = 0){
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            connectivityManager.activeNetworkInfo
+
         }
         assertThat(hasConnection).isTrue()
     }
+    @Config(sdk = [M])
+    @Test
+    fun getInternet_API_at_least_M_no_wifi_or_cellular_or_ethernet_returns_false() {
+        every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
+        every { connectivityManager.activeNetwork } returns activeNetwork
+        every { connectivityManager.getNetworkCapabilities(activeNetwork) } returns capabilities
+
+        every { capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) } returns false
+        every { capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) } returns false
+        every { capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) } returns false
+
+        val hasConnection = Internet.hasConnection(app)
+
+        verifySequence {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+        }
+        verify(exactly = 0){
+            connectivityManager.activeNetworkInfo
+        }
+        assertThat(hasConnection).isFalse()
+    }
+
 }
