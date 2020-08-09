@@ -24,12 +24,11 @@ class MainViewModel(
     private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-
     /** Featured categories response. */
     val featureCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> = MutableLiveData()
 
-    /** Top level categories response. */
-    val topLevelCategories: MutableLiveData<Resource<List<Category>>> = MutableLiveData()
+    /** Second tier categories response. */
+    val secondTierCategories: MutableLiveData<Resource<List<Category>>> = MutableLiveData()
 
     /** Make network requests on initialisation. */
     init {
@@ -63,19 +62,19 @@ class MainViewModel(
     }
 
     private suspend fun safeGetSecondTierCategories() {
-        topLevelCategories.postValue(Resource.Loading())
+        secondTierCategories.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.getSecondTierCategories()
-                topLevelCategories.postValue(handleTopLevelCategoriesResponse(response))
+                secondTierCategories.postValue(handleSecondTierCategoriesResponse(response))
 
             } else {
-                topLevelCategories.postValue(Resource.Error("No internet connection"))
+                secondTierCategories.postValue(Resource.Error("No internet connection"))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> topLevelCategories.postValue(Resource.Error("Network Failure"))
-                else -> topLevelCategories.postValue(Resource.Error("Conversion Error"))
+                is IOException -> secondTierCategories.postValue(Resource.Error("Network Failure"))
+                else -> secondTierCategories.postValue(Resource.Error("Conversion Error"))
             }
         }
     }
@@ -91,7 +90,7 @@ class MainViewModel(
         return Resource.Error(response.message())
     }
 
-    private fun handleTopLevelCategoriesResponse(
+    private fun handleSecondTierCategoriesResponse(
         response: Response<List<Category>>
     ): Resource<List<Category>> {
         if (response.isSuccessful) {

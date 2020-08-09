@@ -68,12 +68,12 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
     }
 
     private fun setupObservers() {
-        viewModel.topLevelCategories.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.secondTierCategories.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
-                    response.data?.let { topLevelCategories ->
-                        mainAdapter.differ.submitList(topLevelCategories)
+                    response.data?.let { secondTierCategories ->
+                        mainAdapter.differ.submitList(secondTierCategories)
                     }
                 }
                 is Resource.Error -> {
@@ -90,10 +90,10 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
     }
 
     private fun showProgressBar() {
-        progressBarTopLevelCategories.visibility = View.VISIBLE
+        progressBarSecondTierCategories.visibility = View.VISIBLE
     }
 
     private fun hideProgressBar() {
-        progressBarTopLevelCategories.visibility = View.GONE
+        progressBarSecondTierCategories.visibility = View.GONE
     }
 }
