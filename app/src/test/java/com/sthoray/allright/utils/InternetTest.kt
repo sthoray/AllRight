@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.net.NetworkInfo
 import android.os.Build.VERSION_CODES.*
 import com.google.common.truth.Truth.assertThat
 import io.mockk.MockKAnnotations
@@ -17,9 +18,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-/*
-TODO add every { connectivity.activeNetworkInfo } return mockK
- */
 
 @RunWith(RobolectricTestRunner::class)
 class InternetTest {
@@ -33,6 +31,8 @@ class InternetTest {
     @RelaxedMockK
     lateinit var activeNetwork: Network
 
+    @RelaxedMockK
+    lateinit var activeNetworkInfo: NetworkInfo
     @RelaxedMockK
     lateinit var capabilities: NetworkCapabilities
 
@@ -132,6 +132,7 @@ class InternetTest {
     @Test
     fun getInternet_API_less_than_M_success_returns_true() {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
+        every { connectivityManager.activeNetworkInfo } returns activeNetworkInfo
         every {
             connectivityManager.activeNetworkInfo?.type
         } answers { NetworkCapabilities.TRANSPORT_WIFI }
@@ -149,6 +150,8 @@ class InternetTest {
     @Test
     fun getInternet_API_less_than_M_failure_returns_false() {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
+
+        every { connectivityManager.activeNetworkInfo } returns activeNetworkInfo
         every {
             connectivityManager.activeNetworkInfo?.type
         } answers { ConnectivityManager.TYPE_DUMMY }
