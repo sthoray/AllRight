@@ -74,7 +74,7 @@ class SearchViewModel(
             }
         }
     }
-    
+
     private fun handleSearchListingsResponse(
         response: Response<SearchResponse>
     ): Resource<SearchResponse> {
@@ -84,17 +84,17 @@ class SearchViewModel(
                 if (searchListingsResponse == null) {
                     searchListingsResponse = responseBody
                 } else {
-                    val oldListings = searchListingsResponse?.data
+                    val oldListings = searchListingsResponse!!.data
                     val newListings = responseBody.data
-                    oldListings?.addAll(newListings)
+                    oldListings.addAll(newListings)
                 }
                 return Resource.Success(searchListingsResponse ?: responseBody)
             }
         }
         return Resource.Error(response.message())
     }
-    
-    
+
+
     /**
      * The draft search request when selecting filters.
      *
