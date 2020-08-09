@@ -1,6 +1,5 @@
 package com.sthoray.allright.data.repository
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.sthoray.allright.data.api.RetrofitInstance
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Category
@@ -8,7 +7,6 @@ import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
-import com.sthoray.allright.utils.TestCoroutineRule
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,9 +15,7 @@ import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockkObject
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
 import retrofit2.Response
 
 
@@ -70,17 +66,24 @@ class AppRepositoryTest {
 
 
     @Test
-    fun searchListings() = runBlocking{
+    fun searchListings() = runBlocking {
         val appRepository = AppRepository(historyDatabase)
         val response = Response.success(searchListingResponse)
         val searchRequest = SearchRequest()
 
-        coEvery { RetrofitInstance.api.searchForListings()} returns response
+        coEvery { RetrofitInstance.api.searchForListings() } returns response
         appRepository.searchListings(searchRequest)
         coVerify { RetrofitInstance.api.searchForListings() }
     }
 
     @Test
-    fun getListing() {
+    fun getListing() = runBlocking {
+        val appRepository = AppRepository(historyDatabase)
+        val response = Response.success(getListingResponse)
+        val listingId = 1234
+
+        coEvery { RetrofitInstance.api.getListing(listingId) } returns response
+        appRepository.getListing(listingId)
+        coVerify { RetrofitInstance.api.getListing(1234) }
     }
 }
