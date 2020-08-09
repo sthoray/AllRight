@@ -1,0 +1,5 @@
+ignore:
+  - "**/model"
+  - "**/*Fragment*.*"
+  - "**/*Activity*.*"
+  - "**/*Adapter*.*"
