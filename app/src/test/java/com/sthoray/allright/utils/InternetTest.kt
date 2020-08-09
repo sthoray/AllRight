@@ -8,6 +8,8 @@ import com.google.common.truth.Truth.assertThat
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockkObject
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
@@ -26,14 +28,17 @@ class InternetTest {
 
     val CONNECTIVITY_SERVICE = "connectivity"
 
+
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+        mockkObject(Constants)
     }
 
     @Test
-    fun getInternet_API_above_M_success_returns_true() {
+    fun getInternet_API_above_or_equal_to_M_success_returns_true() {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
+        every { Constants.getVersionSDKInt() } returns 23
         every { connectivityManager.activeNetwork } returns activeNetwork
         every { connectivityManager.getNetworkCapabilities(activeNetwork) } returns capabilities
 
@@ -43,6 +48,14 @@ class InternetTest {
 
         val hasConnection = Internet.hasConnection(app)
 
+        verify {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+
+        }
+        verify(exactly = 0){
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+        }
         assertThat(hasConnection).isTrue()
     }
 }

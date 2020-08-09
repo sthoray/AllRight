@@ -1,5 +1,6 @@
 package com.sthoray.allright.utils
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
@@ -16,11 +17,12 @@ class Internet {
          *@param application The current application state
          *@return whether the application has a connection to the Internet
          */
+        @SuppressLint("NewApi")
         fun hasConnection(application: Application): Boolean {
             val connectivityManager = application.getSystemService(
                 Context.CONNECTIVITY_SERVICE
             ) as ConnectivityManager
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Constants.getVersionSDKInt() >= Build.VERSION_CODES.M) {
                 val activeNetwork = connectivityManager.activeNetwork ?: return false
                 val capabilities = connectivityManager
                     .getNetworkCapabilities(activeNetwork) ?: return false
