@@ -17,6 +17,10 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
+/*
+TODO add every { connectivity.activeNetworkInfo } return mockK
+ */
+
 @RunWith(RobolectricTestRunner::class)
 class InternetTest {
 
@@ -157,6 +161,19 @@ class InternetTest {
             ConnectivityManager.TYPE_ETHERNET
         }
 
+        assertThat(hasConnection).isFalse()
+    }
+    @Suppress("DEPRECATION")
+    @Config(maxSdk = LOLLIPOP_MR1)
+    @Test
+    fun getInternet_API_less_than_M_failure_because_active_network_info_is_null_returns_false() {
+        every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
+        every { connectivityManager.activeNetworkInfo } returns null
+        val hasConnection = Internet.hasConnection(app)
+
+        verify {
+            connectivityManager.activeNetworkInfo
+        }
         assertThat(hasConnection).isFalse()
     }
 }
