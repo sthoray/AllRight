@@ -18,7 +18,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-
 @RunWith(RobolectricTestRunner::class)
 class InternetTest {
 
@@ -33,6 +32,7 @@ class InternetTest {
 
     @RelaxedMockK
     lateinit var activeNetworkInfo: NetworkInfo
+
     @RelaxedMockK
     lateinit var capabilities: NetworkCapabilities
 
@@ -42,6 +42,7 @@ class InternetTest {
     fun setUp() {
         MockKAnnotations.init(this)
     }
+
     @Suppress("DEPRECATION")
     @Config(minSdk = M, maxSdk = P)
     @Test
@@ -59,7 +60,7 @@ class InternetTest {
         verify {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
         }
-        verify (exactly = 0){
+        verify(exactly = 0) {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
             connectivityManager.activeNetworkInfo
@@ -67,6 +68,7 @@ class InternetTest {
         }
         assertThat(hasConnection).isTrue()
     }
+
     @Suppress("DEPRECATION")
     @Config(minSdk = M, maxSdk = P)
     @Test
@@ -86,11 +88,12 @@ class InternetTest {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
         }
-        verify(exactly = 0){
+        verify(exactly = 0) {
             connectivityManager.activeNetworkInfo
         }
         assertThat(hasConnection).isFalse()
     }
+
     @Suppress("DEPRECATION")
     @Config(minSdk = M, maxSdk = P)
     @Test
@@ -101,15 +104,16 @@ class InternetTest {
 
         val hasConnection = Internet.hasConnection(app)
         verify(exactly = 0) {
-                connectivityManager.getNetworkCapabilities(activeNetwork)
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-                connectivityManager.activeNetworkInfo
+            connectivityManager.getNetworkCapabilities(activeNetwork)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            connectivityManager.activeNetworkInfo
 
         }
         assertThat(hasConnection).isFalse()
     }
+
     @Suppress("DEPRECATION")
     @Config(minSdk = M, maxSdk = P)
     @Test
@@ -127,6 +131,7 @@ class InternetTest {
         }
         assertThat(hasConnection).isFalse()
     }
+
     @Suppress("DEPRECATION")
     @Config(maxSdk = LOLLIPOP_MR1)
     @Test
@@ -145,6 +150,7 @@ class InternetTest {
 
         assertThat(hasConnection).isTrue()
     }
+
     @Suppress("DEPRECATION")
     @Config(maxSdk = LOLLIPOP_MR1)
     @Test
@@ -166,6 +172,7 @@ class InternetTest {
 
         assertThat(hasConnection).isFalse()
     }
+
     @Suppress("DEPRECATION")
     @Config(maxSdk = LOLLIPOP_MR1)
     @Test
