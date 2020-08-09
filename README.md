@@ -8,7 +8,7 @@ A simple and fast browser for the AllGoods marketplace. Built for Android device
 [![Documentation](https://github.com/sthoray/AllRight/workflows/Documentation/badge.svg)](https://sthoray.github.io/AllRight/index.html)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Build from source
+## Build
 
 The app can be built from source using [Android Studio](###Android-Studio) or via the [command line](###Command-line).
 
@@ -20,16 +20,16 @@ Refer to the Android Studio [User Guide](https://developer.android.com/studio/ru
 
 To use the included Gradle wrapper you must have a working JDK version 8 or later installation. Once setup, the following command will create an installable APK at `app/build/outputs/apk/debug/app-debug.apk`
 
-On Windows:
-
-```cmd
-.\gradlew.bat assembleDebug
-```
-
-On MacOS or Linux:
-
 ```bash
 ./gradlew assembleDebug
+```
+
+## Test
+
+All tests will performed on pull requests. These must pass before being accepted. To run tests locally, either use Android Studio or `gradlew`.
+
+```bash
+./gradlew test
 ```
 
 ## Documentation
