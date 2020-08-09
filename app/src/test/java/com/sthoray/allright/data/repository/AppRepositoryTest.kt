@@ -7,15 +7,15 @@ import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchResponse
-import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.utils.Internet
-import com.sthoray.allright.utils.Resource
 import com.sthoray.allright.utils.TestCoroutineRule
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
+import io.mockk.mockkObject
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,36 +46,20 @@ class AppRepositoryTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        mockkObject(Internet)
+        mockkObject(RetrofitInstance)
     }
     @Test
-    fun getFeaturedCategories() =
-        mainCoroutineRule.runBlockingTest {
-            val appRepository = AppRepository(historyDatabase)
-            val response = Response.success(featureCategoriesResponse)
+    fun getFeatureCategories() = runBlocking {
+        val appRepository = AppRepository(historyDatabase)
+        val response = Response.success(featureCategoriesResponse)
 
-            coEvery { RetrofitInstance.api.getFeatureCategories() } returns response
-            appRepository.getFeatureCategories()
-            coVerify { RetrofitInstance.api.getFeatureCategories() }
+        coEvery { RetrofitInstance.api.getFeatureCategories() } returns response
+        appRepository.getFeatureCategories()
+        coVerify { RetrofitInstance.api.getFeatureCategories() }
+        //val response = RetrofitInstance.api.getFeatureCategories()
+        //Truth.assertThat(response.code()).isEqualTo(200)
 
-            /*val testId = 9
-            val errorResponse: Response<Listing> = Response.error(
-                400,
-                "{\"key\":[\"some_stuff\"]}"
-                    .toResponseBody("application/json".toMediaTypeOrNull())
-            )
-
-            every { Internet.hasConnection(any()) } returns true
-            coEvery { appRepository.getListing(eq(testId)) } returns errorResponse
-
-            val listingViewModel = ListingViewModel(app, appRepository)
-            listingViewModel.getListing(testId)
-
-            verify { Internet.hasConnection(any()) }
-
-            Truth.assertThat(listingViewModel.listing.value).isInstanceOf(Resource.Error::class.java)
-            Truth.assertThat(listingViewModel.listing.value?.message).isEqualTo(errorResponse.message())*/
-        }
+    }
 
     @Test
     fun getSecondTierCategories() {
