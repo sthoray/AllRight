@@ -4,8 +4,7 @@ import android.app.Application
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import android.os.Build.VERSION_CODES.LOLLIPOP_MR1
-import android.os.Build.VERSION_CODES.M
+import android.os.Build.VERSION_CODES.*
 import com.google.common.truth.Truth.assertThat
 import io.mockk.MockKAnnotations
 import io.mockk.every
@@ -20,6 +19,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class InternetTest {
+
     @RelaxedMockK
     lateinit var app: Application
 
@@ -39,7 +39,7 @@ class InternetTest {
         MockKAnnotations.init(this)
     }
     @Suppress("DEPRECATION")
-    @Config(sdk = [M])
+    @Config(minSdk = M, maxSdk = P)
     @Test
     fun getInternet_API_at_least_M_success_returns_true() {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
@@ -64,7 +64,7 @@ class InternetTest {
         assertThat(hasConnection).isTrue()
     }
     @Suppress("DEPRECATION")
-    @Config(sdk = [M])
+    @Config(minSdk = M, maxSdk = P)
     @Test
     fun getInternet_API_at_least_M_no_wifi_or_cellular_or_ethernet_returns_false() {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
@@ -88,7 +88,7 @@ class InternetTest {
         assertThat(hasConnection).isFalse()
     }
     @Suppress("DEPRECATION")
-    @Config(sdk = [M])
+    @Config(minSdk = M, maxSdk = P)
     @Test
     fun getInternet_API_at_least_M_when_activeNetwork_returns_null_returns_false() {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
@@ -107,7 +107,7 @@ class InternetTest {
         assertThat(hasConnection).isFalse()
     }
     @Suppress("DEPRECATION")
-    @Config(sdk = [M])
+    @Config(minSdk = M, maxSdk = P)
     @Test
     fun getInternet_API_at_least_M_when_getNetworkCapabilities_returns_null_returns_false() {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
@@ -139,5 +139,24 @@ class InternetTest {
         assertThat(connectivityManager.activeNetworkInfo?.type).isEqualTo(NetworkCapabilities.TRANSPORT_WIFI)
 
         assertThat(hasConnection).isTrue()
+    }
+    @Suppress("DEPRECATION")
+    @Config(maxSdk = LOLLIPOP_MR1)
+    @Test
+    fun getInternet_API_less_than_M_failure_returns_false() {
+        every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
+        every {
+            connectivityManager.activeNetworkInfo?.type
+        } answers { ConnectivityManager.TYPE_DUMMY }
+        val hasConnection = Internet.hasConnection(app)
+
+        verify {
+            connectivityManager.activeNetworkInfo
+            ConnectivityManager.TYPE_WIFI
+            ConnectivityManager.TYPE_MOBILE
+            ConnectivityManager.TYPE_ETHERNET
+        }
+
+        assertThat(hasConnection).isFalse()
     }
 }
