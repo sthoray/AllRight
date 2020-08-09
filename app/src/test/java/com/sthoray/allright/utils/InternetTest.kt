@@ -38,7 +38,7 @@ class InternetTest {
     }
     @Config(sdk = [M])
     @Test
-    fun getInternet_API_above_M_success_returns_true() {
+    fun getInternet_API_at_least_M_success_returns_true() {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
         every { connectivityManager.activeNetwork } returns activeNetwork
         every { connectivityManager.getNetworkCapabilities(activeNetwork) } returns capabilities
