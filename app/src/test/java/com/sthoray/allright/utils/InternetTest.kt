@@ -37,6 +37,7 @@ class InternetTest {
     fun setUp() {
         MockKAnnotations.init(this)
     }
+    @Suppress("DEPRECATION")
     @Config(sdk = [M])
     @Test
     fun getInternet_API_at_least_M_success_returns_true() {
@@ -61,6 +62,7 @@ class InternetTest {
         }
         assertThat(hasConnection).isTrue()
     }
+    @Suppress("DEPRECATION")
     @Config(sdk = [M])
     @Test
     fun getInternet_API_at_least_M_no_wifi_or_cellular_or_ethernet_returns_false() {
