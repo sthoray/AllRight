@@ -6,6 +6,7 @@ A simple and fast browser for the AllGoods marketplace. Built for Android device
 [![Codecov](https://codecov.io/gh/sthoray/AllRight/branch/master/graph/badge.svg)](https://codecov.io/gh/sthoray/AllRight)
 [![Android CI](https://github.com/sthoray/AllRight/workflows/Android%20CI/badge.svg)](https://github.com/sthoray/AllRight/actions?query=workflow%3A%22Android+CI%22)
 [![Documentation](https://github.com/sthoray/AllRight/workflows/Documentation/badge.svg)](https://sthoray.github.io/AllRight/index.html)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Build from source
 
