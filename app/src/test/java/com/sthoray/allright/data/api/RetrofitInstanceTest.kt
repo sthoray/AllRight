@@ -14,7 +14,7 @@ import org.junit.Test
  */
 class RetrofitInstanceTest {
 
-    @Test
+   /* @Test
     fun testGetFeatureCategories() = runBlocking {
         val response = RetrofitInstance.api.getFeatureCategories()
         assertThat(response.code()).isEqualTo(200)
@@ -38,6 +38,6 @@ class RetrofitInstanceTest {
         val listingId = 1234
         val response = RetrofitInstance.api.getListing(listingId)
         assertThat(response.code()).isEqualTo(200)
-    }
+    }*/
 
 }

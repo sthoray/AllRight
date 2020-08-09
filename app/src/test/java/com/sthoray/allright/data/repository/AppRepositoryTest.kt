@@ -52,7 +52,7 @@ class AppRepositoryTest {
             coVerify { RetrofitInstance.api.getFeatureCategories() }
         }
 
-   /* @Test
+    @Test
     fun testGetSecondTierCategories() = runBlocking {
         val appRepository = AppRepository(searchHistoryDatabase)
         val response = Response.success(secondTierCategoriesResponse)
@@ -83,6 +83,6 @@ class AppRepositoryTest {
         coEvery { RetrofitInstance.api.getListing(listingId) } returns response
         appRepository.getListing(listingId)
         coVerify { RetrofitInstance.api.getListing(listingId) }
-    }*/
+    }
 
 }
