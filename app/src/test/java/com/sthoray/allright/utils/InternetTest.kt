@@ -30,6 +30,7 @@ class InternetTest {
     @RelaxedMockK
     lateinit var activeNetwork: Network
 
+    @Suppress("DEPRECATION")
     @RelaxedMockK
     lateinit var activeNetworkInfo: NetworkInfo
 
