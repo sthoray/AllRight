@@ -104,5 +104,21 @@ class InternetTest {
         }
         assertThat(hasConnection).isFalse()
     }
+    @Config(sdk = [M])
+    @Test
+    fun getInternet_API_at_least_M_when_getNetworkCapabilities_returns_null_returns_false() {
+        every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
+        every { connectivityManager.activeNetwork } returns activeNetwork
+        every { connectivityManager.getNetworkCapabilities(activeNetwork) } returns null
+        val hasConnection = Internet.hasConnection(app)
+        verify(exactly = 0) {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            connectivityManager.activeNetworkInfo
+
+        }
+        assertThat(hasConnection).isFalse()
+    }
 
 }
