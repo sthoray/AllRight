@@ -1,5 +1,5 @@
 ignore:
-  - "**/model/*"
-  - "**/*Fragment*.*"
-  - "**/*Activity*.*"
-  - "**/*Adapter*.*"
+  - "**/model/**/*"
+  - "**/*Fragment.*"
+  - "**/*Activity.*"
+  - "**/*Adapter.*"
