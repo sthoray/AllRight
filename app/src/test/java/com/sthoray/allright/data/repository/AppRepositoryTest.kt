@@ -41,7 +41,7 @@ class AppRepositoryTest {
         mockkObject(RetrofitInstance)
     }
 
-    @Test
+   /* @Test
     fun getFeatureCategories() =
         runBlocking {
             val appRepository = AppRepository(searchHistoryDatabase)
@@ -83,6 +83,6 @@ class AppRepositoryTest {
         coEvery { RetrofitInstance.api.getListing(listingId) } returns response
         appRepository.getListing(listingId)
         coVerify { RetrofitInstance.api.getListing(listingId) }
-    }
+    }*/
 
 }
