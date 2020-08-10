@@ -4,7 +4,15 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'org.jetbrains.dokka-android'
-apply plugin: "com.hiya.jacoco-android"
+apply plugin: 'com.hiya.jacoco-android'
+
+jacocoAndroidUnitTestReport {
+    // Ignore data classes and anything related to the UI
+    excludes += ['**/model',
+                 '**/*Fragment*.*',
+                 '**/*Activity*.*',
+                 '**/*Adapter*.*']
+}
 
 android {
     compileSdkVersion 30
