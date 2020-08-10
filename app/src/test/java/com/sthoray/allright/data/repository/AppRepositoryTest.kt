@@ -77,7 +77,13 @@ class AppRepositoryTest {
     }
 
     @Test
-    fun getListing(){
-        
+    fun getListing() = runBlocking {
+        val listingId = 1234
+        val appRepository = AppRepository(historyDatabase)
+        val response = Response.success(getListingResponse)
+
+        coEvery { RetrofitInstance.api.getListing(listingId) } returns response
+        appRepository.getListing(listingId)
+        coVerify { RetrofitInstance.api.getListing(listingId) }
     }
 }
