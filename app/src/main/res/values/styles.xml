@@ -11,7 +11,7 @@
     <!-- Splash screen theme. -->
     <style name="Theme.Splash" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary_orange</item>
-        <item name="android:colorBackground">?attr/colorPrimary</item>
+        <item name="android:windowBackground">@drawable/theme_splash</item>
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="android:navigationBarColor">?attr/colorPrimary</item>
     </style>
