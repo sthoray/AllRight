@@ -2,7 +2,6 @@
 
 package com.sthoray.allright.ui.splash.view
 
-
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
@@ -20,7 +19,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@Suppress("DEPRECATION")
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
