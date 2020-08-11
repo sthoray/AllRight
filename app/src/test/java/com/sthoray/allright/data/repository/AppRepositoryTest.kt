@@ -76,7 +76,13 @@ class AppRepositoryTest {
         coVerify { RetrofitInstance.api.searchForListings() }
     }
 
+    /**
+     * Adding this test is causing RetrofitInstanceTest fail.
+     */
+
     @Test
     fun getListing(){
+
     }
+
 }
