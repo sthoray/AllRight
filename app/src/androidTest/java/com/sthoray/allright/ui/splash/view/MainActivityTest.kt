@@ -28,7 +28,7 @@ class MainActivityTest {
     var mActivityTestRule = ActivityTestRule(SplashActivity::class.java)
 
     @Test
-    fun mainActivityTest() {
+    fun mainActivity_checkViews_integrationTest() {
         val textView = onView(
             allOf(
                 withText("AllRight"),
