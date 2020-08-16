@@ -2,14 +2,13 @@ package com.sthoray.allright.data.db
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
-import com.sthoray.allright.TestUtil
+import com.sthoray.allright.util.TestUtil
 import com.sthoray.allright.data.model.search.SearchRequest
+import com.sthoray.allright.util.blockingObserve
 import com.sthoray.allright.utils.SortOrder
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -18,9 +17,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
-
 
 @RunWith(AndroidJUnit4::class)
 class SearchHistoryDatabaseTest {
@@ -176,20 +172,5 @@ class SearchHistoryDatabaseTest {
         val history = searchHistoryDao.getHistory().blockingObserve()
 
         assertThat(history?.size).isEqualTo(0)
-    }
-
-    private fun <T> LiveData<T>.blockingObserve(): T? {
-        var value: T? = null
-        val latch = CountDownLatch(1)
-
-        val observer = Observer<T> { t ->
-            value = t
-            latch.countDown()
-        }
-
-        observeForever(observer)
-
-        latch.await(2, TimeUnit.SECONDS)
-        return value
     }
 }
