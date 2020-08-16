@@ -26,7 +26,7 @@ To use the included Gradle wrapper you must have a working JDK version 8 or late
 
 ## Test
 
-All tests will performed on pull requests. These must pass before being accepted. To run tests locally, either use Android Studio or `gradlew`. Tests may fail when using `gradlew` depending on your systems JDK version. Try running the tests inside Android Studio if you encounter errors. 
+All tests must pass on GitHub before being accepted. To run tests locally, either use Android Studio or `gradlew`. Tests may fail when using `gradlew` depending on your systems JDK version. Try running the tests inside Android Studio if you encounter errors.
 
 ```bash
 ./gradlew test
