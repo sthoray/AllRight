@@ -2,6 +2,9 @@ package com.sthoray.allright.util
 
 import com.sthoray.allright.data.model.search.SearchRequest
 
+/**
+ * Utilities to construct objects with sensible defaults for testing.
+ */
 class TestUtil {
     companion object {
 
