@@ -35,6 +35,6 @@ interface SearchHistoryDao {
     suspend fun delete(searchRequest: SearchRequest)
 
     /** Clears the entire search history. */
-    //@Query("DELETE FROM search_history")
-    //suspend fun clearHistory()
+    @Query("DELETE FROM search_history")
+    suspend fun clearHistory()
 }
