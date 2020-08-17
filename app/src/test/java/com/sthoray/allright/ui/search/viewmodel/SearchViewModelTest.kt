@@ -9,9 +9,9 @@ import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.model.search.SearchResponseMetadata
 import com.sthoray.allright.data.repository.AppRepository
-import com.sthoray.allright.utils.Internet
-import com.sthoray.allright.utils.Resource
-import com.sthoray.allright.utils.TestCoroutineRule
+import com.sthoray.allright.util.Internet
+import com.sthoray.allright.util.Resource
+import com.sthoray.allright.util.TestCoroutineRule
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi

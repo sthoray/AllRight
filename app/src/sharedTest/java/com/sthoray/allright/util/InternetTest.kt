@@ -1,4 +1,4 @@
-package com.sthoray.allright.utils
+package com.sthoray.allright.util
 
 import android.app.Application
 import android.net.ConnectivityManager
@@ -56,7 +56,8 @@ class InternetTest {
         every { capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) } returns true
         every { capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) } returns true
 
-        val hasConnection = Internet.hasConnection(app)
+        val hasConnection =
+            Internet.hasConnection(app)
 
         verify {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
@@ -82,7 +83,8 @@ class InternetTest {
         every { capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) } returns false
         every { capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) } returns false
 
-        val hasConnection = Internet.hasConnection(app)
+        val hasConnection =
+            Internet.hasConnection(app)
 
         verifySequence {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
@@ -103,7 +105,8 @@ class InternetTest {
         every { connectivityManager.activeNetwork } returns null
         every { connectivityManager.getNetworkCapabilities(activeNetwork) } returns capabilities
 
-        val hasConnection = Internet.hasConnection(app)
+        val hasConnection =
+            Internet.hasConnection(app)
         verify(exactly = 0) {
             connectivityManager.getNetworkCapabilities(activeNetwork)
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
@@ -122,7 +125,8 @@ class InternetTest {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
         every { connectivityManager.activeNetwork } returns activeNetwork
         every { connectivityManager.getNetworkCapabilities(activeNetwork) } returns null
-        val hasConnection = Internet.hasConnection(app)
+        val hasConnection =
+            Internet.hasConnection(app)
         verify(exactly = 0) {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
@@ -142,7 +146,8 @@ class InternetTest {
         every {
             connectivityManager.activeNetworkInfo?.type
         } answers { NetworkCapabilities.TRANSPORT_WIFI }
-        val hasConnection = Internet.hasConnection(app)
+        val hasConnection =
+            Internet.hasConnection(app)
 
         verify {
             connectivityManager.activeNetworkInfo
@@ -162,7 +167,8 @@ class InternetTest {
         every {
             connectivityManager.activeNetworkInfo?.type
         } answers { ConnectivityManager.TYPE_DUMMY }
-        val hasConnection = Internet.hasConnection(app)
+        val hasConnection =
+            Internet.hasConnection(app)
 
         verify {
             connectivityManager.activeNetworkInfo
@@ -180,7 +186,8 @@ class InternetTest {
     fun getInternet_API_less_than_M_failure_because_active_network_info_is_null_returns_false() {
         every { app.getSystemService(CONNECTIVITY_SERVICE) } returns connectivityManager
         every { connectivityManager.activeNetworkInfo } returns null
-        val hasConnection = Internet.hasConnection(app)
+        val hasConnection =
+            Internet.hasConnection(app)
 
         verify {
             connectivityManager.activeNetworkInfo

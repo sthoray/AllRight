@@ -9,7 +9,7 @@ import com.google.common.truth.Truth.assertThat
 import com.sthoray.allright.util.TestUtil
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.util.blockingObserve
-import com.sthoray.allright.utils.SortOrder
+import com.sthoray.allright.util.SortOrder
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before

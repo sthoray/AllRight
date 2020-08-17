@@ -1,6 +1,6 @@
 package com.sthoray.allright.data.api
 
-import com.sthoray.allright.utils.Constants.Companion.BASE_API_URL
+import com.sthoray.allright.util.Constants.Companion.BASE_API_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

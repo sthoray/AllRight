@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Category
-import com.sthoray.allright.utils.AppIcon
+import com.sthoray.allright.util.AppIcon
 import kotlinx.android.synthetic.main.item_layout_second_tier_category.view.*
 
 /** Adapter for adapting top level categories into a RecyclerView. */

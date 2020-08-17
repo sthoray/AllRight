@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Category
-import com.sthoray.allright.utils.Constants.Companion.BASE_URL
+import com.sthoray.allright.util.Constants.Companion.BASE_URL
 import kotlinx.android.synthetic.main.item_layout_featured_category.view.*
 
 /**

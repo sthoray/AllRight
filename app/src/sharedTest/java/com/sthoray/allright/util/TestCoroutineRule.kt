@@ -1,4 +1,4 @@
-package com.sthoray.allright.utils
+package com.sthoray.allright.util
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

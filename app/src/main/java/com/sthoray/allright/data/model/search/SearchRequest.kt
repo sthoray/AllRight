@@ -2,7 +2,7 @@ package com.sthoray.allright.data.model.search
 
 import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
-import com.sthoray.allright.utils.SortOrder
+import com.sthoray.allright.util.SortOrder
 
 /**
  * Model for search requests.

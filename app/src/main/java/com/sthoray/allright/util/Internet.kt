@@ -1,4 +1,4 @@
-package com.sthoray.allright.utils
+package com.sthoray.allright.util
 
 import android.app.Application
 import android.content.Context

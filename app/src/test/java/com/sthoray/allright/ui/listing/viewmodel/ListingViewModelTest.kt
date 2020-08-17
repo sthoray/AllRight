@@ -6,9 +6,9 @@ import com.google.common.truth.Truth.assertThat
 import com.google.gson.JsonSyntaxException
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.repository.AppRepository
-import com.sthoray.allright.utils.Internet
-import com.sthoray.allright.utils.Resource
-import com.sthoray.allright.utils.TestCoroutineRule
+import com.sthoray.allright.util.Internet
+import com.sthoray.allright.util.Resource
+import com.sthoray.allright.util.TestCoroutineRule
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK

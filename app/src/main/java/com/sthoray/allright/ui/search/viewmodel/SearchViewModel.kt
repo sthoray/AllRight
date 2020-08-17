@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
-import com.sthoray.allright.utils.Internet
-import com.sthoray.allright.utils.Resource
-import com.sthoray.allright.utils.SortOrder
+import com.sthoray.allright.util.Internet
+import com.sthoray.allright.util.Resource
+import com.sthoray.allright.util.SortOrder
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException

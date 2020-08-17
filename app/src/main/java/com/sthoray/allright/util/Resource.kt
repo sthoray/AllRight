@@ -1,4 +1,4 @@
-package com.sthoray.allright.utils
+package com.sthoray.allright.util
 
 /**
  * Generic resource to wrap around network responses.

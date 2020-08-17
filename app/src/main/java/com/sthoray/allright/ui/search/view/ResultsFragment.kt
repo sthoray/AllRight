@@ -16,7 +16,7 @@ import com.sthoray.allright.ui.listing.view.ListingActivity
 import com.sthoray.allright.ui.search.adapter.ResultsAdapter
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
-import com.sthoray.allright.utils.Resource
+import com.sthoray.allright.util.Resource
 import kotlinx.android.synthetic.main.fragment_results.*
 
 /** Fragment to display search results in a recycler view. */

@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.repository.AppRepository
-import com.sthoray.allright.utils.Internet
-import com.sthoray.allright.utils.Resource
+import com.sthoray.allright.util.Internet
+import com.sthoray.allright.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException

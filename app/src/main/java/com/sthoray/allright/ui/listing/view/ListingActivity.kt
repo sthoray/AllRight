@@ -18,8 +18,8 @@ import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.adapter.ViewPagerAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
-import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
-import com.sthoray.allright.utils.Resource
+import com.sthoray.allright.util.Constants.Companion.BASE_PRODUCT_URL
+import com.sthoray.allright.util.Resource
 import kotlinx.android.synthetic.main.activity_listing.*
 
 /** The listing activity to display information about a listing. */
