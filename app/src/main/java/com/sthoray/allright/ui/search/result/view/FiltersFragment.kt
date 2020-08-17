@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.search.view
+package com.sthoray.allright.ui.search.result.view
 
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.sthoray.allright.R
-import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
+import com.sthoray.allright.ui.search.result.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_filters.*
 
 /**

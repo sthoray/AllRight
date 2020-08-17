@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.search.viewmodel
+package com.sthoray.allright.ui.search.result.viewmodel
 
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -50,7 +50,10 @@ class SearchViewModelTest {
     @Test
     fun initSearch_withUninitialisedSearchRequest_initialisesSearchRequest() =
         mainCoroutineRule.runBlockingTest {
-            SearchViewModel(app, appRepository).apply {
+            SearchViewModel(
+                app,
+                appRepository
+            ).apply {
                 initSearch(testId)
 
                 coVerify { searchListings() }
@@ -64,7 +67,10 @@ class SearchViewModelTest {
     fun initSearch_withInitialisedSearchRequest_doesNothing() = mainCoroutineRule.runBlockingTest {
         val testSearchRequest = SearchRequest(categoryId = testId)
 
-        SearchViewModel(app, appRepository).apply {
+        SearchViewModel(
+            app,
+            appRepository
+        ).apply {
             searchRequest = testSearchRequest
             initSearch(testId + 1)
 
@@ -85,7 +91,10 @@ class SearchViewModelTest {
                 appRepository.searchListings(eq(testSearchRequest))
             } returns Response.success(testSearchResponse)
 
-            SearchViewModel(app, appRepository).apply {
+            SearchViewModel(
+                app,
+                appRepository
+            ).apply {
                 searchRequest = testSearchRequest
                 searchListings()
 
@@ -112,7 +121,10 @@ class SearchViewModelTest {
                 appRepository.searchListings(eq(testSearchRequest))
             } returns Response.success(singleSearchListingResponse)
 
-            SearchViewModel(app, appRepository).apply {
+            SearchViewModel(
+                app,
+                appRepository
+            ).apply {
                 searchRequest = testSearchRequest
                 searchListingsResponse = singleSearchListingResponse
                 searchListings()
@@ -138,7 +150,10 @@ class SearchViewModelTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery { appRepository.searchListings(eq(testSearchRequest)) } returns errorResponse
 
-            SearchViewModel(app, appRepository).apply {
+            SearchViewModel(
+                app,
+                appRepository
+            ).apply {
                 searchRequest = testSearchRequest
                 searchListings()
 
@@ -156,7 +171,10 @@ class SearchViewModelTest {
 
             every { Internet.hasConnection(any()) } returns false
 
-            SearchViewModel(app, appRepository).apply {
+            SearchViewModel(
+                app,
+                appRepository
+            ).apply {
                 searchRequest = testSearchRequest
                 searchListings()
 
@@ -178,7 +196,10 @@ class SearchViewModelTest {
                 appRepository.searchListings(eq(testSearchRequest))
             } throws IOException()
 
-            SearchViewModel(app, appRepository).apply {
+            SearchViewModel(
+                app,
+                appRepository
+            ).apply {
                 searchRequest = testSearchRequest
                 searchListings()
 
@@ -199,7 +220,10 @@ class SearchViewModelTest {
                 appRepository.searchListings(eq(testSearchRequest))
             } throws JsonSyntaxException("Something happened")
 
-            SearchViewModel(app, appRepository).apply {
+            SearchViewModel(
+                app,
+                appRepository
+            ).apply {
                 searchRequest = testSearchRequest
                 searchListings()
 
@@ -212,7 +236,10 @@ class SearchViewModelTest {
 
     @Test
     fun applyFiltersAndSearch() {
-        SearchViewModel(app, appRepository).apply {
+        SearchViewModel(
+            app,
+            appRepository
+        ).apply {
             searchRequestDraft = SearchRequest(pageNumber = 999)
             searchRequest = mockk(relaxed = true)
             searchListingsResponse = mockk(relaxed = true)
@@ -228,7 +255,10 @@ class SearchViewModelTest {
 
     @Test
     fun setDraftBinaryFilters_withTrueParameters_isCorrect() {
-        SearchViewModel(app, appRepository).apply {
+        SearchViewModel(
+            app,
+            appRepository
+        ).apply {
             searchRequestDraft = SearchRequest()
             setDraftBinaryFilters(
                 freeShipping = true,
@@ -243,7 +273,10 @@ class SearchViewModelTest {
 
     @Test
     fun setDraftBinaryFilters_withFalseParameters_isCorrect() {
-        SearchViewModel(app, appRepository).apply {
+        SearchViewModel(
+            app,
+            appRepository
+        ).apply {
             searchRequestDraft = SearchRequest()
             setDraftBinaryFilters(
                 freeShipping = false,
@@ -261,7 +294,10 @@ class SearchViewModelTest {
         val initialSearchRequest = SearchRequest()
         val expectedSearchRequest = SearchRequest(auctions = 0, products = 1)
 
-        SearchViewModel(app, appRepository).apply {
+        SearchViewModel(
+            app,
+            appRepository
+        ).apply {
             searchRequestDraft = initialSearchRequest
             setDraftMarketplace(isMall = true)
 
@@ -274,7 +310,10 @@ class SearchViewModelTest {
         val initialSearchRequest = SearchRequest()
         val expectedSearchRequest = SearchRequest(auctions = 1, products = 0)
 
-        SearchViewModel(app, appRepository).apply {
+        SearchViewModel(
+            app,
+            appRepository
+        ).apply {
             searchRequestDraft = initialSearchRequest
             setDraftMarketplace(isMall = false)
 
@@ -286,7 +325,10 @@ class SearchViewModelTest {
     fun isMall_withMallRequest_returnsTrue() {
         val mallSearchRequest = SearchRequest(auctions = 0, products = 1)
 
-        SearchViewModel(app, appRepository).apply {
+        SearchViewModel(
+            app,
+            appRepository
+        ).apply {
             assertThat(isMall(mallSearchRequest)).isTrue()
         }
     }
@@ -295,7 +337,10 @@ class SearchViewModelTest {
     fun isMall_withSecondhandRequest_returnsFalse() {
         val secondhandSearchRequest = SearchRequest(auctions = 1, products = 0)
 
-        SearchViewModel(app, appRepository).apply {
+        SearchViewModel(
+            app,
+            appRepository
+        ).apply {
             assertThat(isMall(secondhandSearchRequest)).isFalse()
         }
     }

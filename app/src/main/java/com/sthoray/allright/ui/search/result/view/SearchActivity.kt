@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.search.view
+package com.sthoray.allright.ui.search.result.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +8,7 @@ import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
-import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
+import com.sthoray.allright.ui.search.result.viewmodel.SearchViewModel
 
 /**
  * Activity for viewing search results.

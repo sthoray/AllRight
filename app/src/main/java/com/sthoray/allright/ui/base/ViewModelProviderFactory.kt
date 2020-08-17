@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
-import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
+import com.sthoray.allright.ui.search.result.viewmodel.SearchViewModel
 
 /**
  * Factory class to define how the Main ViewModel should be created.
@@ -32,7 +32,10 @@ class ViewModelProviderFactory(
             }
             modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
                 @Suppress("UNCHECKED_CAST")
-                return SearchViewModel(app, appRepository) as T
+                return SearchViewModel(
+                    app,
+                    appRepository
+                ) as T
             }
             modelClass.isAssignableFrom(ListingViewModel::class.java) -> {
                 @Suppress("UNCHECKED_CAST")

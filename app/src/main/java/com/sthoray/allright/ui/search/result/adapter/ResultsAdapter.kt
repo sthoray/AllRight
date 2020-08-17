@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.search.adapter
+package com.sthoray.allright.ui.search.result.adapter
 
 import android.view.LayoutInflater
 import android.view.View
