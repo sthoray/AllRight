@@ -5,12 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.view.MainActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/primary_orange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/app_name"
+        app:titleTextColor="@color/design_default_color_on_primary"
         />
     <fragment
         android:id="@+id/navigationHostFragment"

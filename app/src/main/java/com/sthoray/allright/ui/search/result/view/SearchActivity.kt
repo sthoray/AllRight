@@ -9,6 +9,7 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.search.result.viewmodel.SearchViewModel
+import kotlinx.android.synthetic.main.activity_search.*
 
 /**
  * Activity for viewing search results.
@@ -56,4 +57,5 @@ class SearchActivity : AppCompatActivity() {
     private fun setupSearchRequest(categoryId: Int) {
         viewModel.initSearch(categoryId)
     }
+
 }

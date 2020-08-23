@@ -5,10 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.listing.view.ListingActivity">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/listing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/primary_orange"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/design_default_color_on_primary"/>
+
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpListingImages"
@@ -17,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/listing_toolbar" />
 
         <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
             android:id="@+id/wdiListingImages"
