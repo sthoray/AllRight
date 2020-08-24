@@ -43,6 +43,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        setSupportActionBar(findViewById(R.id.search_toolbar))
         setupViewModel()
         setupSearchRequest(intent.getIntExtra(CATEGORY_ID_KEY, 0))
     }

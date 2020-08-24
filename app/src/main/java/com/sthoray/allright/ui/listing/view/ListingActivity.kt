@@ -35,7 +35,7 @@ class ListingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listing)
         setupViewModel()
-
+        setSupportActionBar(findViewById(R.id.listing_toolbar))
         val listingId = intent.getIntExtra(LISTING_ID_KEY, 0)
         viewModel.getListing(listingId)
         setVisitListingBtnListener(listingId)

@@ -14,9 +14,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/app_name"
-        app:titleTextColor="@color/design_default_color_on_primary"
-        />
+        app:titleTextColor="@color/design_default_color_on_primary"/>
+
+
     <fragment
         android:id="@+id/navigationHostFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
