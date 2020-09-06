@@ -34,6 +34,7 @@
             android:name=".ui.listing.view.ListingActivity"
             android:label="@string/listing_label"
             android:launchMode="singleTop"
+            android:parentActivityName=".ui.search.result.view.SearchActivity"
             >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

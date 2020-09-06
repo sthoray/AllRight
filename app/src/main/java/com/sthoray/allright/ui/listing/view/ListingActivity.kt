@@ -1,11 +1,14 @@
 package com.sthoray.allright.ui.listing.view
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
@@ -35,14 +38,19 @@ class ListingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listing)
         setupViewModel()
-        setSupportActionBar(findViewById(R.id.listing_toolbar))
+        setupActionBar()
+
         val listingId = intent.getIntExtra(LISTING_ID_KEY, 0)
         viewModel.getListing(listingId)
         setVisitListingBtnListener(listingId)
 
         setupObservers()
     }
-
+    private fun setupActionBar(){
+        setSupportActionBar(findViewById(R.id.listing_toolbar))
+        supportActionBar?.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_button_arrow_back_white_24))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
     private fun setupViewModel() {
         val appRepository = AppRepository(SearchHistoryDatabase(this))
         val viewModelProviderFactory = ViewModelProviderFactory(application, appRepository)
