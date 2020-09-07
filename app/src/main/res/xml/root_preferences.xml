@@ -1,0 +1,24 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/search_header">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="start_secondhand"
+            android:summaryOff="@string/start_secondhand_off_summary"
+            android:summaryOn="@string/start_secondhand_on_summary"
+            android:title="@string/start_secondhand_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/about_header">
+
+        <Preference
+            app:key="version"
+            app:summary="v0.2.0"
+            app:title="@string/version_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
