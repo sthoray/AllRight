@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.sthoray.allright.utils
 
 import android.app.Application
