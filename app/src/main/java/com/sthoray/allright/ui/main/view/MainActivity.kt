@@ -3,6 +3,7 @@ package com.sthoray.allright.ui.main.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.sthoray.allright.R
@@ -55,8 +56,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNav() {
-        bottomNavigationView.setupWithNavController(
-            navigationHostFragment.findNavController()
-        )
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navigationHostFragment) as NavHostFragment
+        bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
     }
 }
