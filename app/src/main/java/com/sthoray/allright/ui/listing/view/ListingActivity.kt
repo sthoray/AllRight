@@ -93,6 +93,7 @@ class ListingActivity : AppCompatActivity() {
             tvListingLocation.visibility = View.VISIBLE
         }
 
+
         // Price
         if (listing.buyNowPrice == null && listing.currentPrice == null) {
             // Likely a mall listing
@@ -120,6 +121,24 @@ class ListingActivity : AppCompatActivity() {
                 )
                 tvListingBuyNowPriceTitle.visibility = View.VISIBLE
                 tvListingBuyNowPrice.visibility = View.VISIBLE
+            }
+        }
+
+
+        //Item Specifics
+        listing.properties?.let {
+            if (it.size > 0){
+                var allProperties = String()
+                for (p in it){
+                    allProperties += "ID: " + p.id + "\n"
+                    allProperties += "Option: " + p.option + "\n"
+                    allProperties += "Option ID: " + p.optionId + "\n"
+                    allProperties += "Title: " + p.title + "\n"
+                    allProperties += "Type: " + p.type + "\n"
+                    allProperties += "Value: " + p.value + "\n\n"
+                }
+                tvListingProperties.text = allProperties
+                tvListingProperties.visibility = View.VISIBLE
             }
         }
 
@@ -156,6 +175,7 @@ class ListingActivity : AppCompatActivity() {
         ivSellersImage.visibility = View.GONE
         tvSellersName.visibility = View.GONE
         tvSellersLocation.visibility = View.GONE
+        tvListingProperties.visibility = View.GONE
     }
 
     private fun hideProgressBar() {
