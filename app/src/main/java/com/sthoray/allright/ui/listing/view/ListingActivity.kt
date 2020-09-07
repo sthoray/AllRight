@@ -130,15 +130,16 @@ class ListingActivity : AppCompatActivity() {
             if (it.size > 0){
                 var allProperties = String()
                 for (p in it){
-                    allProperties += "ID: " + p.id + "\n"
-                    allProperties += "Option: " + p.option + "\n"
-                    allProperties += "Option ID: " + p.optionId + "\n"
                     allProperties += "Title: " + p.title + "\n"
+                    allProperties += "Option: " + p.option + "\n"
+                    allProperties += "ID: " + p.id + "\n"
+                    allProperties += "Option ID: " + p.optionId + "\n"
                     allProperties += "Type: " + p.type + "\n"
                     allProperties += "Value: " + p.value + "\n\n"
                 }
                 tvListingProperties.text = allProperties
                 tvListingProperties.visibility = View.VISIBLE
+                tvListingPropertiesTitle.visibility = View.VISIBLE
             }
         }
 
@@ -176,6 +177,7 @@ class ListingActivity : AppCompatActivity() {
         tvSellersName.visibility = View.GONE
         tvSellersLocation.visibility = View.GONE
         tvListingProperties.visibility = View.GONE
+        tvListingPropertiesTitle.visibility = View.GONE
     }
 
     private fun hideProgressBar() {
