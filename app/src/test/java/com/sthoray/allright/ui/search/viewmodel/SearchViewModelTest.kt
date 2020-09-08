@@ -51,7 +51,7 @@ class SearchViewModelTest {
     fun initSearch_withUninitialisedSearchRequest_initialisesSearchRequest() =
         mainCoroutineRule.runBlockingTest {
             SearchViewModel(app, appRepository).apply {
-                initSearch(testId)
+                initSearch(testId, "mall")
 
                 coVerify { searchListings() }
 
@@ -66,7 +66,7 @@ class SearchViewModelTest {
 
         SearchViewModel(app, appRepository).apply {
             searchRequest = testSearchRequest
-            initSearch(testId + 1)
+            initSearch(testId + 1, "mall")
 
             coVerify(exactly = 0) { searchListings() }
 
