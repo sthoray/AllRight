@@ -67,9 +67,6 @@ class MainActivity : AppCompatActivity() {
     private fun setupToolbar() {
         toolbarMain.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.toolbarSearch -> {
-                    true
-                }
                 R.id.toolbarSettings -> {
                     Intent(this, SettingsActivity::class.java).also {
                         startActivity(it)
