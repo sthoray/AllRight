@@ -3,6 +3,7 @@ package com.sthoray.allright.ui.search.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.repository.AppRepository
@@ -24,7 +25,7 @@ class SearchActivity : AppCompatActivity() {
         /** The key for a selected listingId. */
         const val LISTING_ID_KEY = "LISTING_ID"
     }
-    
+
     /**
      * Search activity's share view model.
      *
@@ -54,6 +55,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun setupSearchRequest(categoryId: Int) {
-        viewModel.initSearch(categoryId)
+        val marketplace = PreferenceManager
+            .getDefaultSharedPreferences(this)
+            .getString("default_marketplace", "mall")!!
+        viewModel.initSearch(categoryId, marketplace)
     }
 }

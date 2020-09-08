@@ -44,10 +44,16 @@ class SearchViewModel(
      * search must also be performed to fetch the first page.
      *
      * @param categoryId The ID of the category to begin the search in.
+     * @param marketplace The marketplace to start searching in. Accepts
+     * either "mall" or "secondhand".
      */
-    fun initSearch(categoryId: Int) {
+    fun initSearch(categoryId: Int, marketplace: String) {
         if (!::searchRequest.isInitialized) {
-            searchRequest = SearchRequest(categoryId = categoryId)
+            searchRequest = if (marketplace == "secondhand") {
+                setMarketplace(SearchRequest(categoryId = categoryId), false)
+            } else {
+                setMarketplace(SearchRequest(categoryId = categoryId), true)
+            }
             searchRequestDraft = searchRequest
             searchListings()
         }
@@ -137,8 +143,14 @@ class SearchViewModel(
      * @param isMall True if the marketplace is "mall", false if it is "secondhand".
      */
     fun setDraftMarketplace(isMall: Boolean) {
-        searchRequestDraft.auctions = (!isMall).toInt()
-        searchRequestDraft.products = isMall.toInt()
+        searchRequestDraft = setMarketplace(searchRequestDraft, isMall)
+    }
+
+    private fun setMarketplace(searchRequest: SearchRequest, isMall: Boolean): SearchRequest {
+        return searchRequest.apply {
+            auctions = (!isMall).toInt()
+            products = isMall.toInt()
+        }
     }
 
     /**
