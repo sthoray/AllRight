@@ -17,6 +17,11 @@ jacocoAndroidUnitTestReport {
                  '**/Constants.*']
 }
 
+// Version numbers used for versionCode and versionName
+def versionMajor = 0
+def versionMinor = 2
+def versionPatch = 1
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -25,8 +30,8 @@ android {
         applicationId "com.sthoray.allright"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "0.2.0"
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -50,9 +55,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "app_version", "${defaultConfig.versionName}"
         }
         debug {
             testCoverageEnabled true
+            versionNameSuffix ".debug"
+            resValue "string", "app_version", "${defaultConfig.versionName}"
         }
     }
 
