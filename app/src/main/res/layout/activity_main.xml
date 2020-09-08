@@ -19,7 +19,6 @@
             app:title="@string/app_name"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             />
-
     </com.google.android.material.appbar.AppBarLayout>
 
 

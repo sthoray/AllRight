@@ -1,8 +1,6 @@
 package com.sthoray.allright.ui.listing.view
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -28,7 +26,6 @@ import kotlinx.android.synthetic.main.activity_listing.*
 /** The listing activity to display information about a listing. */
 class ListingActivity : AppCompatActivity() {
 
-
     private val TAG = "ListingActivity"
     private lateinit var viewModel: ListingViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
@@ -46,6 +43,7 @@ class ListingActivity : AppCompatActivity() {
 
         setupObservers()
     }
+
     private fun setupActionBar(){
         setSupportActionBar(findViewById(R.id.listing_toolbar))
         supportActionBar?.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_button_arrow_back_white_24))

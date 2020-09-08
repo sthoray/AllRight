@@ -1,6 +1,7 @@
 package com.sthoray.allright.ui.search.result.view
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.R
@@ -9,7 +10,6 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.search.result.viewmodel.SearchViewModel
-import kotlinx.android.synthetic.main.activity_search.*
 
 /**
  * Activity for viewing search results.
@@ -48,6 +48,17 @@ class SearchActivity : AppCompatActivity() {
         setupSearchRequest(intent.getIntExtra(CATEGORY_ID_KEY, 0))
     }
 
+    /**
+     * Set OptionsMenu to show the actions on the top app bar
+     *
+     *@param menu If non null, this menu will be added to the activity as the top app bar
+     *@return
+     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.top_search_menu, menu)
+        return true
+    }
     private fun setupViewModel() {
         val appRepository = AppRepository(SearchHistoryDatabase(this))
         val viewModelProviderFactory = ViewModelProviderFactory(application, appRepository)
