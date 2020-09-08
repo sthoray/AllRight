@@ -14,7 +14,7 @@
         android:theme="@style/Theme.App">
         <activity
             android:name=".ui.settings.view.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".ui.splash.view.SplashActivity"
             android:theme="@style/Theme.Splash">
@@ -26,11 +26,12 @@
         </activity>
         <activity
             android:name=".ui.main.view.MainActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppPrimary" />
         <activity
             android:name=".ui.search.view.SearchActivity"
             android:label="@string/search_label"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop" />
         <activity
             android:name=".ui.listing.view.ListingActivity"
             android:label="@string/listing_label"

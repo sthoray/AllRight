@@ -5,13 +5,21 @@
     <string name="coming_soon_text">Coming soon</string>
     <string name="extended_fab_filter_content">Filter</string>
 
+
     <!-- Format strings-->
     <string name="format_price">$%.2f</string>
+
 
     <!-- Main menu items -->
     <string name="title_home">Home</string>
     <string name="title_browse">Browse</string>
     <string name="title_profile">Profile</string>
+
+
+    <!-- Top menu items -->
+    <string name="item_search">Search</string>
+    <string name="item_settings">Settings</string>
+
 
     <!-- Search fragments -->
     <string name="title_results">Search Results</string>
@@ -44,12 +52,14 @@
     <string name="fast_shipping_title">Fast Shipping</string>
     <string name="brand_new_title">Brand New Only</string>
 
+
     <!-- Listing activity -->
     <string name="btn_visit_listing">View Listing</string>
     <string name="title_buy_now_price">Buy Now</string>
     <string name="title_start_price">Start Price</string>
     <string name="title_sellers_details">Seller\'s Details</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings</string>
+
 
     <!-- Preference Titles -->
     <string name="about_header">About</string>

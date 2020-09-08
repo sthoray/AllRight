@@ -8,6 +8,15 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
 
+    <!-- Application theme without actionbar. -->
+    <style name="Theme.AppPrimary" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary_orange</item>
+        <item name="colorPrimaryVariant">@color/primary_orange_dark</item>
+        <item name="colorOnPrimary">@color/primary_orange_text</item>
+        <item name="colorSecondary">@color/primary_orange</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+
     <!-- Splash screen theme. -->
     <style name="Theme.Splash" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary_orange</item>
