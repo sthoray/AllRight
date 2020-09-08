@@ -69,7 +69,5 @@
     <string name="version_title">Build version</string>
 
     <!-- Search Preferences -->
-    <string name="start_secondhand_title">Default to secondhand</string>
-    <string name="start_secondhand_on_summary">Search the secondhand marketplace</string>
-    <string name="start_secondhand_off_summary">Search the mall marketplace</string>
+    <string name="default_marketplace_title">Default marketplace</string>
 </resources>

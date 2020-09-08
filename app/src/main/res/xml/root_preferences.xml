@@ -3,12 +3,13 @@
 
     <PreferenceCategory app:title="@string/search_header">
 
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="start_secondhand"
-            android:summaryOff="@string/start_secondhand_off_summary"
-            android:summaryOn="@string/start_secondhand_on_summary"
-            android:title="@string/start_secondhand_title" />
+        <ListPreference
+            android:defaultValue="mall"
+            android:entries="@array/marketplace"
+            android:entryValues="@array/marketplace_values"
+            android:key="default_marketplace"
+            android:title="@string/default_marketplace_title"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
