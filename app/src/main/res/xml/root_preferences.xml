@@ -16,6 +16,14 @@
     <PreferenceCategory app:title="@string/about_header">
 
         <Preference
+            app:key="oss"
+            app:title="@string/oss_notices_title">
+            <intent
+                android:targetPackage="com.sthoray.allright"
+                android:targetClass="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
+        </Preference>
+
+        <Preference
             app:key="version"
             app:summary="@string/app_version"
             app:title="@string/version_title" />

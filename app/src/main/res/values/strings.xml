@@ -66,6 +66,7 @@
     <string name="search_header">Search</string>
 
     <!-- About Preferences -->
+    <string name="oss_notices_title">Open source licenses</string>
     <string name="version_title">Build version</string>
 
     <!-- Search Preferences -->
