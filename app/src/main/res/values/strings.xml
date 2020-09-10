@@ -75,4 +75,6 @@
     <!-- Keys -->
     <string name="preference_crypt_auth_key">crypt_auth</string>
     <string name="user_bearer_token_key">user.bearerToken</string>
+    <string name="login_btn">Login</string>
+    <string name="register_btn">Register</string>
 </resources>
