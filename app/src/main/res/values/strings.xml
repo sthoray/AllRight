@@ -71,4 +71,8 @@
 
     <!-- Search Preferences -->
     <string name="default_marketplace_title">Default marketplace</string>
+
+    <!-- Keys -->
+    <string name="preference_auth_key">com.sthoray.allright_auth</string>
+    <string name="user_bearer_token_key">bearerToken</string>
 </resources>

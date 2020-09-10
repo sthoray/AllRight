@@ -1,11 +1,15 @@
 package com.sthoray.allright.ui.main.viewmodel
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Category
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
+import com.sthoray.allright.data.model.user.UserData
+import com.sthoray.allright.data.model.user.UserResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
@@ -30,10 +34,14 @@ class MainViewModel(
     /** Second tier categories response. */
     val secondTierCategories: MutableLiveData<Resource<List<Category>>> = MutableLiveData()
 
+    /** User profile resource. */
+    val userProfile: MutableLiveData<Resource<UserData>> = MutableLiveData()
+
     /** Make network requests on initialisation. */
     init {
         getFeaturedCategories()
         getSecondTierCategories()
+        getUserProfile()
     }
 
     private fun getFeaturedCategories() = viewModelScope.launch {
@@ -42,6 +50,27 @@ class MainViewModel(
 
     private fun getSecondTierCategories() = viewModelScope.launch {
         safeGetSecondTierCategories()
+    }
+
+    /**
+     * Get the profile for the logged in user.
+     */
+    fun getUserProfile() = viewModelScope.launch {
+        val sharedPref = getApplication<Application>().getSharedPreferences(
+            getApplication<Application>().getString(R.string.preference_auth_key),
+            Context.MODE_PRIVATE
+        )
+        val bearerToken = "Bearer" + sharedPref.getString(
+            getApplication<Application>().getString(R.string.user_bearer_token_key),
+            null
+        )
+
+        // Check if a user is logged in
+        if (bearerToken.isNullOrEmpty()) {
+            userProfile.postValue(Resource.Success(null))
+        } else {
+            safeGetUserProfile(bearerToken)
+        }
     }
 
     private suspend fun safeGetFeaturedCategoriesCall() {
@@ -79,6 +108,24 @@ class MainViewModel(
         }
     }
 
+    private suspend fun safeGetUserProfile(bearerToken: String) {
+        userProfile.postValue(Resource.Loading())
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.getUserProfile(bearerToken)
+                userProfile.postValue(handleUserProfileResponse(response))
+
+            } else {
+                userProfile.postValue(Resource.Error("No internet connection"))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> userProfile.postValue(Resource.Error("Network Failure"))
+                else -> userProfile.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
+
     private fun handleFeatureCategoriesResponse(
         response: Response<FeatureCategoriesResponse>
     ): Resource<FeatureCategoriesResponse> {
@@ -101,4 +148,16 @@ class MainViewModel(
         return Resource.Error(response.message())
     }
 
+    private fun handleUserProfileResponse(
+        response: Response<UserResponse>
+    ): Resource<UserData> {
+        if (response.isSuccessful) {
+            response.body()?.let { responseBody ->
+                return Resource.Success(responseBody.userData)
+            }
+        } else if (response.code() == 401) {
+            return Resource.Error("Invalid or expired credentials")
+        }
+        return Resource.Error(response.message())
+    }
 }
