@@ -4,6 +4,7 @@ import com.sthoray.allright.data.api.RetrofitInstance
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.search.SearchRequest
+import com.sthoray.allright.data.model.user.Authentication
 
 /**
  * Repository for handling all data operations.
@@ -35,4 +36,19 @@ class AppRepository(
      */
     suspend fun getListing(listingId: Int) =
         RetrofitInstance.api.getListing(listingId)
+
+    /**
+     * Get a token for authentication.
+     *
+     * @param auth The users AllGoods login in details.
+     */
+    suspend fun login(auth: Authentication) = RetrofitInstance.api.login(auth)
+
+    /**
+     * Get the current user's profile.
+     *
+     * @param bearerToken The bearerToken provided by a successful [login] request.
+     */
+    suspend fun getUserProfile(bearerToken: String) =
+        RetrofitInstance.api.getUserProfile(bearerToken)
 }
