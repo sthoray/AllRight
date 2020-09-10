@@ -4,10 +4,12 @@
     <string name="listing_label">Listing</string>
     <string name="coming_soon_text">Coming soon</string>
     <string name="extended_fab_filter_content">Filter</string>
-
+    <string name="login_btn">Login</string>
+    <string name="register_btn">Register</string>
 
     <!-- Format strings-->
     <string name="format_price">$%.2f</string>
+    <string name="fullname_concatenate">%s %s</string>
 
 
     <!-- Main menu items -->
@@ -75,6 +77,4 @@
     <!-- Keys -->
     <string name="preference_crypt_auth_key">crypt_auth</string>
     <string name="user_bearer_token_key">user.bearerToken</string>
-    <string name="login_btn">Login</string>
-    <string name="register_btn">Register</string>
 </resources>

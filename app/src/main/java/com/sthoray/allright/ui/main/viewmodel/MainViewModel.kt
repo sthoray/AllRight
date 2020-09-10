@@ -53,11 +53,11 @@ class MainViewModel(
         safeGetSecondTierCategories()
     }
 
-    /**
+    /*
      * Get the profile for the logged in user. If no user is logged-in, then
      * the [userProfile] data will be set to null.
      */
-    fun getUserProfile() = viewModelScope.launch {
+    private fun getUserProfile() = viewModelScope.launch {
         val masterKeyAlias = MasterKey.Builder(getApplication(), MasterKey.DEFAULT_MASTER_KEY_ALIAS)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
