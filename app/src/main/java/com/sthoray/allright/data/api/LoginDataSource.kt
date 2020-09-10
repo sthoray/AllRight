@@ -1,8 +1,7 @@
 package com.sthoray.allright.data.api
 
 import com.sthoray.allright.data.model.login.LoggedInUser
-import com.sthoray.allright.utils.Result
-import java.io.IOException
+import com.sthoray.allright.utils.Resource
 import java.util.*
 
 /**
@@ -10,13 +9,13 @@ import java.util.*
  */
 class LoginDataSource {
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(username: String, password: String): Resource<LoggedInUser> {
         try {
             // TODO: handle loggedInUser authentication
             val fakeUser = LoggedInUser(UUID.randomUUID().toString(), "Jane Doe")
-            return Result.Success(fakeUser)
+            return Resource.Success(fakeUser)
         } catch (e: Throwable) {
-            return Result.Error(IOException("Error logging in", e))
+            return Resource.Error("Error logging in: " + e.message)
         }
     }
 

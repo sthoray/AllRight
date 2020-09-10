@@ -2,7 +2,7 @@ package com.sthoray.allright.data.repository
 
 import com.sthoray.allright.data.api.LoginDataSource
 import com.sthoray.allright.data.model.login.LoggedInUser
-import com.sthoray.allright.utils.Result
+import com.sthoray.allright.utils.Resource
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -29,12 +29,12 @@ class LoginRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(username: String, password: String): Resource<LoggedInUser> {
         // handle login
         val result = dataSource.login(username, password)
 
-        if (result is Result.Success) {
-            setLoggedInUser(result.data)
+        if (result is Resource.Success) {
+            setLoggedInUser(result.data!!)
         }
 
         return result

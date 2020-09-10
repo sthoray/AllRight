@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import com.sthoray.allright.R
 import com.sthoray.allright.data.repository.LoginRepository
-import com.sthoray.allright.utils.Result
 import com.sthoray.allright.data.model.login.LoggedInUserView
 import com.sthoray.allright.data.model.login.LoginFormState
 import com.sthoray.allright.data.model.login.LoginResult
+import com.sthoray.allright.utils.Resource
 
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
@@ -24,9 +24,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         // can be launched in a separate asynchronous job
         val result = loginRepository.login(username, password)
 
-        if (result is Result.Success) {
+        if (result is Resource.Success) {
             _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
+                LoginResult(success = LoggedInUserView(displayName = result.data?.displayName!!))
         } else {
             _loginResult.value = LoginResult(error = R.string.login_failed)
         }
