@@ -1,5 +1,7 @@
 package com.sthoray.allright.ui.main.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,7 +11,9 @@ import androidx.lifecycle.Observer
 import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.user.UserData
+import com.sthoray.allright.ui.login.view.LoginActivity
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
+import com.sthoray.allright.utils.Constants.Companion.BASE_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_my_allgoods.*
 
@@ -36,19 +40,17 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
     }
 
     private fun setOnClickListeners() {
-        /*
-        TODO: Create login/register activity
         btnMyAllGoodsLogin.setOnClickListener {
             Intent(activity, LoginActivity::class.java).also {
                 startActivity(it)
             }
         }
         btnMyAllGoodsRegister.setOnClickListener {
-            Intent(activity, LoginActivity::class.java).also {
+            Intent(Intent.ACTION_VIEW).also {
+                it.data = Uri.parse(BASE_URL)
                 startActivity(it)
             }
         }
-         */
     }
 
     private fun setupObservers() {
