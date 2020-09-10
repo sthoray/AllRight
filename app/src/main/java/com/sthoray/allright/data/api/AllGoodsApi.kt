@@ -69,6 +69,6 @@ interface AllGoodsApi {
      *
      * @return An [UserResponse] object
      */
-    @POST("user")
+    @GET("user")
     suspend fun getUserProfile(@Header("Authorization") bearerToken: String): Response<UserResponse>
 }
