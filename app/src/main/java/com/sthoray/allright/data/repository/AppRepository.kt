@@ -47,8 +47,11 @@ class AppRepository(
     /**
      * Get the current user's profile.
      *
+     * AllGoods uses bearer (or token) authentication. The `Authorization`
+     * header token needs to be prefixed with 'Bearer' for this to work.
+     *
      * @param bearerToken The bearerToken provided by a successful [login] request.
      */
     suspend fun getUserProfile(bearerToken: String) =
-        RetrofitInstance.api.getUserProfile(bearerToken)
+        RetrofitInstance.api.getUserProfile("Bearer $bearerToken")
 }

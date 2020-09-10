@@ -60,7 +60,7 @@ class MainViewModel(
             getApplication<Application>().getString(R.string.preference_auth_key),
             Context.MODE_PRIVATE
         )
-        val bearerToken = "Bearer" + sharedPref.getString(
+        val bearerToken = sharedPref.getString(
             getApplication<Application>().getString(R.string.user_bearer_token_key),
             null
         )
