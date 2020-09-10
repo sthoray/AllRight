@@ -1,10 +1,11 @@
 package com.sthoray.allright.ui.main.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Category
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
@@ -56,11 +57,19 @@ class MainViewModel(
      * Get the profile for the logged in user.
      */
     fun getUserProfile() = viewModelScope.launch {
-        val sharedPref = getApplication<Application>().getSharedPreferences(
-            getApplication<Application>().getString(R.string.preference_auth_key),
-            Context.MODE_PRIVATE
+        val masterKeyAlias = MasterKey.Builder(getApplication(), MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        val encryptedSharedPreferences = EncryptedSharedPreferences.create(
+            getApplication(),
+            getApplication<Application>().getString(R.string.preference_crypt_auth_key),
+            masterKeyAlias,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
-        val bearerToken = sharedPref.getString(
+
+        val bearerToken = encryptedSharedPreferences.getString(
             getApplication<Application>().getString(R.string.user_bearer_token_key),
             null
         )

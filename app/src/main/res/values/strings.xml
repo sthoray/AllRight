@@ -73,6 +73,6 @@
     <string name="default_marketplace_title">Default marketplace</string>
 
     <!-- Keys -->
-    <string name="preference_auth_key">com.sthoray.allright_auth</string>
-    <string name="user_bearer_token_key">bearerToken</string>
+    <string name="preference_crypt_auth_key">crypt_auth</string>
+    <string name="user_bearer_token_key">user.bearerToken</string>
 </resources>
