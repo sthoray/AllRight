@@ -11,6 +11,14 @@ import com.sthoray.allright.data.repository.LoginRepository
  */
 class LoginViewModelFactory : ViewModelProvider.Factory {
 
+    /**
+     * Create a new instance of LoginViewModel
+     *
+     * @param modelClass The ViewModel class whose instance is requested.
+     * @param T The type parameter for the ViewModel.
+     *
+     * @return T a newly created ViewModel
+     */
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
