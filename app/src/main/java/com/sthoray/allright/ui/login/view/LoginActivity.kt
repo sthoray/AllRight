@@ -2,7 +2,6 @@ package com.sthoray.allright.ui.login.view
 
 import android.app.Activity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -14,27 +13,37 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.login.LoggedInUserView
 import com.sthoray.allright.ui.login.viewmodel.LoginViewModel
 import com.sthoray.allright.ui.login.viewmodel.LoginViewModelFactory
 
+/**
+ * Activity to handle user authentication with AllGoods.
+ */
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
 
+    /**
+     * Inflate login views.
+     *
+     * @param savedInstanceState If non-null, this activity is being re-constructed
+     * from a previous saved state as given here.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_login)
 
-        val username = findViewById<EditText>(R.id.username)
-        val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
-
-        loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
+        val loginViewModelProviderFactory = LoginViewModelFactory()
+        loginViewModel = ViewModelProvider(this, loginViewModelProviderFactory)
             .get(LoginViewModel::class.java)
+
+        val username = findViewById<EditText>(R.id.etUsername)
+        val password = findViewById<EditText>(R.id.etPassword)
+        val login = findViewById<Button>(R.id.btnLogin)
+        val loading = findViewById<ProgressBar>(R.id.pbAuthenticating)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
