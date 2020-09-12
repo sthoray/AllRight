@@ -1,4 +1,4 @@
-package com.sthoray.allright.data.model.login
+package com.sthoray.allright.ui.login.viewmodel
 
 /**
  * Data validation state of the login form.

@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 /**
  * Model for user response.
  *
- * @property userData Contains all information about the authenticated user.
+ * @property user Contains all information about the authenticated user.
  */
 data class UserResponse(
     @SerializedName("data")
-    val userData: UserData?
+    val user: User?
 )

@@ -38,13 +38,6 @@ class AppRepository(
         RetrofitInstance.api.getListing(listingId)
 
     /**
-     * Get a token for authentication.
-     *
-     * @param auth The users AllGoods login in details.
-     */
-    suspend fun login(auth: Authentication) = RetrofitInstance.api.login(auth)
-
-    /**
      * Get the current user's profile.
      *
      * AllGoods uses bearer (or token) authentication. The `Authorization`

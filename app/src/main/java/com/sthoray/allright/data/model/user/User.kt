@@ -28,7 +28,7 @@ import com.google.gson.annotations.SerializedName
  * @property config Configuration details describing what UI should be visible
  * or accessible to user.
  */
-data class UserData(
+data class User(
     val id: Int?,
     @SerializedName("first_name") val firstName: String?,
     @SerializedName("last_name") val lastName: String?,

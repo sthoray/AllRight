@@ -1,37 +1,84 @@
 package com.sthoray.allright.ui.login.viewmodel
 
+import android.app.Application
+import android.util.Patterns
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import android.util.Patterns
+import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.R
+import com.sthoray.allright.data.model.user.AuthenticationResponse
 import com.sthoray.allright.data.repository.LoginRepository
-import com.sthoray.allright.data.model.login.LoggedInUserView
-import com.sthoray.allright.data.model.login.LoginFormState
-import com.sthoray.allright.data.model.login.LoginResult
+import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import java.io.IOException
 
-
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+/**
+ * View model for the login activity.
+ */
+class LoginViewModel(
+    app: Application,
+    private val loginRepository: LoginRepository
+) : AndroidViewModel(app) {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
+
+    /** The current login form state. */
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+    private val _loginResult = MutableLiveData<Resource<AuthenticationResponse>>()
 
-    fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+    /** The result from a login attempt. */
+    val loginResult: LiveData<Resource<AuthenticationResponse>> = _loginResult
 
-        if (result is Resource.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data?.displayName!!))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+    /**
+     * Attempt to login to AllGoods with an AllGoods account.
+     *
+     * @param username The user's AllGoods' username/email.
+     * @param password The user's AllGoods' password.
+     */
+    fun login(username: String, password: String) = viewModelScope.launch {
+        safeLogin(username, password)
+    }
+
+    private suspend fun safeLogin(username: String, password: String) {
+        _loginResult.postValue(Resource.Loading())
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = loginRepository.login(username, password)
+                _loginResult.postValue(handleLoginResponse(response))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> _loginResult.postValue(Resource.Error("Network failure"))
+                else -> _loginResult.postValue(Resource.Error("Conversion error"))
+            }
         }
     }
 
+    private fun handleLoginResponse(
+        response: Response<AuthenticationResponse>
+    ): Resource<AuthenticationResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(it)
+            }
+        } else if (response.code() == 401) {
+            response.body()?.let {
+                return Resource.Error(it.error!!)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    /**
+     * Submit a new username and password and perform validation checks.
+     *
+     * @param username The user's AllGoods' username/email.
+     * @param password The user's AllGoods' password.
+     */
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
             _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
@@ -42,17 +89,13 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
-    // A placeholder username validation check
+    // Username validation check
     private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }
+        return Patterns.EMAIL_ADDRESS.matcher(username).matches()
     }
 
-    // A placeholder password validation check
+    // Password validation check
     private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
+        return password.isNotBlank()
     }
 }

@@ -9,7 +9,7 @@ import androidx.security.crypto.MasterKey
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Category
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
-import com.sthoray.allright.data.model.user.UserData
+import com.sthoray.allright.data.model.user.User
 import com.sthoray.allright.data.model.user.UserResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Internet
@@ -36,7 +36,7 @@ class MainViewModel(
     val secondTierCategories: MutableLiveData<Resource<List<Category>>> = MutableLiveData()
 
     /** User profile resource. */
-    val userProfile: MutableLiveData<Resource<UserData>> = MutableLiveData()
+    val userProfile: MutableLiveData<Resource<User>> = MutableLiveData()
 
     /** Make network requests on initialisation. */
     init {
@@ -160,10 +160,10 @@ class MainViewModel(
 
     private fun handleUserProfileResponse(
         response: Response<UserResponse>
-    ): Resource<UserData> {
+    ): Resource<User> {
         if (response.isSuccessful) {
             response.body()?.let { responseBody ->
-                return Resource.Success(responseBody.userData)
+                return Resource.Success(responseBody.user)
             }
         } else if (response.code() == 401) {
             return Resource.Error("Invalid or expired credentials")

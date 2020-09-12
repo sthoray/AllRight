@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import coil.api.load
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.user.UserData
+import com.sthoray.allright.data.model.user.User
 import com.sthoray.allright.ui.login.view.LoginActivity
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.utils.Constants.Companion.BASE_URL
@@ -100,8 +100,8 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
         tvMyAllGoodsLocation.visibility = View.GONE
     }
 
-    private fun bindViews(userData: UserData) {
-        with(userData) {
+    private fun bindViews(user: User) {
+        with(user) {
             tvMyAllGoodsName.text = getString(R.string.fullname_concatenate)
                 .format(firstName, lastName)
             tvMyAllGoodsEmail.text = email
