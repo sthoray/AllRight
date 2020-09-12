@@ -63,9 +63,13 @@ class SettingsActivity : AppCompatActivity() {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
             val logoutPreference: Preference? = findPreference("logout")
-            logoutPreference?.setOnPreferenceClickListener {
-                logout()
-                true
+            logoutPreference?.apply {
+                isEnabled = isLoggedIn()
+                setOnPreferenceClickListener {
+                    logout()
+                    isEnabled = false
+                    true
+                }
             }
         }
 
@@ -90,6 +94,29 @@ class SettingsActivity : AppCompatActivity() {
                     )
                 }.apply()
             }
+        }
+
+        private fun isLoggedIn(): Boolean {
+            var bearerToken: String? = null
+            context?.let { context ->
+                val masterKeyAlias = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build()
+
+                val encryptedSharedPreferences = EncryptedSharedPreferences.create(
+                    context,
+                    getString(R.string.preference_crypt_auth_key),
+                    masterKeyAlias,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                )
+
+                bearerToken = encryptedSharedPreferences.getString(
+                    getString(R.string.user_bearer_token_key),
+                    null
+                )
+            }
+            return !bearerToken.isNullOrEmpty()
         }
     }
 }
