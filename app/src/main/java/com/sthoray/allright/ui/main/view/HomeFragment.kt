@@ -12,7 +12,7 @@ import com.sthoray.allright.R
 import com.sthoray.allright.ui.main.adapter.HomeAdapter
 import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
-import com.sthoray.allright.ui.search.result.view.SearchActivity
+import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_home.*
 

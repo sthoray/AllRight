@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
-import com.sthoray.allright.ui.search.result.viewmodel.SearchViewModel
+import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 
 /**
  * Factory class to define how the Main ViewModel should be created.

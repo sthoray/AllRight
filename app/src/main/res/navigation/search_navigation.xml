@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_results"
-        android:name="com.sthoray.allright.ui.search.result.view.ResultsFragment"
+        android:name="com.sthoray.allright.ui.search.view.ResultsFragment"
         android:label="@string/title_results"
         tools:layout="@layout/fragment_home">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_filters"
-        android:name="com.sthoray.allright.ui.search.result.view.FiltersFragment"
+        android:name="com.sthoray.allright.ui.search.view.FiltersFragment"
         android:label="@string/title_filters"
         tools:layout="@layout/fragment_filters" />
 

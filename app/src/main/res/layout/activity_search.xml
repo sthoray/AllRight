@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.search.result.view.SearchActivity">
+    tools:context=".ui.search.view.SearchActivity">
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/search_toolbar"
+        android:id="@+id/toolbarSearch"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/primary_orange"
@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/design_default_color_on_primary"
-        app:menu="@menu/top_search_menu"
+        app:menu="@menu/toolbar"
     />
 
     <fragment
@@ -27,10 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_toolbar"
+        app:layout_constraintTop_toBottomOf="@id/toolbarSearch"
         app:layout_constraintVertical_bias="1.0"
         app:navGraph="@navigation/search_navigation" />
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

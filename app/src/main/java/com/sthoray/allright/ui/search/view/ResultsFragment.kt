@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.search.result.view
+package com.sthoray.allright.ui.search.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
 import com.sthoray.allright.ui.listing.view.ListingActivity
-import com.sthoray.allright.ui.search.result.adapter.ResultsAdapter
-import com.sthoray.allright.ui.search.result.view.SearchActivity.Companion.LISTING_ID_KEY
-import com.sthoray.allright.ui.search.result.viewmodel.SearchViewModel
+import com.sthoray.allright.ui.search.adapter.ResultsAdapter
+import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
+import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_results.*
 

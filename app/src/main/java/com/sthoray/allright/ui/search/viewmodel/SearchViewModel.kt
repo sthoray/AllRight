@@ -1,4 +1,4 @@
-package com.sthoray.allright.ui.search.result.viewmodel
+package com.sthoray.allright.ui.search.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

@@ -9,6 +9,7 @@ import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.model.search.SearchResponseMetadata
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
 import com.sthoray.allright.utils.TestCoroutineRule

@@ -18,7 +18,7 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.adapter.ViewPagerAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
-import com.sthoray.allright.ui.search.result.view.SearchActivity.Companion.LISTING_ID_KEY
+import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_listing.*
