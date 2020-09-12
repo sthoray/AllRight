@@ -6,6 +6,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.user.AuthenticationResponse
@@ -77,8 +79,9 @@ class LoginViewModel(
         response: Response<AuthenticationResponse>
     ): Resource<AuthenticationResponse> {
         if (response.isSuccessful) {
-            response.body()?.let {
-                return Resource.Success(it)
+            response.body()?.let { responseBody ->
+                responseBody.token?.let { commitUserCredentials(it) }
+                return Resource.Success(responseBody)
             }
         } else if (response.code() == 401) {
             // Custom error message from AllGoods API
@@ -98,6 +101,27 @@ class LoginViewModel(
         }
         // Fallback to response error message
         return Resource.Error(response.message())
+    }
+
+    private fun commitUserCredentials(bearerToken: String) {
+        val masterKeyAlias = MasterKey.Builder(getApplication(), MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        val encryptedSharedPreferences = EncryptedSharedPreferences.create(
+            getApplication(),
+            getApplication<Application>().getString(R.string.preference_crypt_auth_key),
+            masterKeyAlias,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+
+        encryptedSharedPreferences.edit().apply {
+            putString(
+                getApplication<Application>().getString(R.string.user_bearer_token_key),
+                bearerToken
+            )
+        }.apply()
     }
 
     /**
