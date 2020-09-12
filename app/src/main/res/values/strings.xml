@@ -89,4 +89,8 @@
     <string name="invalid_password">Password cannot be empty</string>
     <string name="login_failed">"Login failed"</string>
     <string name="invalid_credentials">Invalid email or password</string>
+    <string name="api_error_network">Network failure</string>
+    <string name="api_error_conversion">Conversion error</string>
+    <string name="no_network_error">No internet connection</string>
+    <string name="invalid_token_error">Invalid or expired credentials</string>
 </resources>

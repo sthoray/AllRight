@@ -90,12 +90,24 @@ class MainViewModel(
                 val response = appRepository.getFeatureCategories()
                 featureCategories.postValue(handleFeatureCategoriesResponse(response))
             } else {
-                featureCategories.postValue(Resource.Error("No internet connection"))
+                featureCategories.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.no_network_error)
+                    )
+                )
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> featureCategories.postValue(Resource.Error("Network Failure"))
-                else -> featureCategories.postValue(Resource.Error("Conversion Error"))
+                is IOException -> featureCategories.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_network)
+                    )
+                )
+                else -> featureCategories.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_conversion)
+                    )
+                )
             }
         }
     }
@@ -108,12 +120,24 @@ class MainViewModel(
                 secondTierCategories.postValue(handleSecondTierCategoriesResponse(response))
 
             } else {
-                secondTierCategories.postValue(Resource.Error("No internet connection"))
+                secondTierCategories.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.no_network_error)
+                    )
+                )
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> secondTierCategories.postValue(Resource.Error("Network Failure"))
-                else -> secondTierCategories.postValue(Resource.Error("Conversion Error"))
+                is IOException -> secondTierCategories.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_network)
+                    )
+                )
+                else -> secondTierCategories.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_conversion)
+                    )
+                )
             }
         }
     }
@@ -126,12 +150,24 @@ class MainViewModel(
                 userProfile.postValue(handleUserProfileResponse(response))
 
             } else {
-                userProfile.postValue(Resource.Error("No internet connection"))
+                userProfile.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.no_network_error)
+                    )
+                )
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> userProfile.postValue(Resource.Error("Network Failure"))
-                else -> userProfile.postValue(Resource.Error("Conversion Error"))
+                is IOException -> userProfile.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_network)
+                    )
+                )
+                else -> userProfile.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_conversion)
+                    )
+                )
             }
         }
     }
@@ -166,7 +202,9 @@ class MainViewModel(
                 return Resource.Success(responseBody.user)
             }
         } else if (response.code() == 401) {
-            return Resource.Error("Invalid or expired credentials")
+            return Resource.Error(
+                getApplication<Application>().getString(R.string.invalid_token_error)
+            )
         }
         return Resource.Error(response.message())
     }

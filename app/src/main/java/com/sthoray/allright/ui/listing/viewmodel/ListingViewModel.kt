@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Internet
@@ -42,12 +43,24 @@ class ListingViewModel(
                 val response = appRepository.getListing(listingId)
                 listing.postValue(handleListingResponse(response))
             } else {
-                listing.postValue(Resource.Error("No internet connection"))
+                listing.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.no_network_error)
+                    )
+                )
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> listing.postValue(Resource.Error("Network Failure"))
-                else -> listing.postValue(Resource.Error("Conversion Error"))
+                is IOException -> listing.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_network)
+                    )
+                )
+                else -> listing.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_conversion)
+                    )
+                )
             }
         }
     }

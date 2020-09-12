@@ -50,11 +50,25 @@ class LoginViewModel(
             if (Internet.hasConnection(getApplication())) {
                 val response = loginRepository.login(username, password)
                 _loginResult.postValue(handleLoginResponse(response))
+            } else {
+                _loginResult.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.no_network_error)
+                    )
+                )
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> _loginResult.postValue(Resource.Error("Network failure"))
-                else -> _loginResult.postValue(Resource.Error("Conversion error"))
+                is IOException -> _loginResult.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_network)
+                    )
+                )
+                else -> _loginResult.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_conversion)
+                    )
+                )
             }
         }
     }

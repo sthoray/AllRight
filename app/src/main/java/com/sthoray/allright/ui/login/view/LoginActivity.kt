@@ -26,7 +26,6 @@ import com.sthoray.allright.utils.Resource
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
-    private var TAG = "LoginActivity"
 
     /**
      * Inflate login views.
