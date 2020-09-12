@@ -39,8 +39,20 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
         setupObservers()
     }
 
+    /**
+     * Fetch user data on resume if the login button was previously pressed.
+     */
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.loginPressed) {
+            viewModel.loginPressed = false
+            viewModel.getUserProfile()
+        }
+    }
+
     private fun setOnClickListeners() {
         btnMyAllGoodsLogin.setOnClickListener {
+            viewModel.loginPressed = true
             Intent(activity, LoginActivity::class.java).also {
                 startActivity(it)
             }

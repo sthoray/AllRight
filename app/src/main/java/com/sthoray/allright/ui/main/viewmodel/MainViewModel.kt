@@ -38,6 +38,9 @@ class MainViewModel(
     /** User profile resource. */
     val userProfile: MutableLiveData<Resource<User>> = MutableLiveData()
 
+    /** Flag to check if the login button has been pressed. */
+    var loginPressed = false;
+
     /** Make network requests on initialisation. */
     init {
         getFeaturedCategories()
@@ -53,11 +56,11 @@ class MainViewModel(
         safeGetSecondTierCategories()
     }
 
-    /*
+    /**
      * Get the profile for the logged in user. If no user is logged-in, then
      * the [userProfile] data will be set to null.
      */
-    private fun getUserProfile() = viewModelScope.launch {
+    fun getUserProfile() = viewModelScope.launch {
         val masterKeyAlias = MasterKey.Builder(getApplication(), MasterKey.DEFAULT_MASTER_KEY_ALIAS)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
