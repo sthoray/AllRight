@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.user.AuthenticationResponse
 import com.sthoray.allright.data.repository.LoginRepository
@@ -66,10 +67,22 @@ class LoginViewModel(
                 return Resource.Success(it)
             }
         } else if (response.code() == 401) {
-            response.body()?.let {
-                return Resource.Error(it.error!!)
+            // Custom error message from AllGoods API
+            val errorBody = Gson().fromJson(
+                response.errorBody()?.charStream(),
+                AuthenticationResponse::class.java
+            )
+            errorBody.error?.let {
+                if (it == "invalid_credentials") {
+                    return Resource.Error(
+                        getApplication<Application>().getString(R.string.invalid_credentials)
+                    )
+                }
+                // Other error messages appear to be formatted in natural language
+                return Resource.Error(it)
             }
         }
+        // Fallback to response error message
         return Resource.Error(response.message())
     }
 

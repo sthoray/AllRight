@@ -88,4 +88,5 @@
     <string name="invalid_username">Not a valid email address</string>
     <string name="invalid_password">Password cannot be empty</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="invalid_credentials">Invalid email or password</string>
 </resources>
