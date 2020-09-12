@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.user.User
 import com.sthoray.allright.ui.login.view.LoginActivity
@@ -141,7 +142,9 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
                 .format(firstName, lastName)
             tvMyAllGoodsEmail.text = email
             tvMyAllGoodsLocation.text = locationName
-            ivMyAllGoodsAvatar.load(image?.large)
+            ivMyAllGoodsAvatar.load(image?.large) {
+                transformations(CircleCropTransformation())
+            }
         }
     }
 }
