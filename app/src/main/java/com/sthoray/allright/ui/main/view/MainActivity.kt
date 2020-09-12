@@ -1,5 +1,6 @@
 package com.sthoray.allright.ui.main.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
+import com.sthoray.allright.ui.settings.view.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -47,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         setupViewModel()
         setupBottomNav()
+        setupToolbar()
     }
 
     private fun setupViewModel() {
@@ -59,5 +62,19 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.navigationHostFragment) as NavHostFragment
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
+    }
+
+    private fun setupToolbar() {
+        toolbarMain.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.toolbarSettings -> {
+                    Intent(this, SettingsActivity::class.java).also {
+                        startActivity(it)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }

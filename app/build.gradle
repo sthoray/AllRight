@@ -5,6 +5,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'com.hiya.jacoco-android'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+
 
 jacocoAndroidUnitTestReport {
     // Ignore data classes, constants, and anything related to the UI
@@ -17,6 +19,11 @@ jacocoAndroidUnitTestReport {
                  '**/Constants.*']
 }
 
+// Version numbers used for versionCode and versionName
+def versionMajor = 0
+def versionMinor = 2
+def versionPatch = 1
+
 android {
     compileSdkVersion 30
     buildToolsVersion '30.0.2'
@@ -25,8 +32,8 @@ android {
         applicationId "com.sthoray.allright"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "0.2.0"
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -53,9 +60,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "app_version", "${defaultConfig.versionName}"
         }
         debug {
             testCoverageEnabled true
+            versionNameSuffix ".debug"
+            resValue "string", "app_version", "${defaultConfig.versionName}"
         }
     }
 
@@ -96,6 +106,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
     testImplementation 'junit:junit:4.13'
     testImplementation 'com.google.truth:truth:1.0.1'

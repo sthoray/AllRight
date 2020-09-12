@@ -1,0 +1,33 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/search_header">
+
+        <ListPreference
+            android:defaultValue="mall"
+            android:entries="@array/marketplace"
+            android:entryValues="@array/marketplace_values"
+            android:key="default_marketplace"
+            android:title="@string/default_marketplace_title"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/about_header">
+
+        <Preference
+            app:key="oss"
+            app:title="@string/oss_notices_title">
+            <intent
+                android:targetPackage="com.sthoray.allright"
+                android:targetClass="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
+        </Preference>
+
+        <Preference
+            app:key="version"
+            app:summary="@string/app_version"
+            app:title="@string/version_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
