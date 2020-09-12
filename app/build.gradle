@@ -75,6 +75,11 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
+    lintOptions {
+        disable "UnsafeExperimentalUsageError",
+                "UnsafeExperimentalUsageWarning"
+    }
+
     dokka {
         outputFormat = 'html'
         outputDirectory = "$rootDir/docs"
