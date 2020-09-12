@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.user.User
@@ -44,15 +46,34 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
      */
     override fun onResume() {
         super.onResume()
-        if (viewModel.loginPressed) {
-            viewModel.loginPressed = false
+
+        var bearerToken: String? = null
+        context?.let { context ->
+            val masterKeyAlias = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
+
+            val encryptedSharedPreferences = EncryptedSharedPreferences.create(
+                context,
+                getString(R.string.preference_crypt_auth_key),
+                masterKeyAlias,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+
+            bearerToken = encryptedSharedPreferences.getString(
+                getString(R.string.user_bearer_token_key),
+                null
+            )
+        }
+
+        if (bearerToken.isNullOrEmpty() == viewModel.userProfileShowen) {
             viewModel.getUserProfile()
         }
     }
 
     private fun setOnClickListeners() {
         btnMyAllGoodsLogin.setOnClickListener {
-            viewModel.loginPressed = true
             Intent(activity, LoginActivity::class.java).also {
                 startActivity(it)
             }
@@ -101,6 +122,7 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
         tvMyAllGoodsName.visibility = View.VISIBLE
         tvMyAllGoodsEmail.visibility = View.VISIBLE
         tvMyAllGoodsLocation.visibility = View.VISIBLE
+        viewModel.userProfileShowen = true
     }
 
     private fun hideAuthenticatedViews() {
@@ -110,6 +132,7 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
         tvMyAllGoodsName.visibility = View.GONE
         tvMyAllGoodsEmail.visibility = View.GONE
         tvMyAllGoodsLocation.visibility = View.GONE
+        viewModel.userProfileShowen = false
     }
 
     private fun bindViews(user: User) {

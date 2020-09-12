@@ -38,8 +38,8 @@ class MainViewModel(
     /** User profile resource. */
     val userProfile: MutableLiveData<Resource<User>> = MutableLiveData()
 
-    /** Flag to check if the login button has been pressed. */
-    var loginPressed = false;
+    /** Flag to check if login state has changed. */
+    var userProfileShowen = false
 
     /** Make network requests on initialisation. */
     init {
