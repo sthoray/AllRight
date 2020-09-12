@@ -65,11 +65,15 @@
 
     <!-- Preference Titles -->
     <string name="about_header">About</string>
+    <string name="account_header">Account</string>
     <string name="search_header">Search</string>
 
     <!-- About Preferences -->
     <string name="oss_notices_title">Open source licenses</string>
     <string name="version_title">Build version</string>
+
+    <!-- Account preferences -->
+    <string name="logout_title">Logout</string>
 
     <!-- Search Preferences -->
     <string name="default_marketplace_title">Default marketplace</string>
