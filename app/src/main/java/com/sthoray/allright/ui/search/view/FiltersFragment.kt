@@ -78,8 +78,8 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         )
 
         cbFreeShipping.visibility = View.VISIBLE
-        cbFastShipping.visibility = View.INVISIBLE
-        cbBrandNew.visibility = View.INVISIBLE
+        cbFastShipping.visibility = View.GONE
+        cbBrandNew.visibility = View.GONE
     }
 
     private fun setMallFilters() {

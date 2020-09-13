@@ -11,17 +11,14 @@
     <string name="format_price">$%.2f</string>
     <string name="fullname_concatenate">%s %s</string>
 
-
     <!-- Main menu items -->
     <string name="title_home">Home</string>
     <string name="title_browse">Browse</string>
     <string name="title_my_allgoods">My AllGoods</string>
 
-
     <!-- Top menu items -->
     <string name="item_search">Search</string>
     <string name="item_settings">Settings</string>
-
 
     <!-- Search fragments -->
     <string name="title_results">Search Results</string>
@@ -29,12 +26,11 @@
 
     <!-- Filters -->
     <string name="btn_title_apply_filters">Apply Filters</string>
-
-    <string name="marketplace_title">Marketplace:</string>
+    <string name="marketplace_title">Marketplace</string>
     <string name="marketplace_mall">Mall</string>
     <string name="marketplace_secondhand">Secondhand</string>
-
-    <string name="sort_by_title">Sort:</string>
+    <string name="category_title">Category</string>
+    <string name="sort_by_title">Sort By</string>
     <string name="sort_by_best">Best Match</string>
     <string name="sort_by_popular">Popularity</string>
     <string name="sort_by_trending">Trending</string>
@@ -49,11 +45,10 @@
     <string name="sort_by_alphabetical">A-Z</string>
     <string name="sort_by_closing_soon">Closing soon</string>
     <string name="sort_by_most_bids">Most bids</string>
-
     <string name="free_shipping_title">Free Shipping</string>
     <string name="fast_shipping_title">Fast Shipping</string>
     <string name="brand_new_title">Brand New Only</string>
-
+    <string name="refine_title">Refine</string>
 
     <!-- Listing activity -->
     <string name="btn_visit_listing">View Listing</string>
@@ -61,7 +56,6 @@
     <string name="title_start_price">Start Price</string>
     <string name="title_sellers_details">Seller\'s Details</string>
     <string name="title_activity_settings">Settings</string>
-
 
     <!-- Preference Titles -->
     <string name="about_header">About</string>
