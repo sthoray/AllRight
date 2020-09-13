@@ -5,6 +5,9 @@ import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
+import com.sthoray.allright.data.model.user.Authentication
+import com.sthoray.allright.data.model.user.AuthenticationResponse
+import com.sthoray.allright.data.model.user.UserResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -47,4 +50,25 @@ interface AllGoodsApi {
     @GET("product/{productId}")
     suspend fun getListing(@Path("productId") listingId: Int): Response<Listing>
 
+    /**
+     * Get a token for authentication.
+     *
+     * @param auth The users AllGoods login in details.
+     *
+     * @return An [AuthenticationResponse] object
+     */
+    @POST("authenticate")
+    suspend fun login(@Body auth: Authentication): Response<AuthenticationResponse>
+
+    /**
+     * Get the current user's profile.
+     *
+     * It may be preferable to add the header using an interceptor.
+     *
+     * @param bearerToken The bearerToken provided by a successful [login] request.
+     *
+     * @return An [UserResponse] object
+     */
+    @GET("user")
+    suspend fun getUserProfile(@Header("Authorization") bearerToken: String): Response<UserResponse>
 }
