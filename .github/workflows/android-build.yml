@@ -7,25 +7,6 @@ on:
     branches: master
 
 jobs:
-  unit-tests:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
-
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-
-      - name: Run unit tests
-        run: ./gradlew test --stacktrace
-
   instrumented-tests:
     name: Instrumented Tests
     runs-on: macos-latest
@@ -65,7 +46,7 @@ jobs:
           java-version: 1.8
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
 
   apk:
     name: Debug APK
