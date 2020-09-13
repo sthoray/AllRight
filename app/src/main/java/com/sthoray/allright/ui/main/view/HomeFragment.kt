@@ -41,6 +41,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupRecyclerView()
         setOnClickListeners()
         setupObservers()
+        refreshHome()
+    }
+
+    private fun refreshHome(){
+        swipeRefresh.setOnRefreshListener {
+
+        }
     }
 
     private fun setupRecyclerView() {
