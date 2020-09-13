@@ -36,6 +36,10 @@ class MainViewModel(
         getSecondTierCategories()
     }
 
+    fun getRefreshFragment(){
+        getFeaturedCategories()
+    }
+
     private fun getFeaturedCategories() = viewModelScope.launch {
         safeGetFeaturedCategoriesCall()
     }

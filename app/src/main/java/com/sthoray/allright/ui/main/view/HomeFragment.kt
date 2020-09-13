@@ -41,14 +41,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupRecyclerView()
         setOnClickListeners()
         setupObservers()
-        refreshHome()
+        swipeToRefreshHomeFragment()
     }
 
-    private fun refreshHome(){
+    private fun swipeToRefreshHomeFragment(){
         swipeRefresh.setOnRefreshListener {
-
-
-            //so it does not load forever
+            viewModel.getRefreshFragment()
             swipeRefresh.isRefreshing = false
         }
     }
