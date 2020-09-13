@@ -47,8 +47,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private fun swipeToRefreshResultFragment() {
         swipeRefreshResult.setOnRefreshListener {
-            viewModel.searchListings
-            Toast.makeText(context, "Page refreshed!", Toast.LENGTH_SHORT).show()
+            viewModel.searchListings()
             swipeRefreshResult.isRefreshing = false
         }
     }
