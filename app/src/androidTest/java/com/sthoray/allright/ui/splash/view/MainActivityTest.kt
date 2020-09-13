@@ -29,6 +29,9 @@ class MainActivityTest {
 
     @Test
     fun mainActivity_checkViews_integrationTest() {
+        /*
+        // The default action bar has been removed in v0.2.1k
+        // This code is no longer useful and should be replaced.
         val textView = onView(
             allOf(
                 withText("AllRight"),
@@ -64,6 +67,7 @@ class MainActivityTest {
             )
         )
         textView2.check(matches(isDisplayed()))
+        */
 
         val recyclerView = onView(
             allOf(
