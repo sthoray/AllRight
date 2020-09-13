@@ -6,7 +6,7 @@ import com.sthoray.allright.data.model.user.Authentication
 /**
  * Class that requests authentication from the remote data source.
  */
-class LoginRepository() {
+class LoginRepository {
 
     /**
      * Attempt to login to AllGoods and return the token if successful.
