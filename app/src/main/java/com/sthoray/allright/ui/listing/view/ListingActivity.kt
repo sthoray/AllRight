@@ -130,12 +130,12 @@ class ListingActivity : AppCompatActivity() {
             if (it.size > 0){
                 var allProperties = String()
                 for (p in it){
-                    allProperties += "Title: " + p.title + "\n"
-                    allProperties += "Option: " + p.option + "\n"
-                    allProperties += "ID: " + p.id + "\n"
-                    allProperties += "Option ID: " + p.optionId + "\n"
-                    allProperties += "Type: " + p.type + "\n"
-                    allProperties += "Value: " + p.value + "\n\n"
+                    allProperties += p.title
+                    if (p.type == 1){
+                        allProperties += ": " + p.option + "\n"
+                    } else if (p.type == 2){
+                        allProperties += ": " + p.value + "\n"
+                    }
                 }
                 tvListingProperties.text = allProperties
                 tvListingProperties.visibility = View.VISIBLE
