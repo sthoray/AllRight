@@ -47,7 +47,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private fun swipeToRefreshResultFragment() {
         swipeRefreshResult.setOnRefreshListener {
-            viewModel.searchListings()
+            viewModel.applyFiltersAndSearch()
             swipeRefreshResult.isRefreshing = false
         }
     }
