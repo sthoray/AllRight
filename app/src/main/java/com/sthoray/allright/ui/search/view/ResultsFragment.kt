@@ -42,6 +42,14 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         setupFab()
         setListingOnClickListeners()
         setupObservers()
+        swipeToRefreshResultFragment()
+    }
+
+    private fun swipeToRefreshResultFragment() {
+        swipeRefreshResult.setOnRefreshListener {
+            Toast.makeText(context, "Page refreshed!", Toast.LENGTH_SHORT).show()
+            swipeRefreshResult.isRefreshing = false
+        }
     }
 
 
