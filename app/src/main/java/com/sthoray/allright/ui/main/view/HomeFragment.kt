@@ -46,7 +46,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun swipeToRefreshHomeFragment(){
         swipeRefresh.setOnRefreshListener {
-            viewModel.getRefreshFragment()
+            Toast.makeText(context, "Page refreshed!", Toast.LENGTH_SHORT).show()
             swipeRefresh.isRefreshing = false
         }
     }
