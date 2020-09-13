@@ -47,6 +47,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun refreshHome(){
         swipeRefresh.setOnRefreshListener {
 
+
+            //so it does not load forever
+            swipeRefresh.isRefreshing = false
         }
     }
 
