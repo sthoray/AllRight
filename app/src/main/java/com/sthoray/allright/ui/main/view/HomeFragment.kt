@@ -41,16 +41,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupRecyclerView()
         setOnClickListeners()
         setupObservers()
-        //swipeToRefreshHomeFragment()
+        swipeToRefreshHomeFragment()
     }
 
-    /*private fun swipeToRefreshHomeFragment(){
+    private fun swipeToRefreshHomeFragment(){
         swipeRefresh.setOnRefreshListener {
             viewModel.getRefreshFragment()
             //Toast.makeText(context, "Page refreshed!", Toast.LENGTH_SHORT).show()
             swipeRefresh.isRefreshing = false
         }
-    }*/
+    }
 
     private fun setupRecyclerView() {
         mainAdapter = HomeAdapter()
