@@ -4,16 +4,18 @@
     <string name="listing_label">Listing</string>
     <string name="coming_soon_text">Coming soon</string>
     <string name="extended_fab_filter_content">Filter</string>
-
+    <string name="login_btn">Login</string>
+    <string name="register_btn">Register</string>
 
     <!-- Format strings-->
     <string name="format_price">$%.2f</string>
+    <string name="fullname_concatenate">%s %s</string>
 
 
     <!-- Main menu items -->
     <string name="title_home">Home</string>
     <string name="title_browse">Browse</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_my_allgoods">My AllGoods</string>
 
 
     <!-- Top menu items -->
@@ -63,12 +65,36 @@
 
     <!-- Preference Titles -->
     <string name="about_header">About</string>
+    <string name="account_header">Account</string>
     <string name="search_header">Search</string>
 
     <!-- About Preferences -->
     <string name="oss_notices_title">Open source licenses</string>
     <string name="version_title">Build version</string>
 
+    <!-- Account preferences -->
+    <string name="logout_title">Logout</string>
+
     <!-- Search Preferences -->
     <string name="default_marketplace_title">Default marketplace</string>
+
+    <!-- Keys -->
+    <string name="preference_crypt_auth_key">crypt_auth</string>
+    <string name="user_bearer_token_key">user.bearerToken</string>
+
+    <!-- Login -->
+    <string name="title_activity_login">Login</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid email address</string>
+    <string name="invalid_password">Password cannot be empty</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="invalid_credentials">Invalid email or password</string>
+    <string name="api_error_network">Network failure</string>
+    <string name="api_error_conversion">Conversion error</string>
+    <string name="no_network_error">No internet connection</string>
+    <string name="invalid_token_error">Invalid or expired credentials</string>
 </resources>

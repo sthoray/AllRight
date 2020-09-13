@@ -116,7 +116,7 @@ class MainActivityTest {
 
         val frameLayout3 = onView(
             allOf(
-                withId(R.id.navigation_profile), withContentDescription("Profile"),
+                withId(R.id.navigation_my_allgoods), withContentDescription("My AllGoods"),
                 childAtPosition(
                     childAtPosition(
                         withId(R.id.bottomNavigationView),
