@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
@@ -15,6 +16,7 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
+import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,53 +30,13 @@ class MainActivityTest {
     var mActivityTestRule = ActivityTestRule(SplashActivity::class.java)
 
     @Test
-    fun mainActivity_checkViews_integrationTest() {
-        /*
-        // The default action bar has been removed in v0.2.1k
-        // This code is no longer useful and should be replaced.
-        val textView = onView(
+    fun mainActivity_checkViewsExist_integrationTest() {
+        val viewGroup = onView(
             allOf(
-                withText("AllRight"),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.action_bar),
-                        childAtPosition(
-                            withId(R.id.action_bar_container),
-                            0
-                        )
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        textView.check(matches(withText("AllRight")))
-
-        val textView2 = onView(
-            allOf(
-                withText("AllRight"),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.action_bar),
-                        childAtPosition(
-                            withId(R.id.action_bar_container),
-                            0
-                        )
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        textView2.check(matches(isDisplayed()))
-        */
-
-        val recyclerView = onView(
-            allOf(
-                withId(R.id.recyclerViewFeaturedCategories),
+                withId(R.id.toolbarMain),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.navigationHostFragment),
+                        IsInstanceOf.instanceOf(android.view.ViewGroup::class.java),
                         0
                     ),
                     0
@@ -82,17 +44,17 @@ class MainActivityTest {
                 isDisplayed()
             )
         )
-        recyclerView.check(matches(isDisplayed()))
+        viewGroup.check(matches(isDisplayed()))
 
         val frameLayout = onView(
             allOf(
-                withId(R.id.navigation_home), withContentDescription("Home"),
+                withId(R.id.navigationHostFragment),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.bottomNavigationView),
+                        IsInstanceOf.instanceOf(android.widget.RelativeLayout::class.java),
                         0
                     ),
-                    0
+                    1
                 ),
                 isDisplayed()
             )
@@ -101,10 +63,10 @@ class MainActivityTest {
 
         val frameLayout2 = onView(
             allOf(
-                withId(R.id.navigation_browse), withContentDescription("Browse"),
+                withId(R.id.bottomNavigationView),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.bottomNavigationView),
+                        withId(android.R.id.content),
                         0
                     ),
                     1
@@ -113,21 +75,6 @@ class MainActivityTest {
             )
         )
         frameLayout2.check(matches(isDisplayed()))
-
-        val frameLayout3 = onView(
-            allOf(
-                withId(R.id.navigation_profile), withContentDescription("Profile"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.bottomNavigationView),
-                        0
-                    ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        frameLayout3.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(
