@@ -38,15 +38,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
+        swipeToRefreshHomeFragment()
         setupRecyclerView()
         setOnClickListeners()
         setupObservers()
-        swipeToRefreshHomeFragment()
     }
 
     private fun swipeToRefreshHomeFragment(){
         swipeRefresh.setOnRefreshListener {
-            Toast.makeText(context, "Page refreshed!", Toast.LENGTH_SHORT).show()
+            //viewModel.getRefreshFragment()
+            //Toast.makeText(context, "Page refreshed!", Toast.LENGTH_SHORT).show()
             swipeRefresh.isRefreshing = false
         }
     }
