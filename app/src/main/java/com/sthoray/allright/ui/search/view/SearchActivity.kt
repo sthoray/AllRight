@@ -1,10 +1,8 @@
 package com.sthoray.allright.ui.search.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.R
@@ -13,7 +11,6 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
-import kotlinx.android.synthetic.main.activity_search.*
 
 /**
  * Activity for viewing search results.
@@ -67,14 +64,9 @@ class SearchActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.toolbarSearch -> {
             onSearchRequested()
-//            Intent(this, SearchView::class.java).also {
-//                startActivity(it)
-//            }
             true
         }
         else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
     }
