@@ -1,5 +1,6 @@
 package com.sthoray.allright.ui.search.view
 
+import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -73,9 +74,13 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onNewIntent(intent: Intent?) {
-//        when (intent?.action){
-//            //Intent.ACTION_SEARCH -> // do search
-//        }
+        setIntent(intent)
+        when (intent?.action){
+            Intent.ACTION_SEARCH -> {
+                viewModel.searchRequest.searchQuery = intent.getStringExtra(SearchManager.QUERY).toString()
+            }
+
+        }
         super.onNewIntent(intent)
     }
     private fun setupViewModel() {
