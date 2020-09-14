@@ -1,5 +1,6 @@
 package com.sthoray.allright.ui.search.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -69,6 +70,13 @@ class SearchActivity : AppCompatActivity() {
         else -> {
             super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+//        when (intent?.action){
+//            //Intent.ACTION_SEARCH -> // do search
+//        }
+        super.onNewIntent(intent)
     }
     private fun setupViewModel() {
         val appRepository = AppRepository(SearchHistoryDatabase(this))
