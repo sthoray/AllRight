@@ -43,6 +43,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as SearchActivity).viewModel
+        viewModel.draftSearch()
         setupCategoryRecyclerView()
         updateFilters()
         setListeners()
@@ -59,7 +60,6 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
                 }
                 is Resource.Error -> {
                     response.message?.let {
-                        Log.e(DEBUG_TAG, "An error occurred: $it")
                         Toast.makeText(
                             activity, "An error occurred: $it",
                             Toast.LENGTH_LONG
