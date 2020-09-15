@@ -44,7 +44,7 @@ data class Listing(
     val description: String?,
     @SerializedName("markdown_options")
     val markdownOptions: MarkdownOptions?,
-    val categories: List<Category>?,
+    val categories: List<CategorySmall>?,
     @SerializedName("manager")
     val manager: Manager?,
     val pickups: Int?,

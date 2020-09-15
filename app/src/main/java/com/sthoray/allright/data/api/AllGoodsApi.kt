@@ -1,6 +1,7 @@
 package com.sthoray.allright.data.api
 
 import com.sthoray.allright.data.model.listing.Category
+import com.sthoray.allright.data.model.listing.CategorySmall
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchRequest
@@ -28,7 +29,7 @@ interface AllGoodsApi {
      * @return A list of [Category]s.
      */
     @GET("category/secondTier")
-    suspend fun getSecondTierCategories(): Response<List<Category>>
+    suspend fun getSecondTierCategories(): Response<List<CategorySmall>>
 
     /**
      * Search for listings.
