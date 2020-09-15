@@ -76,7 +76,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         rvCategory.apply {
             adapter = categoryAdapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, 1))
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
     }
 
