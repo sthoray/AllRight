@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#00FFFFFF"
     tools:context=".ui.search.view.SearchActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -116,6 +117,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cbBrandNew" />
 
+        <TextView
+            android:id="@+id/tvCurrentCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@android:string/unknownName"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCategoryUp"
+            app:layout_constraintStart_toEndOf="@+id/btnCategoryUp"
+            app:layout_constraintTop_toTopOf="@+id/btnCategoryUp"
+            tools:text="Current Category" />
+
+        <ImageButton
+            android:id="@+id/btnCategoryUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/category_up_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCategory"
+            app:srcCompat="@drawable/ic_arrow_upward_24" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCategory"
             android:layout_width="0dp"
@@ -125,8 +149,8 @@
             android:layout_marginEnd="16dp"
             android:overScrollMode="never"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
+            app:layout_constraintStart_toEndOf="@+id/btnCategoryUp"
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrentCategory" />
 
         <Button
             android:id="@+id/btnApplyFilters"
@@ -134,7 +158,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/btn_title_apply_filters"

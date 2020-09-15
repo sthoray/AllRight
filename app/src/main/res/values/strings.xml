@@ -91,4 +91,5 @@
     <string name="api_error_conversion">Conversion error</string>
     <string name="no_network_error">No internet connection</string>
     <string name="invalid_token_error">Invalid or expired credentials</string>
+    <string name="category_up_description">Navigate to parent category</string>
 </resources>
