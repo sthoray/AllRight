@@ -7,7 +7,8 @@ import com.google.gson.annotations.SerializedName
  *
  * @property id The category ID.
  * @property name The name of the category.
- * @property level The tree level of the category. Second tier categories are level 1 while their children are level 2.
+ * @property parent The category's direct parent. The parent category will be one level higher.
+ * @property level The tree level of the category. Second tier categories are level 1 while their children are level 2, etc.
  * @property icon The name of the icon representing the category.
  * @property appIcon The name of the icon in the mobil app representing the category.
  * @property listingCount The number of listings contained in the category.
@@ -23,10 +24,11 @@ import com.google.gson.annotations.SerializedName
  * @property children The list of categories that are one level below this category. If the category is a child node, [children] will not be present.
  */
 data class Category(
-    val id: Int,
-    val name: String,
+    val id: Int?,
+    val name: String?,
+    val parent: Category?,
     val level: Int?,
-    val icon: String,
+    val icon: String?,
     @SerializedName("app_icon") val appIcon: String?,
     @SerializedName("listing_count") val listingCount: Int?,
     @SerializedName("auction_count") val auctionCount: Int?,
