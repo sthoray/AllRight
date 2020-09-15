@@ -35,8 +35,13 @@ class MainViewModel(
         getFeaturedCategories()
         getSecondTierCategories()
     }
-    /** public functions, so we can access it from somewhere else. */
-    fun getRefreshFragment(){
+    /**
+     * This function will be called from the home fragment,
+     * when a user vertically swipes to get the updated data(featured categories in this case)
+     * get featuredCategories is private function, the best way is to create public function and
+     * call the private function in it rather than making it directly public.
+     */
+    fun swipeRefreshHomeUpdate(){
         getFeaturedCategories()
     }
 
