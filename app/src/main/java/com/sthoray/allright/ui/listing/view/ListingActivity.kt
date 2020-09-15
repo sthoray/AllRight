@@ -75,7 +75,12 @@ class ListingActivity : AppCompatActivity() {
         viewPagerAdapter = ViewPagerAdapter(images)
         vpListingImages.adapter = viewPagerAdapter
         wdiListingImages.setViewPager2(vpListingImages)
+
+
     }
+
+
+
 
     private fun setVisitListingBtnListener(listingId: Int) {
         btnVisitListing.setOnClickListener {

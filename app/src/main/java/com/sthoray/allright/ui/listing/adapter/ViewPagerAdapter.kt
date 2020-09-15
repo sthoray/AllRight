@@ -32,6 +32,8 @@ class ViewPagerAdapter(
         return ViewPagerViewHolder(view)
     }
 
+
+
     /**
      * Returns the total number of items in the data set held by the adapter.
      *
@@ -52,5 +54,9 @@ class ViewPagerAdapter(
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
         val imageUrl = images[position].largeUrl
         holder.itemView.ivListingImage.load(imageUrl)
+
+        holder.itemView.setOnClickListener {
+            
+        }
     }
 }
