@@ -1,7 +1,9 @@
 package com.sthoray.allright.ui.search.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.R
@@ -27,6 +29,8 @@ class SearchViewModel(
     app: Application,
     private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
+
+    private val DEBUG_TAG = "SearchViewModel"
 
     /** The search request to search for. */
     lateinit var searchRequest: SearchRequest
@@ -79,6 +83,7 @@ class SearchViewModel(
                 )
             }
         } catch (t: Throwable) {
+            t.message?.let { Log.e(DEBUG_TAG, it) }
             when (t) {
                 is IOException -> searchListings.postValue(
                     Resource.Error(
@@ -122,6 +127,68 @@ class SearchViewModel(
      * their changes and return to the original request.
      */
     lateinit var searchRequestDraft: SearchRequest
+
+    private val _draftSearchListings: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
+
+    /**
+     * Draft search listings data.
+     *
+     * This is used for checking the result of a potential [searchRequestDraft]. Allows
+     * us to navigate through subcategories without discarding the actual [searchListings].
+     */
+    val draftSearchListings: LiveData<Resource<SearchResponse>> = _draftSearchListings
+
+    /**
+     * Search AllGoods for listings using the draft request.
+     *
+     * This will modify [_draftSearchListings] rather than [searchListings]
+     */
+    fun draftSearch() = viewModelScope.launch {
+        searchRequestDraft.pageNumber = 1
+        safeDraftSearch()
+    }
+
+    private suspend fun safeDraftSearch() {
+        _draftSearchListings.postValue(Resource.Loading())
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.searchListings(searchRequestDraft)
+                _draftSearchListings.postValue(handleDraftSearchResponse(response))
+            } else {
+                _draftSearchListings.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.no_network_error)
+                    )
+                )
+            }
+        } catch (t: Throwable) {
+            t.message?.let { Log.e(DEBUG_TAG, it) }
+            when (t) {
+                is IOException -> _draftSearchListings.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_network)
+                    )
+                )
+                else -> _draftSearchListings.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_conversion)
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleDraftSearchResponse(
+        response: Response<SearchResponse>
+    ): Resource<SearchResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(it)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
 
     /** Make the draft search request active, clear the last search, then begin searching. */
     fun applyFiltersAndSearch() {

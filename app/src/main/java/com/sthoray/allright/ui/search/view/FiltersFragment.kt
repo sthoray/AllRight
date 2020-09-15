@@ -5,10 +5,15 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
+import com.sthoray.allright.ui.search.adapter.CategoryAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
+import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_filters.*
 
 /**
@@ -21,7 +26,8 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
 
     private lateinit var viewModel: SearchViewModel
-    private val TAG = "FiltersFragment"
+    private lateinit var categoryAdapter: CategoryAdapter
+    private var DEBUG_TAG = "FiltersFragment"
 
 
     /**
@@ -37,10 +43,41 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as SearchActivity).viewModel
+        setupCategoryRecyclerView()
         updateFilters()
         setListeners()
+        setupObservers()
     }
 
+    private fun setupObservers() {
+        viewModel.draftSearchListings.observe(viewLifecycleOwner, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    response.data?.meta?.categories?.let {
+                        categoryAdapter.differ.submitList(it)
+                    }
+                }
+                is Resource.Error -> {
+                    response.message?.let {
+                        Log.e(DEBUG_TAG, "An error occurred: $it")
+                        Toast.makeText(
+                            activity, "An error occurred: $it",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setupCategoryRecyclerView() {
+        categoryAdapter = CategoryAdapter()
+        rvCategory.apply {
+            adapter = categoryAdapter
+            layoutManager = LinearLayoutManager(context)
+            //addOnScrollListener(this@FiltersFragment.)
+        }
+    }
 
     private fun updateFilters() {
         if (viewModel.isMall(viewModel.searchRequestDraft)) {
@@ -130,7 +167,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     private fun setSortBySpListener() {
         spSortBy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                Log.e(TAG, "spSortBy")
+                Log.e(DEBUG_TAG, "spSortBy")
             }
 
             override fun onItemSelected(
