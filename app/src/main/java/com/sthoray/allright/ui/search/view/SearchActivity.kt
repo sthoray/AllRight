@@ -78,6 +78,8 @@ class SearchActivity : AppCompatActivity() {
         when (intent?.action){
             Intent.ACTION_SEARCH -> {
                 viewModel.searchRequest.searchQuery = intent.getStringExtra(SearchManager.QUERY).toString()
+                viewModel.searchRequest.pageNumber = 1
+                viewModel.applyFiltersAndSearch()
             }
 
         }

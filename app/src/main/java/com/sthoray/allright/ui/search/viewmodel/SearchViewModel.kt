@@ -108,7 +108,11 @@ class SearchViewModel(
     fun applyFiltersAndSearch() {
         searchRequest = searchRequestDraft.copy()
         searchRequest.pageNumber = 1
-        searchListingsResponse = null
+//        searchListingsResponse = null
+        val oldSearchListingsResponseDataSize : Int? = searchListingsResponse?.data?.size?.minus(1)
+        for (listing in 0..oldSearchListingsResponseDataSize!!) {
+            searchListingsResponse?.data?.removeAt(0)
+        }
         searchListings()
     }
 
