@@ -136,6 +136,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         viewModel.draftBrowseResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
+                    pbChildCategoriesLoading.visibility = View.GONE
                     response.data?.apply {
                         children?.let { categoryAdapter.differ.submitList(it) }
                         category?.name?.let { tvCurrentCategory.text = it }
@@ -144,7 +145,9 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
                     }
                 }
                 is Resource.Error -> {
+                    pbChildCategoriesLoading.visibility = View.GONE
                     response.message?.let {
+                        tvCurrentCategory.text = it
                         Toast.makeText(
                             activity, "An error occurred: $it",
                             Toast.LENGTH_LONG
@@ -152,6 +155,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
                     }
                 }
                 is Resource.Loading -> {
+                    pbChildCategoriesLoading.visibility = View.VISIBLE
                     btnCategoryUp.isEnabled = false // Prevent the user from spamming up
                 }
             }
