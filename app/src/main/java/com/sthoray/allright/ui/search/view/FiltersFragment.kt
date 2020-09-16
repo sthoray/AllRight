@@ -1,7 +1,6 @@
 package com.sthoray.allright.ui.search.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -30,7 +29,6 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var categoryAdapter: CategoryAdapter
-    private var DEBUG_TAG = "FiltersFragment"
 
 
     /**
@@ -47,22 +45,17 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as SearchActivity).viewModel
         viewModel.draftSearch()
-        setupCategoryRecyclerView()
-        updateFilters()
-        setListeners()
+        setupView()
         setupObservers()
     }
 
-    private fun setupCategoryRecyclerView() {
-        categoryAdapter = CategoryAdapter()
-        rvCategory.apply {
-            adapter = categoryAdapter
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-        }
+    private fun setupView() {
+        setVisibleFilters()
+        setupRecyclerViews()
+        setupListeners()
     }
 
-    private fun updateFilters() {
+    private fun setVisibleFilters() {
         if (with(viewModel) { searchRequestDraft.isMall() }) {
             showMallFilters()
             setMallFilters()
@@ -70,13 +63,61 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
             showSecondhandFilters()
             setSecondhandFilters()
         }
-        updateCategoryList()
+        updateCategories()
     }
 
-    private fun setListeners() {
-        setMarketplaceRgListener()
-        setSortBySpListener()
-        setApplyFiltersBtnListener()
+    private fun setupRecyclerViews() {
+        // Child categories
+        categoryAdapter = CategoryAdapter()
+        rvCategoryChildren.apply {
+            adapter = categoryAdapter
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
+    }
+
+    private fun setupListeners() {
+        // Marketplace radio group
+        rgMarketplace.setOnCheckedChangeListener { _, id ->
+            viewModel.setDraftMarketplace(id == rbMarketplaceMall.id)
+            // Each marketplace has its own set of filters so we must also reconfigure the UI
+            setVisibleFilters()
+        }
+
+        // Sort order spinner
+        spSortBy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                // Empty overridden function
+            }
+
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                viewModel.apply {
+                    if (searchRequestDraft.isMall()) {
+                        searchRequestDraft.sortBy = sortOrdersMall[position].key
+                    } else {
+                        searchRequestDraft.sortBy = sortOrdersSecondhand[position].key
+                    }
+                }
+            }
+        }
+
+        // Apply button
+        btnApplyFilters.setOnClickListener {
+            // Check any views that do not automatically update the search request
+            viewModel.setDraftBinaryFilters(
+                cbFreeShipping.isChecked,
+                cbFastShipping.isChecked,
+                cbBrandNew.isChecked
+            )
+
+            viewModel.applyFiltersAndSearch()
+            findNavController().popBackStack()
+        }
     }
 
     private fun setupObservers() {
@@ -100,7 +141,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     }
 
 
-    private fun updateCategoryList() {
+    private fun updateCategories() {
         // tvCurrentCategory.text =
         // Fetch the new list of categories
         viewModel.draftSearch()
@@ -163,51 +204,6 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
             cbFastShipping.isChecked = searchRequestDraft.fastShipping != 0
             cbFreeShipping.isChecked = searchRequestDraft.freeShipping != 0
             cbBrandNew.isChecked = searchRequestDraft.brandNew != 0
-        }
-    }
-
-    private fun setMarketplaceRgListener() {
-        rgMarketplace.setOnCheckedChangeListener { _, id ->
-            viewModel.setDraftMarketplace(id == rbMarketplaceMall.id)
-            // Each marketplace has its own set of filters so we must also reconfigure the UI
-            updateFilters()
-        }
-    }
-
-    private fun setSortBySpListener() {
-        spSortBy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                Log.e(DEBUG_TAG, "spSortBy")
-            }
-
-            override fun onItemSelected(
-                adapterView: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                viewModel.apply {
-                    if (searchRequestDraft.isMall()) {
-                        searchRequestDraft.sortBy = sortOrdersMall[position].key
-                    } else {
-                        searchRequestDraft.sortBy = sortOrdersSecondhand[position].key
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setApplyFiltersBtnListener() {
-        btnApplyFilters.setOnClickListener {
-            // Check any views that do not automatically update the search request
-            viewModel.setDraftBinaryFilters(
-                cbFreeShipping.isChecked,
-                cbFastShipping.isChecked,
-                cbBrandNew.isChecked
-            )
-
-            viewModel.applyFiltersAndSearch()
-            findNavController().popBackStack()
         }
     }
 }

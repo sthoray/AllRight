@@ -125,7 +125,7 @@
             android:layout_marginBottom="16dp"
             android:text="@android:string/unknownName"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            app:layout_constraintBottom_toTopOf="@+id/rvCategory"
+            app:layout_constraintBottom_toTopOf="@+id/rvCategoryChildren"
             app:layout_constraintStart_toEndOf="@+id/btnCategoryUp"
             tools:text="Current Category" />
 
@@ -142,7 +142,7 @@
             app:srcCompat="@drawable/ic_arrow_upward_24" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvCategory"
+            android:id="@+id/rvCategoryChildren"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -165,7 +165,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvCategory" />
+            app:layout_constraintTop_toBottomOf="@+id/rvCategoryChildren" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
