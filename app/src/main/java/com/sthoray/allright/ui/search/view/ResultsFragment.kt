@@ -143,7 +143,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     }
 
     private fun showProgressBar() {
-        if (resultsAdapter.itemCount == 0) {
+        if (viewModel.searchListingsResponse == null) {
             srlSearchResults.isRefreshing = true
             pbSearchResultsPagination.visibility = View.GONE
         } else {
