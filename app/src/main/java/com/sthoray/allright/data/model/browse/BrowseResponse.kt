@@ -17,8 +17,8 @@ data class BrowseResponse(
     val category: Category?,
     val parents: List<CategoryParent>?,
     val path: List<CategoryPath>?,
-    val related: List<CategoryRelated>?,
+    val related: List<Category>?,
     @SerializedName("featured_panels")
     val featuredPanels: List<FeaturedPanel>?,
-    val children: List<CategoryChild>?
+    val children: List<Category>?
 )
