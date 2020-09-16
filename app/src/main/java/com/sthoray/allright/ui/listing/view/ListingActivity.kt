@@ -18,6 +18,9 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.adapter.ViewPagerAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
+import com.sthoray.allright.ui.main.adapter.BrowseAdapter
+import com.sthoray.allright.ui.main.view.MainActivity
+import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
@@ -42,6 +45,7 @@ class ListingActivity : AppCompatActivity() {
         setVisitListingBtnListener(listingId)
 
         setupObservers()
+
     }
 
     private fun setupViewModel() {
@@ -72,12 +76,24 @@ class ListingActivity : AppCompatActivity() {
     }
 
     private fun setViewPager(images: List<Image>) {
+
         viewPagerAdapter = ViewPagerAdapter(images)
         vpListingImages.adapter = viewPagerAdapter
         wdiListingImages.setViewPager2(vpListingImages)
 
+        setOnClickListeners()
 
     }
+
+    //BENJAMIN
+    private fun setOnClickListeners() {
+        viewPagerAdapter.setOnItemClickListener { imageUri ->
+            Intent(this@ListingActivity, ListingImagesActivity::class.java).also {
+                startActivity(it)
+            }
+        }
+    }
+
 
 
 
@@ -94,6 +110,11 @@ class ListingActivity : AppCompatActivity() {
         // Description
         tvListingName.text = listing.name
         tvListingDescription.text = listing.description
+
+        //Here we can access the listing variable and maybe save it to send to the ListingImagesActivity???
+
+
+
         listing.locationName?.let {
             tvListingLocation.text = it
             tvListingLocation.visibility = View.VISIBLE

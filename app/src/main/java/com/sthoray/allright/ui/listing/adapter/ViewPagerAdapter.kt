@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Image
+import com.sthoray.allright.data.model.listing.Listing
 import kotlinx.android.synthetic.main.item_view_pager_listing_image.view.*
 
 /** Adapter for images in the listing activity. */
@@ -55,8 +56,30 @@ class ViewPagerAdapter(
         val imageUrl = images[position].largeUrl
         holder.itemView.ivListingImage.load(imageUrl)
 
-        holder.itemView.setOnClickListener {
-            
+
+        //BENJAMIN
+        holder.itemView.apply {
+
+            setOnClickListener {
+                onItemClickListener?.let { it(imageUrl) }
+            }
         }
+
+        //BENJAMIN
+
+
+
     }
+
+    //BENJAMIN
+    //
+    private var onItemClickListener: ((String?) -> Unit)? = null
+
+    fun setOnItemClickListener(imageUrl: (String?) -> Unit) {
+        onItemClickListener = imageUrl
+    }
+
+    //
+    //BENJAMIN
+
 }
