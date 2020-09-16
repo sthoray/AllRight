@@ -63,7 +63,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
             showSecondhandFilters()
             setSecondhandFilters()
         }
-        updateFilters()
+        viewModel.draftSearch()
     }
 
     private fun setupRecyclerViews() {
@@ -122,7 +122,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
     private fun setupObservers() {
         // Category info
-        viewModel.browseResponse.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.draftBrowseResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     response.data?.apply {
@@ -140,13 +140,6 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
                 }
             }
         })
-    }
-
-    private fun updateFilters() {
-        viewModel.apply {
-            browse()
-            draftSearch()
-        }
     }
 
     private fun showMallFilters() {

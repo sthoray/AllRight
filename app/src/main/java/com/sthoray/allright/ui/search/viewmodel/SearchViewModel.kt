@@ -35,6 +35,7 @@ class SearchViewModel(
     private val _searchResponse: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
     private val _browseResponse: MutableLiveData<Resource<BrowseResponse>> = MutableLiveData()
     private val _draftSearchResponse: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
+    private val _draftBrowseResponse: MutableLiveData<Resource<BrowseResponse>> = MutableLiveData()
 
     /** The search request to search for. */
     lateinit var searchRequest: SearchRequest
@@ -65,6 +66,7 @@ class SearchViewModel(
      */
     val draftSearchResponse: LiveData<Resource<SearchResponse>> = _draftSearchResponse
 
+    val draftBrowseResponse: LiveData<Resource<BrowseResponse>> = _draftBrowseResponse
 
     /**
      * Initialise [searchRequest] and perform the first search.
@@ -86,8 +88,14 @@ class SearchViewModel(
             }
             searchRequestDraft = searchRequest
             search()
-            browse()
         }
+    }
+
+
+    /** Search AllGoods for listings. */
+    fun search() = viewModelScope.launch {
+        safeSearchCall()
+        safeBrowseCall()
     }
 
 
@@ -95,11 +103,6 @@ class SearchViewModel(
     // Search API calls
     // ==========================================
 
-
-    /** Search AllGoods for listings. */
-    fun search() = viewModelScope.launch {
-        safeSearchCall()
-    }
 
     private suspend fun safeSearchCall() {
         _searchResponse.postValue(Resource.Loading())
@@ -162,15 +165,6 @@ class SearchViewModel(
     // ==========================================
 
 
-    /**
-     * Browse the category in AllGoods.
-     *
-     * This function sets resources that are used to navigate between categories.
-     */
-    fun browse() = viewModelScope.launch {
-        safeBrowseCall()
-    }
-
     private suspend fun safeBrowseCall() {
         _browseResponse.postValue(Resource.Loading())
 
@@ -178,7 +172,7 @@ class SearchViewModel(
             if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.browseCategory(
                     categoryId = searchRequest.categoryId,
-                    type = (searchRequest.isMall().toInt() - 2) * -1 // 1 = mall, 2 = secondhand
+                    type = searchRequest.type()
                 )
                 _browseResponse.postValue(processBrowseResponse(response))
             } else {
@@ -227,11 +221,12 @@ class SearchViewModel(
     /**
      * Search AllGoods for listings using the draft request.
      *
-     * This will modify [draftSearchResponse] instead of [searchResponse]
+     * This will modify draft resources instead of the actual search resources.
      */
     fun draftSearch() = viewModelScope.launch {
         searchRequestDraft.pageNumber = 1
         safeDraftSearchCall()
+        safeDraftBrowseCall()
     }
 
     private suspend fun safeDraftSearchCall() {
@@ -275,6 +270,48 @@ class SearchViewModel(
             }
         }
         return Resource.Error(response.message())
+    }
+
+    private suspend fun safeDraftBrowseCall() {
+        _draftBrowseResponse.postValue(Resource.Loading())
+
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.browseCategory(
+                    categoryId = searchRequestDraft.categoryId,
+                    type = searchRequestDraft.type()
+                )
+                _draftBrowseResponse.postValue(processBrowseResponse(response))
+            } else {
+                _draftBrowseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.no_network_error
+                        )
+                    )
+                )
+            }
+
+        } catch (e: Exception) {
+            e.message?.let { Log.e(DEBUG_TAG, "safeBrowseCall: $it") }
+
+            when (e) {
+                is IOException -> _draftBrowseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.api_error_network
+                        )
+                    )
+                )
+                else -> _draftBrowseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.api_error_conversion
+                        )
+                    )
+                )
+            }
+        }
     }
 
 
@@ -338,6 +375,8 @@ class SearchViewModel(
      * @return True if the marketplace is "mall" and "false" if it is "secondhand".
      */
     fun SearchRequest.isMall() = (this.auctions == 0) && (this.products == 1)
+
+    private fun SearchRequest.type() = (this.isMall().toInt() - 2) * -1 // 1 = mall, 2 = secondhand
 
     private fun SearchRequest.setMarketplace(mall: Boolean): SearchRequest {
         return this.apply {
