@@ -26,7 +26,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var mainAdapter: HomeAdapter
-    private val TAG = "HomeFragment"
+    private val DEBUG_TAG = "HomeFragment"
 
     /**
      * Set up ViewModel, UI, and observers.
@@ -38,28 +38,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
-        setupRecyclerView()
-        setOnClickListeners()
+        setupView()
         setupObservers()
-        setUpSwipeToRefresh()
     }
 
-    private fun setUpSwipeToRefresh(){
-        swipeRefresh.setOnRefreshListener {
-            viewModel.refreshCategories()
-            //swipeRefresh.isRefreshing = false
-        }
-    }
 
-    private fun setupRecyclerView() {
+    private fun setupView() {
+        // Recycler view
         mainAdapter = HomeAdapter()
         recyclerViewFeaturedCategories.apply {
             adapter = mainAdapter
             layoutManager = GridLayoutManager(activity, 3)
         }
-    }
 
-    private fun setOnClickListeners() {
+        // Swipe to refresh listener
+        srlHome.setOnRefreshListener {
+            viewModel.refreshHomeFragment()
+        }
+
+        // Category selected listener
         mainAdapter.setOnItemClickListener { category ->
             Intent(activity, SearchActivity::class.java).also {
                 it.putExtra(CATEGORY_ID_KEY, category.id)
@@ -68,38 +65,38 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+
     private fun setupObservers() {
         viewModel.featureCategories.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
-                    removeProgressBar()
-                    swipeRefresh.isRefreshing = false
+                    hideProgressBar()
                     response.data?.let { featureCategoriesResponse ->
                         val categories = featureCategoriesResponse.categories.values.toList()
                         mainAdapter.differ.submitList(categories)
                     }
                 }
                 is Resource.Error -> {
-                    removeProgressBar()
-                    swipeRefresh.isRefreshing = false
+                    hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG).show()
-                        Log.e(TAG, "An error occurred: $message")
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
+                            .show()
+                        Log.e(DEBUG_TAG, "An error occurred: $message")
                     }
                 }
                 is Resource.Loading -> {
                     showProgressBar()
-                    swipeRefresh.isRefreshing = true
                 }
             }
         })
     }
 
+
     private fun showProgressBar() {
-        progressBarFeaturedCategories.visibility = View.VISIBLE
+        srlHome.isRefreshing = true
     }
 
-    private fun removeProgressBar() {
-        progressBarFeaturedCategories.visibility = View.GONE
+    private fun hideProgressBar() {
+        srlHome.isRefreshing = false
     }
 }
