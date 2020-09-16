@@ -41,6 +41,11 @@ class MainViewModel(
         getFeaturedCategories()
     }
 
+    /** Refresh data used in the BrowseFragment. */
+    fun refreshBrowseFragment() {
+        getSecondTierCategories()
+    }
+
     private fun getFeaturedCategories() = viewModelScope.launch {
         safeGetFeaturedCategoriesCall()
     }
