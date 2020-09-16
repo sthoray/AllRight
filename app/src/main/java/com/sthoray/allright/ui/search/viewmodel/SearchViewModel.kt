@@ -80,9 +80,9 @@ class SearchViewModel(
     fun initSearch(categoryId: Int, marketplace: String) {
         if (!::searchRequest.isInitialized) {
             searchRequest = if (marketplace == "secondhand") {
-                setMarketplace(SearchRequest(categoryId = categoryId), false)
+                SearchRequest(categoryId = categoryId).setMarketplace(mall = false)
             } else {
-                setMarketplace(SearchRequest(categoryId = categoryId), true)
+                SearchRequest(categoryId = categoryId).setMarketplace(mall = true)
             }
             searchRequestDraft = searchRequest
             search()
@@ -321,7 +321,7 @@ class SearchViewModel(
      * @param isMall True if the marketplace is "mall", false if it is "secondhand".
      */
     fun setDraftMarketplace(isMall: Boolean) {
-        searchRequestDraft = setMarketplace(searchRequestDraft, isMall)
+        searchRequestDraft = searchRequestDraft.setMarketplace(isMall)
     }
 
     /** List of [SortOrder] option for the AllGoods mall marketplace. */
@@ -363,10 +363,10 @@ class SearchViewModel(
      */
     fun SearchRequest.isMall() = (this.auctions == 0) && (this.products == 1)
 
-    private fun setMarketplace(searchRequest: SearchRequest, isMall: Boolean): SearchRequest {
-        return searchRequest.apply {
-            auctions = (!isMall).toInt()
-            products = isMall.toInt()
+    private fun SearchRequest.setMarketplace(mall: Boolean): SearchRequest {
+        return this.apply {
+            auctions = (!mall).toInt()
+            products = mall.toInt()
         }
     }
 
