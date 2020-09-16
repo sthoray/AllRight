@@ -15,7 +15,7 @@ import retrofit2.Response
 import java.io.IOException
 
 /**
- * View model for the listing activity
+ * View model for the listing images activity
  *
  * Uses LiveData to expose observables when interacting with the Model. These
  * can be observed by the View.

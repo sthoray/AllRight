@@ -28,14 +28,18 @@ class ListingImagesActivity : AppCompatActivity() {
 
 
     private val TAG = "ListingImagesActivity"
-    private lateinit var viewModel: ListingImagesViewModel
+    private lateinit var viewModel: ListingViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.i(TAG, "BEFORE")
         setContentView(R.layout.activity_listing_images)
+        Log.i(TAG, "AFTER")
         setupViewModel()
+
+        setupObservers()
 
 
     }
@@ -44,12 +48,38 @@ class ListingImagesActivity : AppCompatActivity() {
         val appRepository = AppRepository(SearchHistoryDatabase(this))
         val viewModelProviderFactory = ViewModelProviderFactory(application, appRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
-            .get(ListingImagesViewModel::class.java)
+            .get(ListingViewModel::class.java)
+    }
+
+    private fun setupObservers() {
+        viewModel.listing.observe(this, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { fillView(it) }
+                }
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message.let { message ->
+                        Log.e(TAG, "An error occurred $message")
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
+            }
+        })
+    }
+
+    private fun fillView(listing: Listing) {
+        // Images
+        listing.images?.let { setViewPager(it) }
     }
 
 
 
     private fun setViewPager(images: List<Image>) {
+
         viewPagerAdapter = ViewPagerAdapter(images)
         vpListingImages.adapter = viewPagerAdapter
         wdiListingImages.setViewPager2(vpListingImages)

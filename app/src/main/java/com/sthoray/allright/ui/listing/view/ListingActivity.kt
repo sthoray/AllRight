@@ -83,6 +83,8 @@ class ListingActivity : AppCompatActivity() {
 
         setOnClickListeners()
 
+        Log.i(TAG, "HERE")
+
     }
 
     //BENJAMIN
