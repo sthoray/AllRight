@@ -64,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.toolbarSearch -> {
+        R.id.toolbarSearchAction -> {
             onSearchRequested()
             true
         }
@@ -79,7 +79,6 @@ class SearchActivity : AppCompatActivity() {
             Intent.ACTION_SEARCH -> {
                 viewModel.searchRequest.searchQuery = intent.getStringExtra(SearchManager.QUERY).toString()
             }
-
         }
         super.onNewIntent(intent)
     }
