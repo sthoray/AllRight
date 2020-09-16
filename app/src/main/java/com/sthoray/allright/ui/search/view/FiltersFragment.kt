@@ -151,6 +151,9 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
                         ).show()
                     }
                 }
+                is Resource.Loading -> {
+                    btnCategoryUp.isEnabled = false // Prevent the user from spamming up
+                }
             }
         })
     }

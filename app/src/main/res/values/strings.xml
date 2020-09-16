@@ -93,4 +93,5 @@
     <string name="no_network_error">No internet connection</string>
     <string name="invalid_token_error">Invalid or expired credentials</string>
     <string name="category_up_description">Navigate to parent category</string>
+    <string name="loading_child_categories">Fetching categories</string>
 </resources>
