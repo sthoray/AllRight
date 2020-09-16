@@ -2,7 +2,7 @@ package com.sthoray.allright.data.repository
 
 import com.sthoray.allright.data.api.RetrofitInstance
 import com.sthoray.allright.data.db.SearchHistoryDatabase
-import com.sthoray.allright.data.model.listing.Category
+import com.sthoray.allright.data.model.listing.CategorySmall
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchRequest
@@ -29,7 +29,7 @@ class AppRepositoryTest {
     private lateinit var featureCategoriesResponse: FeatureCategoriesResponse
 
     @RelaxedMockK
-    private lateinit var secondTierCategoriesResponse: List<Category>
+    private lateinit var secondTierCategoriesResponse: List<CategorySmall>
 
     @RelaxedMockK
     private lateinit var searchListingResponse: SearchResponse
@@ -81,7 +81,7 @@ class AppRepositoryTest {
      */
 
     @Test
-    fun getListing(){
+    fun getListing() {
 
     }
 
