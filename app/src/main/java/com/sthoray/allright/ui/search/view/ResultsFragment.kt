@@ -38,30 +38,31 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as SearchActivity).viewModel
-        setupRecyclerView()
-        setupFab()
-        setListingOnClickListeners()
+        setupView()
         setupObservers()
     }
 
-
-    private fun setupRecyclerView() {
+    private fun setupView() {
+        // Recycler view
         resultsAdapter = ResultsAdapter()
-        rvResultsListings.apply {
+        rvSearchResults.apply {
             adapter = resultsAdapter
             layoutManager = LinearLayoutManager(context)
             addOnScrollListener(this@ResultsFragment.scrollListener)
         }
-    }
 
-    private fun setupFab() {
+        // Swipe to refresh
+        srlSearchResults.setOnRefreshListener {
+            viewModel.refreshSearchResults()
+        }
+
+        // Floating action button
         extendedFabFilter.setOnClickListener {
             viewModel.searchRequestDraft = viewModel.searchRequest.copy()
             findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
         }
-    }
 
-    private fun setListingOnClickListeners() {
+        // Search result selected listener
         resultsAdapter.setOnItemClickListener { listing ->
             Intent(activity, ListingActivity::class.java).also {
                 it.putExtra(LISTING_ID_KEY, listing.id)
@@ -99,7 +100,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         })
     }
 
-
     // Pagination
     private var isLoading = false
     private var isLastPage = false
@@ -126,7 +126,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 isScrolling = false
             }
 
-            val sensitivity = 13 // This may not be right yet
+            val sensitivity = 13 // Determined by trial and error
             if (dy < -sensitivity) {
                 extendedFabFilter.extend()
             } else if (dy > sensitivity) {
@@ -143,19 +143,19 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     }
 
     private fun showProgressBar() {
-        if (resultsAdapter.itemCount == 0) {
-            pbResultsListingsLoading.visibility = View.VISIBLE
-            pbResultsListingsPagination.visibility = View.GONE
+        if (viewModel.searchListingsResponse == null) {
+            srlSearchResults.isRefreshing = true
+            pbSearchResultsPagination.visibility = View.GONE
         } else {
-            pbResultsListingsLoading.visibility = View.GONE
-            pbResultsListingsPagination.visibility = View.VISIBLE
+            srlSearchResults.isRefreshing = false
+            pbSearchResultsPagination.visibility = View.VISIBLE
         }
         isLoading = true
     }
 
     private fun hideProgressBar() {
-        pbResultsListingsLoading.visibility = View.GONE
-        pbResultsListingsPagination.visibility = View.GONE
+        srlSearchResults.isRefreshing = false
+        pbSearchResultsPagination.visibility = View.GONE
         isLoading = false
     }
 }

@@ -34,7 +34,8 @@
         <activity
             android:name=".ui.search.view.SearchActivity"
             android:label="@string/search_label"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppPrimary" />
         <activity
             android:name=".ui.listing.view.ListingActivity"
             android:label="@string/listing_label"
