@@ -41,14 +41,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupRecyclerView()
         setOnClickListeners()
         setupObservers()
-        swipeToRefreshHomeFragment()
+        setUpSwipeToRefresh()
     }
 
-    private fun swipeToRefreshHomeFragment(){
+    private fun setUpSwipeToRefresh(){
         swipeRefresh.setOnRefreshListener {
-            viewModel.swipeRefreshHomeUpdate()
-            //Toast.makeText(context, "Page refreshed!", Toast.LENGTH_SHORT).show()
-            swipeRefresh.isRefreshing = false
+            viewModel.refreshCategories()
+            //swipeRefresh.isRefreshing = false
         }
     }
 
@@ -74,6 +73,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when (response) {
                 is Resource.Success -> {
                     removeProgressBar()
+                    swipeRefresh.isRefreshing = false
                     response.data?.let { featureCategoriesResponse ->
                         val categories = featureCategoriesResponse.categories.values.toList()
                         mainAdapter.differ.submitList(categories)
@@ -81,6 +81,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
                 is Resource.Error -> {
                     removeProgressBar()
+                    swipeRefresh.isRefreshing = false
                     response.message?.let { message ->
                         Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG).show()
                         Log.e(TAG, "An error occurred: $message")
@@ -88,6 +89,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
                 is Resource.Loading -> {
                     showProgressBar()
+                    swipeRefresh.isRefreshing = true
                 }
             }
         })

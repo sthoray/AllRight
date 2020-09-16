@@ -117,6 +117,12 @@ class SearchViewModel(
         searchListingsResponse = null
         searchListings()
     }
+    /** Clear the search result and begin searching again for fresh data. */
+    fun refreshSearchList() {
+        searchRequest.pageNumber = 1
+        searchListingsResponse = null
+        searchListings()
+    }
 
     private fun Boolean.toInt() = if (this) 1 else 0
 

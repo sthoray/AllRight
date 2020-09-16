@@ -41,7 +41,7 @@ class MainViewModel(
      * get featuredCategories is private function, the best way is to create public function and
      * call the private function in it rather than making it directly public.
      */
-    fun swipeRefreshHomeUpdate(){
+    fun refreshCategories(){
         getFeaturedCategories()
     }
 

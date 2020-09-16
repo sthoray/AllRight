@@ -47,8 +47,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private fun swipeToRefreshResultFragment() {
         swipeRefreshResult.setOnRefreshListener {
-            viewModel.applyFiltersAndSearch()
-            swipeRefreshResult.isRefreshing = false
+            viewModel.refreshSearchList()
         }
     }
 
@@ -83,6 +82,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
+                    swipeRefreshResult.isRefreshing = false
                     response.data?.let { listingResponse ->
                         // Not sure why differ is not working when providing a MutableList
                         resultsAdapter.differ.submitList(listingResponse.data.toList())
@@ -92,6 +92,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 }
                 is Resource.Error -> {
                     hideProgressBar()
+                    swipeRefreshResult.isRefreshing = false
                     response.message?.let { message ->
                         Log.e(TAG, "An error occurred: $message")
                         Toast.makeText(
@@ -102,6 +103,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 }
                 is Resource.Loading -> {
                     showProgressBar()
+                    swipeRefreshResult.isRefreshing = true
                 }
             }
         })
