@@ -51,6 +51,32 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         setupObservers()
     }
 
+    private fun setupCategoryRecyclerView() {
+        categoryAdapter = CategoryAdapter()
+        rvCategory.apply {
+            adapter = categoryAdapter
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
+    }
+
+    private fun updateFilters() {
+        if (viewModel.isMall(viewModel.searchRequestDraft)) {
+            showMallFilters()
+            setMallFilters()
+        } else {
+            showSecondhandFilters()
+            setSecondhandFilters()
+        }
+        updateCategoryList()
+    }
+
+    private fun setListeners() {
+        setMarketplaceRgListener()
+        setSortBySpListener()
+        setApplyFiltersBtnListener()
+    }
+
     private fun setupObservers() {
         viewModel.draftSearchListings.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
@@ -71,23 +97,11 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         })
     }
 
-    private fun setupCategoryRecyclerView() {
-        categoryAdapter = CategoryAdapter()
-        rvCategory.apply {
-            adapter = categoryAdapter
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-        }
-    }
 
-    private fun updateFilters() {
-        if (viewModel.isMall(viewModel.searchRequestDraft)) {
-            showMallFilters()
-            setMallFilters()
-        } else {
-            showSecondhandFilters()
-            setSecondhandFilters()
-        }
+    private fun updateCategoryList() {
+        // tvCurrentCategory.text =
+        // Fetch the new list of categories
+        viewModel.draftSearch()
     }
 
     private fun showMallFilters() {
@@ -148,13 +162,6 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
             cbFreeShipping.isChecked = searchRequestDraft.freeShipping != 0
             cbBrandNew.isChecked = searchRequestDraft.brandNew != 0
         }
-    }
-
-
-    private fun setListeners() {
-        setMarketplaceRgListener()
-        setSortBySpListener()
-        setApplyFiltersBtnListener()
     }
 
     private fun setMarketplaceRgListener() {
