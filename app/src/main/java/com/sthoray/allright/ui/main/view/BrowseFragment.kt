@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -83,6 +84,8 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
+                            .show()
                         Log.e(DEBUG_TAG, "An error occurred: $message")
                     }
                 }

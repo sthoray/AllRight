@@ -42,11 +42,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupObservers()
     }
 
-
     private fun setupView() {
         // Recycler view
         mainAdapter = HomeAdapter()
-        recyclerViewFeaturedCategories.apply {
+        rvFeaturedCategories.apply {
             adapter = mainAdapter
             layoutManager = GridLayoutManager(activity, 3)
         }
@@ -64,7 +63,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
     }
-
 
     private fun setupObservers() {
         viewModel.featureCategories.observe(viewLifecycleOwner, Observer { response ->
@@ -90,7 +88,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         })
     }
-
 
     private fun showProgressBar() {
         srlHome.isRefreshing = true
