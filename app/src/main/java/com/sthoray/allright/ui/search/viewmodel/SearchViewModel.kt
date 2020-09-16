@@ -118,7 +118,6 @@ class SearchViewModel(
         return Resource.Error(response.message())
     }
 
-
     /**
      * The draft search request when selecting filters.
      *
@@ -193,6 +192,15 @@ class SearchViewModel(
     /** Make the draft search request active, clear the last search, then begin searching. */
     fun applyFiltersAndSearch() {
         searchRequest = searchRequestDraft.copy()
+        searchRequest.pageNumber = 1
+        searchListingsResponse = null
+        searchListings()
+    }
+
+    /** Clear the search result and begin searching again for fresh data. */
+    fun refreshSearchResults() {
+        searchListings.postValue(Resource.Success(data = null))
+        searchListingsResponse = null
         searchRequest.pageNumber = 1
         searchListingsResponse = null
         searchListings()

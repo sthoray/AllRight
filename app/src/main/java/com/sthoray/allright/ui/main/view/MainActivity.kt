@@ -46,10 +46,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setupViewModel()
-        setupBottomNav()
-        setupToolbar()
+        setupView()
     }
 
     private fun setupViewModel() {
@@ -58,13 +56,13 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(MainViewModel::class.java)
     }
 
-    private fun setupBottomNav() {
+    private fun setupView() {
+        // Bottom Nav
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.navigationHostFragment) as NavHostFragment
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
-    }
 
-    private fun setupToolbar() {
+        // Toolbar
         toolbarMain.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.toolbarSettings -> {
@@ -78,3 +76,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+

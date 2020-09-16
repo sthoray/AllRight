@@ -48,6 +48,16 @@ class MainViewModel(
         getUserProfile()
     }
 
+    /** Refresh data used in the HomeFragment. */
+    fun refreshHomeFragment() {
+        getFeaturedCategories()
+    }
+
+    /** Refresh data used in the BrowseFragment. */
+    fun refreshBrowseFragment() {
+        getSecondTierCategories()
+    }
+
     private fun getFeaturedCategories() = viewModelScope.launch {
         safeGetFeaturedCategoriesCall()
     }

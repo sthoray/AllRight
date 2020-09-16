@@ -100,6 +100,33 @@
             app:layout_constraintTop_toBottomOf="@+id/tvListingName"
             tools:text="Listing Location" />
 
+
+        <TextView
+            android:id="@+id/tvListingPropertiesTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/title_properties"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvListingLocation" />
+
+        <TextView
+            android:id="@+id/tvListingProperties"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvListingPropertiesTitle" />
+
         <TextView
             android:id="@+id/tvListingDescription"
             android:layout_width="0dp"
@@ -112,8 +139,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvListingLocation"
+            app:layout_constraintTop_toBottomOf="@+id/tvListingProperties"
             tools:text="Listing description" />
+
+
 
         <TextView
             android:id="@+id/tvSellerDetails"
@@ -125,6 +154,16 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvListingDescription" />
+
+        <TextView
+            android:id="@+id/tvSellersLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintStart_toStartOf="@+id/tvSellersName"
+            app:layout_constraintTop_toBottomOf="@+id/tvSellersName"
+            tools:text="Sellers Location" />
 
         <ImageView
             android:id="@+id/ivSellersImage"
@@ -147,15 +186,7 @@
             app:layout_constraintTop_toTopOf="@+id/ivSellersImage"
             tools:text="Sellers Name" />
 
-        <TextView
-            android:id="@+id/tvSellersLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="?android:attr/textColorSecondary"
-            app:layout_constraintStart_toStartOf="@+id/tvSellersName"
-            app:layout_constraintTop_toBottomOf="@+id/tvSellersName"
-            tools:text="Sellers Location" />
+
 
 
         <Button
@@ -172,6 +203,10 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivSellersImage" />
+
+
+
+
 
         <ProgressBar
             android:id="@+id/pbListingDetails"

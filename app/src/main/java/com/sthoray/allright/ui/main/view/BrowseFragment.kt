@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -27,7 +28,7 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var mainAdapter: BrowseAdapter
-    private val TAG = "BrowseFragment"
+    private val DEBUG_TAG = "BrowseFragment"
 
     /**
      * Setup the ViewModel, UI and observers.
@@ -39,14 +40,14 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
-        setupRecyclerView()
-        setOnClickListeners()
+        setupView()
         setupObservers()
     }
 
-    private fun setupRecyclerView() {
+    private fun setupView() {
+        // Recycler view
         mainAdapter = BrowseAdapter()
-        recyclerViewTopLevelCategories.apply {
+        rvSecondTierCategories.apply {
             adapter = mainAdapter
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(
@@ -56,9 +57,13 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
                 )
             )
         }
-    }
 
-    private fun setOnClickListeners() {
+        // Swipe to refresh listener
+        srlBrowse.setOnRefreshListener {
+            viewModel.refreshBrowseFragment()
+        }
+
+        // Category selected listener
         mainAdapter.setOnItemClickListener { category ->
             Intent(activity, SearchActivity::class.java).also {
                 it.putExtra(CATEGORY_ID_KEY, category.id)
@@ -79,7 +84,9 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Log.e(TAG, "An error occurred: $message")
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
+                            .show()
+                        Log.e(DEBUG_TAG, "An error occurred: $message")
                     }
                 }
                 is Resource.Loading -> {
@@ -90,10 +97,10 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
     }
 
     private fun showProgressBar() {
-        progressBarSecondTierCategories.visibility = View.VISIBLE
+        srlBrowse.isRefreshing = true
     }
 
     private fun hideProgressBar() {
-        progressBarSecondTierCategories.visibility = View.GONE
+        srlBrowse.isRefreshing = false
     }
 }
