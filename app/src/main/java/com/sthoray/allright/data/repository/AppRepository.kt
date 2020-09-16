@@ -4,7 +4,6 @@ import com.sthoray.allright.data.api.RetrofitInstance
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.search.SearchRequest
-import com.sthoray.allright.data.model.user.Authentication
 
 /**
  * Repository for handling all data operations.
@@ -38,12 +37,24 @@ class AppRepository(
         RetrofitInstance.api.getListing(listingId)
 
     /**
+     * Browse a given category.
+     *
+     * Returns with the provided category information along with other
+     * related categories.
+     *
+     * @param categoryId The category ID to browse.
+     * @param type The type of market place to search. Known values: 1 = mall, 2 = secondhand.
+     */
+    suspend fun browseCategory(categoryId: Int, type: Int) =
+        RetrofitInstance.api.browseCategory(categoryId, type)
+
+    /**
      * Get the current user's profile.
      *
      * AllGoods uses bearer (or token) authentication. The `Authorization`
      * header token needs to be prefixed with 'Bearer' for this to work.
      *
-     * @param bearerToken The bearerToken provided by a successful [login] request.
+     * @param bearerToken The bearerToken provided by a successful login request.
      */
     suspend fun getUserProfile(bearerToken: String) =
         RetrofitInstance.api.getUserProfile("Bearer $bearerToken")
