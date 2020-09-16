@@ -100,7 +100,6 @@ class SearchViewModel(
         return Resource.Error(response.message())
     }
 
-
     /**
      * The draft search request when selecting filters.
      *
@@ -117,8 +116,11 @@ class SearchViewModel(
         searchListingsResponse = null
         searchListings()
     }
+
     /** Clear the search result and begin searching again for fresh data. */
-    fun refreshSearchList() {
+    fun refreshSearchResults() {
+        searchListings.postValue(Resource.Success(data = null))
+        searchListingsResponse = null
         searchRequest.pageNumber = 1
         searchListingsResponse = null
         searchListings()
