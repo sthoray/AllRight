@@ -115,10 +115,10 @@ class SearchViewModel(
                 )
             }
 
-        } catch (t: Throwable) {
-            t.message?.let { Log.e(DEBUG_TAG, it) }
+        } catch (e: Exception) {
+            e.message?.let { Log.e(DEBUG_TAG, "safeSearchCall: $it") }
 
-            when (t) {
+            when (e) {
                 is IOException -> _searchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.api_error_network)
@@ -186,7 +186,7 @@ class SearchViewModel(
             }
 
         } catch (e: Exception) {
-            e.message?.let { Log.e(DEBUG_TAG, it) }
+            e.message?.let { Log.e(DEBUG_TAG, "safeBrowseCall: $it") }
 
             when (e) {
                 is IOException -> _browseResponse.postValue(
@@ -247,9 +247,11 @@ class SearchViewModel(
                     )
                 )
             }
-        } catch (t: Throwable) {
-            t.message?.let { Log.e(DEBUG_TAG, it) }
-            when (t) {
+
+        } catch (e: Exception) {
+            e.message?.let { Log.e(DEBUG_TAG, "safeDraftSearchCall: $it") }
+
+            when (e) {
                 is IOException -> _draftSearchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.api_error_network)

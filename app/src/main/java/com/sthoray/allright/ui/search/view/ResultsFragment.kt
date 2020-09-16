@@ -24,7 +24,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var resultsAdapter: ResultsAdapter
-    private val TAG = "ResultsFragment"
 
 
     /**
