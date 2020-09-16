@@ -29,6 +29,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var categoryAdapter: CategoryAdapter
+    private var parentCategory: Int? = null
 
 
     /**
@@ -69,10 +70,20 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     private fun setupRecyclerViews() {
         // Child categories
         categoryAdapter = CategoryAdapter()
+        categoryAdapter.setOnItemClickListener { category ->
+            category.id?.let { viewModel.searchRequestDraft.categoryId = it }
+            viewModel.draftSearch()
+        }
+
         rvCategoryChildren.apply {
             adapter = categoryAdapter
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
+
+        btnCategoryUp.setOnClickListener {
+            viewModel.searchRequestDraft.categoryId = parentCategory ?: 0
+            viewModel.draftSearch()
         }
     }
 
@@ -128,6 +139,8 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
                     response.data?.apply {
                         children?.let { categoryAdapter.differ.submitList(it) }
                         category?.name?.let { tvCurrentCategory.text = it }
+                        parentCategory = category?.parent
+                        btnCategoryUp.isEnabled = !(parentCategory == null || parentCategory == 0)
                     }
                 }
                 is Resource.Error -> {

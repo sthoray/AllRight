@@ -43,6 +43,12 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private fun setupView() {
         // Recycler view
         resultsAdapter = ResultsAdapter()
+        resultsAdapter.setOnItemClickListener { listing ->
+            Intent(activity, ListingActivity::class.java).also {
+                it.putExtra(LISTING_ID_KEY, listing.id)
+                startActivity(it)
+            }
+        }
         rvSearchResults.apply {
             adapter = resultsAdapter
             layoutManager = LinearLayoutManager(context)
@@ -58,14 +64,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
         extendedFabFilter.setOnClickListener {
             viewModel.searchRequestDraft = viewModel.searchRequest.copy()
             findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
-        }
-
-        // Search result selected listener
-        resultsAdapter.setOnItemClickListener { listing ->
-            Intent(activity, ListingActivity::class.java).also {
-                it.putExtra(LISTING_ID_KEY, listing.id)
-                startActivity(it)
-            }
         }
     }
 
