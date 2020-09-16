@@ -63,7 +63,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
             showSecondhandFilters()
             setSecondhandFilters()
         }
-        updateCategories()
+        updateFilters()
     }
 
     private fun setupRecyclerViews() {
@@ -121,11 +121,13 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     }
 
     private fun setupObservers() {
-        viewModel.draftSearchResponse.observe(viewLifecycleOwner, Observer { response ->
+        // Category info
+        viewModel.browseResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
-                    response.data?.meta?.categories?.let {
-                        categoryAdapter.differ.submitList(it)
+                    response.data?.apply {
+                        children?.let { categoryAdapter.differ.submitList(it) }
+                        category?.name?.let { tvCurrentCategory.text = it }
                     }
                 }
                 is Resource.Error -> {
@@ -140,11 +142,11 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         })
     }
 
-
-    private fun updateCategories() {
-        // tvCurrentCategory.text =
-        // Fetch the new list of categories
-        viewModel.draftSearch()
+    private fun updateFilters() {
+        viewModel.apply {
+            browse()
+            draftSearch()
+        }
     }
 
     private fun showMallFilters() {

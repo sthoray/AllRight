@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.listing.Category
+import com.sthoray.allright.data.model.browse.Category
 import kotlinx.android.synthetic.main.item_filter_category.view.*
 
 /** Adapter for adapting categories into a RecyclerView. */
