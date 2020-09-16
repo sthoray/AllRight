@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.sthoray.allright.utils
 
 import android.app.Application
@@ -30,7 +32,6 @@ class InternetTest {
     @RelaxedMockK
     lateinit var activeNetwork: Network
 
-    @Suppress("DEPRECATION")
     @RelaxedMockK
     lateinit var activeNetworkInfo: NetworkInfo
 
@@ -44,7 +45,6 @@ class InternetTest {
         MockKAnnotations.init(this)
     }
 
-    @Suppress("DEPRECATION")
     @Config(minSdk = M, maxSdk = P)
     @Test
     fun getInternet_API_at_least_M_success_returns_true() {
@@ -70,7 +70,6 @@ class InternetTest {
         assertThat(hasConnection).isTrue()
     }
 
-    @Suppress("DEPRECATION")
     @Config(minSdk = M, maxSdk = P)
     @Test
     fun getInternet_API_at_least_M_no_wifi_or_cellular_or_ethernet_returns_false() {
@@ -95,7 +94,6 @@ class InternetTest {
         assertThat(hasConnection).isFalse()
     }
 
-    @Suppress("DEPRECATION")
     @Config(minSdk = M, maxSdk = P)
     @Test
     fun getInternet_API_at_least_M_when_activeNetwork_returns_null_returns_false() {
@@ -115,7 +113,6 @@ class InternetTest {
         assertThat(hasConnection).isFalse()
     }
 
-    @Suppress("DEPRECATION")
     @Config(minSdk = M, maxSdk = P)
     @Test
     fun getInternet_API_at_least_M_when_getNetworkCapabilities_returns_null_returns_false() {
@@ -133,7 +130,6 @@ class InternetTest {
         assertThat(hasConnection).isFalse()
     }
 
-    @Suppress("DEPRECATION")
     @Config(maxSdk = LOLLIPOP_MR1)
     @Test
     fun getInternet_API_less_than_M_success_returns_true() {
@@ -152,7 +148,6 @@ class InternetTest {
         assertThat(hasConnection).isTrue()
     }
 
-    @Suppress("DEPRECATION")
     @Config(maxSdk = LOLLIPOP_MR1)
     @Test
     fun getInternet_API_less_than_M_failure_returns_false() {
@@ -174,7 +169,6 @@ class InternetTest {
         assertThat(hasConnection).isFalse()
     }
 
-    @Suppress("DEPRECATION")
     @Config(maxSdk = LOLLIPOP_MR1)
     @Test
     fun getInternet_API_less_than_M_failure_because_active_network_info_is_null_returns_false() {

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.sthoray.allright.R
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
@@ -71,12 +72,24 @@ class SearchViewModel(
                 val response = appRepository.searchListings(searchRequest)
                 searchListings.postValue(handleSearchListingsResponse(response))
             } else {
-                searchListings.postValue(Resource.Error("No internet connection"))
+                searchListings.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.no_network_error)
+                    )
+                )
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> searchListings.postValue(Resource.Error("Network Failure"))
-                else -> searchListings.postValue(Resource.Error("Conversion Error"))
+                is IOException -> searchListings.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_network)
+                    )
+                )
+                else -> searchListings.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_conversion)
+                    )
+                )
             }
         }
     }

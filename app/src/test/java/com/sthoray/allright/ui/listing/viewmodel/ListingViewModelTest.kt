@@ -89,8 +89,10 @@ class ListingViewModelTest {
     fun getListing_withoutNetworkConnection_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val testId = 9
+            val errorMsg = "Some error message"
 
             every { Internet.hasConnection(any()) } returns false
+            every { app.getString(any()) } returns errorMsg
 
             val listingViewModel = ListingViewModel(app, appRepository)
             listingViewModel.getListing(testId)
@@ -100,15 +102,17 @@ class ListingViewModelTest {
 
             assertThat(listingViewModel.listing.value).isInstanceOf(Resource.Error::class.java)
             assertThat(listingViewModel.listing.value?.message)
-                .isEqualTo("No internet connection")
+                .isEqualTo(errorMsg)
         }
 
     @Test
     fun getListing_withNetworkFailure_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val testId = 9
+            val errorMsg = "Some error message"
 
             every { Internet.hasConnection(any()) } returns true
+            every { app.getString(any()) } returns errorMsg
             coEvery { appRepository.getListing(eq(testId)) } throws IOException()
 
             val listingViewModel = ListingViewModel(app, appRepository)
@@ -119,15 +123,17 @@ class ListingViewModelTest {
             assertThat(listingViewModel.listing.value)
                 .isInstanceOf(Resource.Error::class.java)
             assertThat(listingViewModel.listing.value?.message)
-                .isEqualTo("Network Failure")
+                .isEqualTo(errorMsg)
         }
 
     @Test
     fun getListing_withConversionError_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val testId = 9
+            val errorMsg = "Some error message"
 
             every { Internet.hasConnection(any()) } returns true
+            every { app.getString(any()) } returns errorMsg
             coEvery {
                 appRepository.getListing(eq(testId))
             } throws JsonSyntaxException("Mockk exception message")
@@ -140,6 +146,6 @@ class ListingViewModelTest {
             assertThat(listingViewModel.listing.value)
                 .isInstanceOf(Resource.Error::class.java)
             assertThat(listingViewModel.listing.value?.message)
-                .isEqualTo("Conversion Error")
+                .isEqualTo(errorMsg)
         }
 }
