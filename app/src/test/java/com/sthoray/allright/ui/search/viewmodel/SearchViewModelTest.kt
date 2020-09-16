@@ -70,7 +70,7 @@ class SearchViewModelTest {
             searchRequest = testSearchRequest
             initSearch(testId + 1, "mall")
 
-            coVerify(exactly = 0) { searchListings() }
+            coVerify(exactly = 0) { search() }
 
             assertThat(searchRequest).isEqualTo(testSearchRequest)
         }
@@ -89,13 +89,13 @@ class SearchViewModelTest {
 
             SearchViewModel(app, appRepository).apply {
                 searchRequest = testSearchRequest
-                searchListings()
+                search()
 
                 verify { Internet.hasConnection(any()) }
 
                 assertThat(searchRequest.pageNumber).isEqualTo(2)
-                assertThat(searchListings.value).isInstanceOf(Resource.Success::class.java)
-                assertThat(searchListings.value?.data).isEqualTo(testSearchResponse)
+                assertThat(searchResponse.value).isInstanceOf(Resource.Success::class.java)
+                assertThat(searchResponse.value?.data).isEqualTo(testSearchResponse)
             }
         }
 
@@ -117,13 +117,13 @@ class SearchViewModelTest {
             SearchViewModel(app, appRepository).apply {
                 searchRequest = testSearchRequest
                 searchListingsResponse = singleSearchListingResponse
-                searchListings()
+                search()
 
                 verify { Internet.hasConnection(any()) }
 
                 assertThat(searchRequest.pageNumber).isEqualTo(startingPage + 1)
-                assertThat(searchListings.value).isInstanceOf(Resource.Success::class.java)
-                assertThat(searchListings.value?.data?.data?.size).isEqualTo(2)
+                assertThat(searchResponse.value).isInstanceOf(Resource.Success::class.java)
+                assertThat(searchResponse.value?.data?.data?.size).isEqualTo(2)
             }
         }
 
@@ -142,12 +142,12 @@ class SearchViewModelTest {
 
             SearchViewModel(app, appRepository).apply {
                 searchRequest = testSearchRequest
-                searchListings()
+                search()
 
                 verify { Internet.hasConnection(any()) }
 
-                assertThat(searchListings.value).isInstanceOf(Resource.Error::class.java)
-                assertThat(searchListings.value?.message).isEqualTo(errorResponse.message())
+                assertThat(searchResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(searchResponse.value?.message).isEqualTo(errorResponse.message())
             }
         }
 
@@ -162,13 +162,13 @@ class SearchViewModelTest {
 
             SearchViewModel(app, appRepository).apply {
                 searchRequest = testSearchRequest
-                searchListings()
+                search()
 
                 verify { Internet.hasConnection(any()) }
                 coVerify(exactly = 0) { appRepository.searchListings(any()) }
 
-                assertThat(searchListings.value).isInstanceOf(Resource.Error::class.java)
-                assertThat(searchListings.value?.message).isEqualTo(errorMsg)
+                assertThat(searchResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(searchResponse.value?.message).isEqualTo(errorMsg)
             }
         }
 
@@ -186,12 +186,12 @@ class SearchViewModelTest {
 
             SearchViewModel(app, appRepository).apply {
                 searchRequest = testSearchRequest
-                searchListings()
+                search()
 
                 verify { Internet.hasConnection(any()) }
 
-                assertThat(searchListings.value).isInstanceOf(Resource.Error::class.java)
-                assertThat(searchListings.value?.message).isEqualTo(errorMsg)
+                assertThat(searchResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(searchResponse.value?.message).isEqualTo(errorMsg)
             }
         }
 
@@ -209,12 +209,12 @@ class SearchViewModelTest {
 
             SearchViewModel(app, appRepository).apply {
                 searchRequest = testSearchRequest
-                searchListings()
+                search()
 
                 verify { Internet.hasConnection(any()) }
 
-                assertThat(searchListings.value).isInstanceOf(Resource.Error::class.java)
-                assertThat(searchListings.value?.message).isEqualTo(errorMsg)
+                assertThat(searchResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(searchResponse.value?.message).isEqualTo(errorMsg)
             }
         }
 

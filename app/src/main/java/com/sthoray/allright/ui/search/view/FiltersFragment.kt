@@ -78,7 +78,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     }
 
     private fun setupObservers() {
-        viewModel.draftSearchListings.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.draftSearchResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     response.data?.meta?.categories?.let {

@@ -2,7 +2,6 @@ package com.sthoray.allright.ui.search.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
@@ -72,7 +71,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     }
 
     private fun setupObservers() {
-        viewModel.searchListings.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.searchResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -121,7 +120,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                     isNotAtBeginning && isTotalMoreThanVisible && isScrolling
 
             if (shouldPaginate) {
-                viewModel.searchListings()
+                viewModel.search()
                 isScrolling = false
             }
 

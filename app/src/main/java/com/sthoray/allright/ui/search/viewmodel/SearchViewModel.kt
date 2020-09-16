@@ -8,8 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.browse.BrowseResponse
-import com.sthoray.allright.data.model.browse.Category
-import com.sthoray.allright.data.model.browse.CategoryPath
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
@@ -34,24 +32,39 @@ class SearchViewModel(
 ) : AndroidViewModel(app) {
 
     private val DEBUG_TAG = "SearchViewModel"
+    private val _searchResponse: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
+    private val _browseResponse: MutableLiveData<Resource<BrowseResponse>> = MutableLiveData()
+    private val _draftSearchResponse: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
 
     /** The search request to search for. */
     lateinit var searchRequest: SearchRequest
 
-    /** Search listings data. */
-    val searchListings: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
+    /**
+     * The draft search request when selecting filters.
+     *
+     * The draft search request lets us work on a copy of the current [searchRequest].
+     * This can be useful for setting filters as a user might want to discard all
+     * their changes and return to the original request.
+     */
+    lateinit var searchRequestDraft: SearchRequest
 
-    /** Last search listings response. */
+    /** Last search response. */
     var searchListingsResponse: SearchResponse? = null
 
-    private val _path: MutableLiveData<Resource<List<CategoryPath>>> = MutableLiveData()
-    private val _children: MutableLiveData<Resource<List<Category>>> = MutableLiveData()
+    /** Search response data containing results. */
+    val searchResponse: LiveData<Resource<SearchResponse>> = _searchResponse
 
-    /** The category path leading to the current search request's category. */
-    val path: LiveData<Resource<List<CategoryPath>>> = _path
+    /** Browse response data containing category information. */
+    val browseResponse: LiveData<Resource<BrowseResponse>> = _browseResponse
 
-    /** The list of children under in the search request's category. */
-    val children: LiveData<Resource<List<Category>>> = _children
+    /**
+     * Draft search response data containing results.
+     *
+     * This is used for checking the result of a potential [searchRequestDraft]. Allows
+     * us to navigate through subcategories without discarding the actual [searchResponse].
+     */
+    val draftSearchResponse: LiveData<Resource<SearchResponse>> = _draftSearchResponse
+
 
     /**
      * Initialise [searchRequest] and perform the first search.
@@ -72,8 +85,8 @@ class SearchViewModel(
                 setMarketplace(SearchRequest(categoryId = categoryId), true)
             }
             searchRequestDraft = searchRequest
-            searchListings()
-            browseCategory()
+            search()
+            browse()
         }
     }
 
@@ -84,32 +97,34 @@ class SearchViewModel(
 
 
     /** Search AllGoods for listings. */
-    fun searchListings() = viewModelScope.launch {
+    fun search() = viewModelScope.launch {
         safeSearchCall()
     }
 
     private suspend fun safeSearchCall() {
-        searchListings.postValue(Resource.Loading())
+        _searchResponse.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.searchListings(searchRequest)
-                searchListings.postValue(handleSearchListingsResponse(response))
+                _searchResponse.postValue(handleSearchResponse(response))
             } else {
-                searchListings.postValue(
+                _searchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.no_network_error)
                     )
                 )
             }
+
         } catch (t: Throwable) {
             t.message?.let { Log.e(DEBUG_TAG, it) }
+
             when (t) {
-                is IOException -> searchListings.postValue(
+                is IOException -> _searchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.api_error_network)
                     )
                 )
-                else -> searchListings.postValue(
+                else -> _searchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.api_error_conversion)
                     )
@@ -118,18 +133,22 @@ class SearchViewModel(
         }
     }
 
-    private fun handleSearchListingsResponse(
+    private fun handleSearchResponse(
         response: Response<SearchResponse>
     ): Resource<SearchResponse> {
         if (response.isSuccessful) {
             response.body()?.let { responseBody ->
                 searchRequest.pageNumber++
                 if (searchListingsResponse == null) {
+                    // First page: replace existing list
                     searchListingsResponse = responseBody
+
                 } else {
-                    val oldListings = searchListingsResponse!!.data
+                    // New page: add to existing list
+                    val oldListings = searchListingsResponse?.data
                     val newListings = responseBody.data
-                    oldListings.addAll(newListings)
+                    oldListings?.addAll(newListings)
+
                 }
                 return Resource.Success(searchListingsResponse ?: responseBody)
             }
@@ -148,13 +167,12 @@ class SearchViewModel(
      *
      * This function sets resources that are used to navigate between categories.
      */
-    fun browseCategory() = viewModelScope.launch {
+    fun browse() = viewModelScope.launch {
         safeBrowseCall()
     }
 
     private suspend fun safeBrowseCall() {
-        _path.postValue(Resource.Loading())
-        _children.postValue(Resource.Loading())
+        _browseResponse.postValue(Resource.Loading())
 
         try {
             if (Internet.hasConnection(getApplication())) {
@@ -162,45 +180,38 @@ class SearchViewModel(
                     categoryId = searchRequest.categoryId,
                     type = (isMall(searchRequest).toInt() - 2) * -1 // 1 = mall, 2 = secondhand
                 )
-                _path.postValue(processBrowseResponsePath(response))
-                _children.postValue(processBrowseResponseChildren(response))
+                _browseResponse.postValue(processBrowseResponse(response))
             } else {
-                _path.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_network_error)))
-                _children.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_network_error)))
+                _browseResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_network_error)))
             }
 
         } catch (e: Exception) {
             e.message?.let { Log.e(DEBUG_TAG, it) }
 
             when (e) {
-                is IOException -> {
-                    _path.postValue(Resource.Error(getApplication<Application>().getString(R.string.api_error_network)))
-                    _children.postValue(Resource.Error(getApplication<Application>().getString(R.string.api_error_network)))
-                }
-                else -> {
-                    _path.postValue(Resource.Error(getApplication<Application>().getString(R.string.api_error_conversion)))
-                    _children.postValue(Resource.Error(getApplication<Application>().getString(R.string.api_error_conversion)))
-                }
+                is IOException -> _browseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.api_error_network
+                        )
+                    )
+                )
+                else -> _browseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.api_error_conversion
+                        )
+                    )
+                )
             }
         }
     }
 
-    private fun processBrowseResponsePath(
+    private fun processBrowseResponse(
         response: Response<BrowseResponse>
-    ): Resource<List<CategoryPath>> {
+    ): Resource<BrowseResponse> {
         if (response.isSuccessful) {
-            response.body()?.path?.let {
-                return Resource.Success(it)
-            }
-        }
-        return Resource.Error(response.message())
-    }
-
-    private fun processBrowseResponseChildren(
-        response: Response<BrowseResponse>
-    ): Resource<List<Category>> {
-        if (response.isSuccessful) {
-            response.body()?.children?.let {
+            response.body()?.let {
                 return Resource.Success(it)
             }
         }
@@ -209,47 +220,28 @@ class SearchViewModel(
 
 
     // ==========================================
-    // Search request drafting
+    // Draft search API calls
     // ==========================================
 
-
-    /**
-     * The draft search request when selecting filters.
-     *
-     * The draft search request lets us work on a copy of the current [searchRequest].
-     * This can be useful for setting filters as a user might want to discard all
-     * their changes and return to the original request.
-     */
-    lateinit var searchRequestDraft: SearchRequest
-
-    private val _draftSearchListings: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
-
-    /**
-     * Draft search listings data.
-     *
-     * This is used for checking the result of a potential [searchRequestDraft]. Allows
-     * us to navigate through subcategories without discarding the actual [searchListings].
-     */
-    val draftSearchListings: LiveData<Resource<SearchResponse>> = _draftSearchListings
 
     /**
      * Search AllGoods for listings using the draft request.
      *
-     * This will modify [_draftSearchListings] rather than [searchListings]
+     * This will modify [draftSearchResponse] instead of [searchResponse]
      */
     fun draftSearch() = viewModelScope.launch {
         searchRequestDraft.pageNumber = 1
-        safeDraftSearch()
+        safeDraftSearchCall()
     }
 
-    private suspend fun safeDraftSearch() {
-        _draftSearchListings.postValue(Resource.Loading())
+    private suspend fun safeDraftSearchCall() {
+        _draftSearchResponse.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.searchListings(searchRequestDraft)
-                _draftSearchListings.postValue(handleDraftSearchResponse(response))
+                _draftSearchResponse.postValue(handleDraftSearchResponse(response))
             } else {
-                _draftSearchListings.postValue(
+                _draftSearchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.no_network_error)
                     )
@@ -258,12 +250,12 @@ class SearchViewModel(
         } catch (t: Throwable) {
             t.message?.let { Log.e(DEBUG_TAG, it) }
             when (t) {
-                is IOException -> _draftSearchListings.postValue(
+                is IOException -> _draftSearchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.api_error_network)
                     )
                 )
-                else -> _draftSearchListings.postValue(
+                else -> _draftSearchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.api_error_conversion)
                     )
@@ -284,21 +276,26 @@ class SearchViewModel(
     }
 
 
+    // ==========================================
+    // More actions
+    // ==========================================
+
+
+    /** Clear the search result and begin searching again for fresh data. */
+    fun refreshSearchResults() {
+        _searchResponse.postValue(Resource.Success(data = null))
+        searchListingsResponse = null
+        searchRequest.pageNumber = 1
+        searchListingsResponse = null
+        search()
+    }
+
     /** Make the draft search request active, clear the last search, then begin searching. */
     fun applyFiltersAndSearch() {
         searchRequest = searchRequestDraft.copy()
         searchRequest.pageNumber = 1
         searchListingsResponse = null
-        searchListings()
-    }
-
-    /** Clear the search result and begin searching again for fresh data. */
-    fun refreshSearchResults() {
-        searchListings.postValue(Resource.Success(data = null))
-        searchListingsResponse = null
-        searchRequest.pageNumber = 1
-        searchListingsResponse = null
-        searchListings()
+        search()
     }
 
     /**
