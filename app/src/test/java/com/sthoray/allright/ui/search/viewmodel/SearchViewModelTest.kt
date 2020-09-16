@@ -297,7 +297,7 @@ class SearchViewModelTest {
         val mallSearchRequest = SearchRequest(auctions = 0, products = 1)
 
         SearchViewModel(app, appRepository).apply {
-            assertThat(isMall(mallSearchRequest)).isTrue()
+            assertThat(mallSearchRequest.isMall()).isTrue()
         }
     }
 
@@ -306,7 +306,7 @@ class SearchViewModelTest {
         val secondhandSearchRequest = SearchRequest(auctions = 1, products = 0)
 
         SearchViewModel(app, appRepository).apply {
-            assertThat(isMall(secondhandSearchRequest)).isFalse()
+            assertThat(secondhandSearchRequest.isMall()).isFalse()
         }
     }
 }

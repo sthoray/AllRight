@@ -61,7 +61,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     }
 
     private fun updateFilters() {
-        if (viewModel.isMall(viewModel.searchRequestDraft)) {
+        if (with(viewModel) { searchRequestDraft.isMall() }) {
             showMallFilters()
             setMallFilters()
         } else {
@@ -185,7 +185,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
                 id: Long
             ) {
                 viewModel.apply {
-                    if (isMall(searchRequestDraft)) {
+                    if (searchRequestDraft.isMall()) {
                         searchRequestDraft.sortBy = sortOrdersMall[position].key
                     } else {
                         searchRequestDraft.sortBy = sortOrdersSecondhand[position].key

@@ -178,7 +178,7 @@ class SearchViewModel(
             if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.browseCategory(
                     categoryId = searchRequest.categoryId,
-                    type = (isMall(searchRequest).toInt() - 2) * -1 // 1 = mall, 2 = secondhand
+                    type = (searchRequest.isMall().toInt() - 2) * -1 // 1 = mall, 2 = secondhand
                 )
                 _browseResponse.postValue(processBrowseResponse(response))
             } else {
@@ -357,15 +357,11 @@ class SearchViewModel(
 
 
     /**
-     * Check what market place the [searchRequest] will search.
-     *
-     * @param searchRequest The [SearchRequest] to check.
+     * Check what marketplace a [searchRequest] will search.
      *
      * @return True if the marketplace is "mall" and "false" if it is "secondhand".
      */
-    fun isMall(searchRequest: SearchRequest): Boolean {
-        return (searchRequest.auctions == 0) && (searchRequest.products == 1)
-    }
+    fun SearchRequest.isMall() = (this.auctions == 0) && (this.products == 1)
 
     private fun setMarketplace(searchRequest: SearchRequest, isMall: Boolean): SearchRequest {
         return searchRequest.apply {
