@@ -7,6 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.R
+import com.sthoray.allright.data.model.browse.BrowseResponse
+import com.sthoray.allright.data.model.browse.Category
+import com.sthoray.allright.data.model.browse.CategoryPath
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
@@ -41,6 +44,15 @@ class SearchViewModel(
     /** Last search listings response. */
     var searchListingsResponse: SearchResponse? = null
 
+    private val _path: MutableLiveData<Resource<List<CategoryPath>>> = MutableLiveData()
+    private val _children: MutableLiveData<Resource<List<Category>>> = MutableLiveData()
+
+    /** The category path leading to the current search request's category. */
+    val path: LiveData<Resource<List<CategoryPath>>> = _path
+
+    /** The list of children under in the search request's category. */
+    val children: LiveData<Resource<List<Category>>> = _children
+
     /**
      * Initialise [searchRequest] and perform the first search.
      *
@@ -61,8 +73,15 @@ class SearchViewModel(
             }
             searchRequestDraft = searchRequest
             searchListings()
+            browseCategory()
         }
     }
+
+
+    // ==========================================
+    // Search API calls
+    // ==========================================
+
 
     /** Search AllGoods for listings. */
     fun searchListings() = viewModelScope.launch {
@@ -117,6 +136,82 @@ class SearchViewModel(
         }
         return Resource.Error(response.message())
     }
+
+
+    // ==========================================
+    // Browse API calls
+    // ==========================================
+
+
+    /**
+     * Browse the category in AllGoods.
+     *
+     * This function sets resources that are used to navigate between categories.
+     */
+    fun browseCategory() = viewModelScope.launch {
+        safeBrowseCall()
+    }
+
+    private suspend fun safeBrowseCall() {
+        _path.postValue(Resource.Loading())
+        _children.postValue(Resource.Loading())
+
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.browseCategory(
+                    categoryId = searchRequest.categoryId,
+                    type = (isMall(searchRequest).toInt() - 2) * -1 // 1 = mall, 2 = secondhand
+                )
+                _path.postValue(processBrowseResponsePath(response))
+                _children.postValue(processBrowseResponseChildren(response))
+            } else {
+                _path.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_network_error)))
+                _children.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_network_error)))
+            }
+
+        } catch (e: Exception) {
+            e.message?.let { Log.e(DEBUG_TAG, it) }
+
+            when (e) {
+                is IOException -> {
+                    _path.postValue(Resource.Error(getApplication<Application>().getString(R.string.api_error_network)))
+                    _children.postValue(Resource.Error(getApplication<Application>().getString(R.string.api_error_network)))
+                }
+                else -> {
+                    _path.postValue(Resource.Error(getApplication<Application>().getString(R.string.api_error_conversion)))
+                    _children.postValue(Resource.Error(getApplication<Application>().getString(R.string.api_error_conversion)))
+                }
+            }
+        }
+    }
+
+    private fun processBrowseResponsePath(
+        response: Response<BrowseResponse>
+    ): Resource<List<CategoryPath>> {
+        if (response.isSuccessful) {
+            response.body()?.path?.let {
+                return Resource.Success(it)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private fun processBrowseResponseChildren(
+        response: Response<BrowseResponse>
+    ): Resource<List<Category>> {
+        if (response.isSuccessful) {
+            response.body()?.children?.let {
+                return Resource.Success(it)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+    // ==========================================
+    // Search request drafting
+    // ==========================================
+
 
     /**
      * The draft search request when selecting filters.
@@ -206,8 +301,6 @@ class SearchViewModel(
         searchListings()
     }
 
-    private fun Boolean.toInt() = if (this) 1 else 0
-
     /**
      * Set [searchRequestDraft]s binary filters.
      *
@@ -232,24 +325,6 @@ class SearchViewModel(
      */
     fun setDraftMarketplace(isMall: Boolean) {
         searchRequestDraft = setMarketplace(searchRequestDraft, isMall)
-    }
-
-    private fun setMarketplace(searchRequest: SearchRequest, isMall: Boolean): SearchRequest {
-        return searchRequest.apply {
-            auctions = (!isMall).toInt()
-            products = isMall.toInt()
-        }
-    }
-
-    /**
-     * Check what market place the [searchRequest] will search.
-     *
-     * @param searchRequest The [SearchRequest] to check.
-     *
-     * @return True if the marketplace is "mall" and "false" if it is "secondhand".
-     */
-    fun isMall(searchRequest: SearchRequest): Boolean {
-        return (searchRequest.auctions == 0) && (searchRequest.products == 1)
     }
 
     /** List of [SortOrder] option for the AllGoods mall marketplace. */
@@ -277,4 +352,30 @@ class SearchViewModel(
         SortOrder.PRICE_HIGHEST,
         SortOrder.ALPHABETICAL
     )
+
+
+    // ==========================================
+    // Helper functions
+    // ==========================================
+
+
+    /**
+     * Check what market place the [searchRequest] will search.
+     *
+     * @param searchRequest The [SearchRequest] to check.
+     *
+     * @return True if the marketplace is "mall" and "false" if it is "secondhand".
+     */
+    fun isMall(searchRequest: SearchRequest): Boolean {
+        return (searchRequest.auctions == 0) && (searchRequest.products == 1)
+    }
+
+    private fun setMarketplace(searchRequest: SearchRequest, isMall: Boolean): SearchRequest {
+        return searchRequest.apply {
+            auctions = (!isMall).toInt()
+            products = isMall.toInt()
+        }
+    }
+
+    private fun Boolean.toInt() = if (this) 1 else 0
 }
