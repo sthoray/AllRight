@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
 import com.sthoray.allright.ui.search.adapter.CategoryAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
+import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersMall
+import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersSecondhand
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_filters.*
 
@@ -106,7 +108,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
     private fun showMallFilters() {
         val sortOrderTitleMall = ArrayList<String>()
-        viewModel.sortOrdersMall.forEach { sortOrderTitleMall.add(getString(it.resourceId)) }
+        sortOrdersMall.forEach { sortOrderTitleMall.add(getString(it.resourceId)) }
 
         spSortBy.adapter = ArrayAdapter<String>(
             this@FiltersFragment.requireContext(),
@@ -121,7 +123,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
     private fun showSecondhandFilters() {
         val sortOrderTitleSecondhand = ArrayList<String>()
-        viewModel.sortOrdersSecondhand.forEach { sortOrderTitleSecondhand.add(getString(it.resourceId)) }
+        sortOrdersSecondhand.forEach { sortOrderTitleSecondhand.add(getString(it.resourceId)) }
 
         spSortBy.adapter = ArrayAdapter<String>(
             this@FiltersFragment.requireContext(),

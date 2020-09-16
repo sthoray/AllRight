@@ -324,32 +324,6 @@ class SearchViewModel(
         searchRequestDraft = searchRequestDraft.setMarketplace(isMall)
     }
 
-    /** List of [SortOrder] option for the AllGoods mall marketplace. */
-    val sortOrdersMall = listOf(
-        SortOrder.BEST,
-        SortOrder.POPULAR,
-        SortOrder.PRICE_SHIPPED_LOWEST,
-        SortOrder.PRICE_LOWEST,
-        SortOrder.PRICE_HIGHEST,
-        SortOrder.NEW_PRODUCTS,
-        SortOrder.SALE,
-        SortOrder.ALPHABETICAL
-    )
-
-    /** List of [SortOrder] option for the AllGoods secondhand marketplace. */
-    val sortOrdersSecondhand = listOf(
-        SortOrder.BEST,
-        SortOrder.TRENDING,
-        SortOrder.NEW_LISTINGS,
-        SortOrder.CLOSING_SOON,
-        SortOrder.MOST_BIDS,
-        SortOrder.BUY_NOW_LOWEST,
-        SortOrder.BUY_NOW_HIGHEST,
-        SortOrder.PRICE_LOWEST,
-        SortOrder.PRICE_HIGHEST,
-        SortOrder.ALPHABETICAL
-    )
-
 
     // ==========================================
     // Helper functions
@@ -371,4 +345,33 @@ class SearchViewModel(
     }
 
     private fun Boolean.toInt() = if (this) 1 else 0
+
+
+    companion object {
+        /** List of [SortOrder] option for the AllGoods mall marketplace. */
+        val sortOrdersMall = listOf(
+            SortOrder.BEST,
+            SortOrder.POPULAR,
+            SortOrder.PRICE_SHIPPED_LOWEST,
+            SortOrder.PRICE_LOWEST,
+            SortOrder.PRICE_HIGHEST,
+            SortOrder.NEW_PRODUCTS,
+            SortOrder.SALE,
+            SortOrder.ALPHABETICAL
+        )
+
+        /** List of [SortOrder] option for the AllGoods secondhand marketplace. */
+        val sortOrdersSecondhand = listOf(
+            SortOrder.BEST,
+            SortOrder.TRENDING,
+            SortOrder.NEW_LISTINGS,
+            SortOrder.CLOSING_SOON,
+            SortOrder.MOST_BIDS,
+            SortOrder.BUY_NOW_LOWEST,
+            SortOrder.BUY_NOW_HIGHEST,
+            SortOrder.PRICE_LOWEST,
+            SortOrder.PRICE_HIGHEST,
+            SortOrder.ALPHABETICAL
+        )
+    }
 }
