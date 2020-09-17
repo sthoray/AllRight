@@ -55,7 +55,7 @@ class SearchActivity : AppCompatActivity() {
      * Set OptionsMenu to show the actions on the top app bar
      *
      *@param menu If non null, this menu will be added to the activity as the top app bar
-     *@return
+     *@return true for the menu to be displayed
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
@@ -63,6 +63,13 @@ class SearchActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+     * Activates actions (like search using keywords) when the corresponding buttons on the options
+     * menu/top app bar are selected
+     *@param item The item in the options menu/top app bar that was selected
+     *@return whether the menu processing occurs in this overridden implementation of this function,
+     * false if menu processing occurs in the parent implementation
+     */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.toolbarSearch -> {
             onSearchRequested()
@@ -73,6 +80,10 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Called if the intent of the function was changed
+     *@param intent The new intent of the SearchActivity
+     */
     override fun onNewIntent(intent: Intent?) {
         setIntent(intent)
         when (intent?.action){
