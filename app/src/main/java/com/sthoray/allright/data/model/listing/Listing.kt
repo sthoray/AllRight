@@ -1,6 +1,7 @@
 package com.sthoray.allright.data.model.listing
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * Model for listings.
@@ -80,6 +81,7 @@ data class Listing(
     val reserveMet: Boolean?,
     val noReserve: Boolean?,
     val expires: String?,
+
     @SerializedName("payment_options")
     val paymentOptions: List<PaymentOption>?
-)
+)  : Serializable

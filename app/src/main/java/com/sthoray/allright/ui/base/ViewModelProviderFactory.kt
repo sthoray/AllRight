@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.ui.listing.viewmodel.ListingImagesViewModel
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
@@ -36,6 +37,9 @@ class ViewModelProviderFactory(
             }
             modelClass.isAssignableFrom(ListingViewModel::class.java) -> {
                 return ListingViewModel(app, appRepository) as T
+            }
+            modelClass.isAssignableFrom(ListingImagesViewModel::class.java) -> {
+                return ListingImagesViewModel(app, appRepository) as T
             }
         }
         throw IllegalArgumentException("Unknown ViewModel class")

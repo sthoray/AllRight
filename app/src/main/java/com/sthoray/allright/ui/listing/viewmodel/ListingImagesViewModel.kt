@@ -26,9 +26,55 @@ class ListingImagesViewModel(
 ) : AndroidViewModel(app) {
 
     /** The listing to display. */
-    val listingImages: MutableLiveData<Resource<List<Image>>> = MutableLiveData()
+    val listing: MutableLiveData<Resource<Listing>> = MutableLiveData()
+
+    /**
+     * Get all information about a listing.
+     *
+     * @param listingId the id of the listing to get
+     */
+    fun getListing(listingId: Int) = viewModelScope.launch {
+        safeGetListing(listingId)
+    }
+
+    private suspend fun safeGetListing(listingId: Int) {
+        listing.postValue(Resource.Loading())
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.getListing(listingId)
+                listing.postValue(handleListingResponse(response))
+            } else {
+                listing.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.no_network_error)
+                    )
+                )
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> listing.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_network)
+                    )
+                )
+                else -> listing.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_conversion)
+                    )
+                )
+            }
+        }
+    }
 
 
-
-
+    private fun handleListingResponse(
+        response: Response<Listing>
+    ): Resource<Listing> {
+        if (response.isSuccessful) {
+            response.body()?.let { responseBody ->
+                return Resource.Success(responseBody)
+            }
+        }
+        return Resource.Error(response.message())
+    }
 }

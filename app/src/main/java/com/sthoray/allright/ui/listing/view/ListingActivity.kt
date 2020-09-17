@@ -81,16 +81,17 @@ class ListingActivity : AppCompatActivity() {
         vpListingImages.adapter = viewPagerAdapter
         wdiListingImages.setViewPager2(vpListingImages)
 
-        setOnClickListeners()
+
 
         Log.i(TAG, "HERE")
 
     }
 
     //BENJAMIN
-    private fun setOnClickListeners() {
-        viewPagerAdapter.setOnItemClickListener { imageUri ->
+    private fun setOnClickListeners(listing: Listing) {
+        viewPagerAdapter.setOnItemClickListener { listener ->
             Intent(this@ListingActivity, ListingImagesActivity::class.java).also {
+                it.putExtra(LISTING_ID_KEY, listing.id)
                 startActivity(it)
             }
         }
@@ -191,6 +192,7 @@ class ListingActivity : AppCompatActivity() {
 
         // Images
         listing.images?.let { setViewPager(it) }
+        listing.let { setOnClickListeners(it) }
     }
 
     private fun showProgressBar() {

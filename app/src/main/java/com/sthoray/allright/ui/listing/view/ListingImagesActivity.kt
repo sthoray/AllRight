@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,25 +23,29 @@ import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_K
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_listing.*
+import kotlinx.android.synthetic.main.activity_listing.vpListingImages
+import kotlinx.android.synthetic.main.activity_listing.wdiListingImages
+import kotlinx.android.synthetic.main.activity_listing_images.*
 
 /** The listing images activity to display the images in full screen. */
 class ListingImagesActivity : AppCompatActivity() {
 
 
     private val TAG = "ListingImagesActivity"
-    private lateinit var viewModel: ListingViewModel
+    private lateinit var viewModel: ListingImagesViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i(TAG, "BEFORE")
         setContentView(R.layout.activity_listing_images)
-        Log.i(TAG, "AFTER")
         setupViewModel()
 
-        setupObservers()
+        val listingId = intent.getIntExtra(LISTING_ID_KEY, 0)
+        viewModel.getListing(listingId)
 
+        setupObservers()
+        Toast.makeText(this, "HELLO", Toast.LENGTH_LONG).show()
 
     }
 
@@ -48,7 +53,7 @@ class ListingImagesActivity : AppCompatActivity() {
         val appRepository = AppRepository(SearchHistoryDatabase(this))
         val viewModelProviderFactory = ViewModelProviderFactory(application, appRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
-            .get(ListingViewModel::class.java)
+            .get(ListingImagesViewModel::class.java)
     }
 
     private fun setupObservers() {
@@ -89,11 +94,13 @@ class ListingImagesActivity : AppCompatActivity() {
 
 
     private fun showProgressBar() {
+        pbListingImages.visibility = View.VISIBLE
         vpListingImages.visibility = View.GONE
         wdiListingImages.visibility = View.GONE
     }
 
     private fun hideProgressBar() {
+        pbListingImages.visibility = View.GONE
         vpListingImages.visibility = View.VISIBLE
         wdiListingImages.visibility = View.VISIBLE
     }
