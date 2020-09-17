@@ -45,7 +45,6 @@ class ListingImagesActivity : AppCompatActivity() {
         viewModel.getListing(listingId)
 
         setupObservers()
-        Toast.makeText(this, "HELLO", Toast.LENGTH_LONG).show()
 
     }
 
