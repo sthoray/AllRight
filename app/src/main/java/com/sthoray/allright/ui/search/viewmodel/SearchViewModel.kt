@@ -3,7 +3,6 @@ package com.sthoray.allright.ui.search.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
@@ -11,7 +10,7 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
 import com.sthoray.allright.utils.SortOrder
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Response
 import java.io.IOException
 
@@ -61,11 +60,7 @@ class SearchViewModel(
     }
 
     /** Search AllGoods for listings. */
-    fun searchListings() = viewModelScope.launch {
-        safeSearchCall()
-    }
-
-    private suspend fun safeSearchCall() {
+    fun searchListings() = runBlocking {
         searchListings.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
@@ -93,6 +88,8 @@ class SearchViewModel(
             }
         }
     }
+
+
 
     private fun handleSearchListingsResponse(
         response: Response<SearchResponse>

@@ -3,13 +3,12 @@ package com.sthoray.allright.ui.listing.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Response
 import java.io.IOException
 
@@ -32,11 +31,7 @@ class ListingViewModel(
      *
      * @param listingId the id of the listing to get
      */
-    fun getListing(listingId: Int) = viewModelScope.launch {
-        safeGetListing(listingId)
-    }
-
-    private suspend fun safeGetListing(listingId: Int) {
+    fun getListing(listingId: Int) = runBlocking {
         listing.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {

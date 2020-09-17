@@ -39,7 +39,7 @@ class MainViewModel(
     val userProfile: MutableLiveData<Resource<User>> = MutableLiveData()
 
     /** Flag to check if login state has changed. */
-    var userProfileShowen = false
+    var userProfileShown = false
 
     /** Make network requests on initialisation. */
     init {
