@@ -34,6 +34,7 @@ class ListingImagesActivity : AppCompatActivity() {
     private val TAG = "ListingImagesActivity"
     private lateinit var viewModel: ListingImagesViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private var imagePosition : Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +44,8 @@ class ListingImagesActivity : AppCompatActivity() {
 
         val listingId = intent.getIntExtra(LISTING_ID_KEY, 0)
         viewModel.getListing(listingId)
+
+        imagePosition = intent.getIntExtra("ImagePosition", 0)
 
         setupObservers()
 
@@ -85,6 +88,7 @@ class ListingImagesActivity : AppCompatActivity() {
     private fun setViewPager(images: List<Image>) {
 
         viewPagerAdapter = ViewPagerAdapter(images)
+        viewPagerAdapter
         vpListingImages.adapter = viewPagerAdapter
         wdiListingImages.setViewPager2(vpListingImages)
 

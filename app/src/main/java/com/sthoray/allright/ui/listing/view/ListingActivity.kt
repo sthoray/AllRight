@@ -92,6 +92,7 @@ class ListingActivity : AppCompatActivity() {
         viewPagerAdapter.setOnItemClickListener { listener ->
             Intent(this@ListingActivity, ListingImagesActivity::class.java).also {
                 it.putExtra(LISTING_ID_KEY, listing.id)
+                it.putExtra("ImagePosition", viewPagerAdapter.getPosition())
                 startActivity(it)
             }
         }
