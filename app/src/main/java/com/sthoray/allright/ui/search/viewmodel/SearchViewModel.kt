@@ -108,13 +108,7 @@ class SearchViewModel(
     fun applyFiltersAndSearch() {
         searchRequest = searchRequestDraft.copy()
         searchRequest.pageNumber = 1
-        // TODO set searchListingsResponse to null without causing a crash when searching for keywords
-//        searchListingsResponse = null
-        val oldSearchListingsResponseDataSize : Int? = searchListingsResponse?.data?.size?.minus(1)
-        // TODO use removeAll()
-        for (listing in 0..oldSearchListingsResponseDataSize!!) {
-            searchListingsResponse?.data?.removeAt(0)
-        }
+        searchListingsResponse = null
         searchListings()
     }
 
