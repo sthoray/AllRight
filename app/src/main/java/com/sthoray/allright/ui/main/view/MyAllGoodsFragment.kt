@@ -68,7 +68,7 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
             )
         }
 
-        if (bearerToken.isNullOrEmpty() == viewModel.userProfileShowen) {
+        if (bearerToken.isNullOrEmpty() == viewModel.userProfileShown) {
             viewModel.getUserProfile()
         }
     }
@@ -123,7 +123,7 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
         tvMyAllGoodsName.visibility = View.VISIBLE
         tvMyAllGoodsEmail.visibility = View.VISIBLE
         tvMyAllGoodsLocation.visibility = View.VISIBLE
-        viewModel.userProfileShowen = true
+        viewModel.userProfileShown = true
     }
 
     private fun hideAuthenticatedViews() {
@@ -133,7 +133,7 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
         tvMyAllGoodsName.visibility = View.GONE
         tvMyAllGoodsEmail.visibility = View.GONE
         tvMyAllGoodsLocation.visibility = View.GONE
-        viewModel.userProfileShowen = false
+        viewModel.userProfileShown = false
     }
 
     private fun bindViews(user: User) {

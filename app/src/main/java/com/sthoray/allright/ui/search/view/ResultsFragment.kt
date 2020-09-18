@@ -2,7 +2,6 @@ package com.sthoray.allright.ui.search.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
@@ -25,7 +24,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var resultsAdapter: ResultsAdapter
-    private val TAG = "ResultsFragment"
 
 
     /**
@@ -45,6 +43,12 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private fun setupView() {
         // Recycler view
         resultsAdapter = ResultsAdapter()
+        resultsAdapter.setOnItemClickListener { listing ->
+            Intent(activity, ListingActivity::class.java).also {
+                it.putExtra(LISTING_ID_KEY, listing.id)
+                startActivity(it)
+            }
+        }
         rvSearchResults.apply {
             adapter = resultsAdapter
             layoutManager = LinearLayoutManager(context)
@@ -61,18 +65,10 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
             viewModel.searchRequestDraft = viewModel.searchRequest.copy()
             findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
         }
-
-        // Search result selected listener
-        resultsAdapter.setOnItemClickListener { listing ->
-            Intent(activity, ListingActivity::class.java).also {
-                it.putExtra(LISTING_ID_KEY, listing.id)
-                startActivity(it)
-            }
-        }
     }
 
     private fun setupObservers() {
-        viewModel.searchListings.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.searchResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -86,7 +82,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Log.e(TAG, "An error occurred: $message")
                         Toast.makeText(
                             activity, "An error occurred: $message",
                             Toast.LENGTH_LONG
@@ -122,7 +117,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                     isNotAtBeginning && isTotalMoreThanVisible && isScrolling
 
             if (shouldPaginate) {
-                viewModel.searchListings()
+                viewModel.search()
                 isScrolling = false
             }
 

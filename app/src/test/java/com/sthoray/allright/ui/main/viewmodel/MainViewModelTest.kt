@@ -1,13 +1,11 @@
 package com.sthoray.allright.ui.main.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.google.gson.JsonSyntaxException
-import com.sthoray.allright.data.model.listing.Category
+import com.sthoray.allright.data.model.listing.CategorySmall
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
-import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
@@ -44,7 +42,7 @@ class MainViewModelTest {
     private lateinit var featureCategoriesResponse: FeatureCategoriesResponse
 
     @RelaxedMockK
-    private lateinit var secondTierCategoriesResponse: List<Category>
+    private lateinit var secondTierCategoriesResponse: List<CategorySmall>
 
     @Before
     fun setUp() {
@@ -172,7 +170,7 @@ class MainViewModelTest {
     @Test
     fun getSecondTierCategories_withResponseError_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
-            val errorResponse: Response<List<Category>> = Response.error(
+            val errorResponse: Response<List<CategorySmall>> = Response.error(
                 400,
                 "{\"key\":[\"some_stuff\"]}"
                     .toResponseBody("application/json".toMediaTypeOrNull())

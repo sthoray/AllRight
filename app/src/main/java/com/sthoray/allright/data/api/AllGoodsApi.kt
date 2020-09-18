@@ -1,6 +1,8 @@
 package com.sthoray.allright.data.api
 
+import com.sthoray.allright.data.model.browse.BrowseResponse
 import com.sthoray.allright.data.model.listing.Category
+import com.sthoray.allright.data.model.listing.CategorySmall
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.search.SearchRequest
@@ -28,7 +30,7 @@ interface AllGoodsApi {
      * @return A list of [Category]s.
      */
     @GET("category/secondTier")
-    suspend fun getSecondTierCategories(): Response<List<Category>>
+    suspend fun getSecondTierCategories(): Response<List<CategorySmall>>
 
     /**
      * Search for listings.
@@ -71,4 +73,21 @@ interface AllGoodsApi {
      */
     @GET("user")
     suspend fun getUserProfile(@Header("Authorization") bearerToken: String): Response<UserResponse>
+
+    /**
+     * Browse a given category.
+     *
+     * Returns with the provided category information along with other
+     * related categories.
+     *
+     * @param categoryId The category ID to browse.
+     * @param type The type of market place to search. Known values: 1 = mall, 2 = secondhand.
+     *
+     * @return A [BrowseResponse] object
+     */
+    @GET("category/{categoryId}/browse")
+    suspend fun browseCategory(
+        @Path("categoryId") categoryId: Int,
+        @Query("type") type: Int
+    ): Response<BrowseResponse>
 }

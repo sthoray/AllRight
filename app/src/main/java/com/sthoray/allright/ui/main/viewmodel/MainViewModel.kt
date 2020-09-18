@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.listing.Category
+import com.sthoray.allright.data.model.listing.CategorySmall
 import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.user.User
 import com.sthoray.allright.data.model.user.UserResponse
@@ -33,13 +33,13 @@ class MainViewModel(
     val featureCategories: MutableLiveData<Resource<FeatureCategoriesResponse>> = MutableLiveData()
 
     /** Second tier categories response. */
-    val secondTierCategories: MutableLiveData<Resource<List<Category>>> = MutableLiveData()
+    val secondTierCategories: MutableLiveData<Resource<List<CategorySmall>>> = MutableLiveData()
 
     /** User profile resource. */
     val userProfile: MutableLiveData<Resource<User>> = MutableLiveData()
 
     /** Flag to check if login state has changed. */
-    var userProfileShowen = false
+    var userProfileShown = false
 
     /** Make network requests on initialisation. */
     init {
@@ -197,8 +197,8 @@ class MainViewModel(
     }
 
     private fun handleSecondTierCategoriesResponse(
-        response: Response<List<Category>>
-    ): Resource<List<Category>> {
+        response: Response<List<CategorySmall>>
+    ): Resource<List<CategorySmall>> {
         if (response.isSuccessful) {
             response.body()?.let { responseBody ->
                 return Resource.Success(responseBody)

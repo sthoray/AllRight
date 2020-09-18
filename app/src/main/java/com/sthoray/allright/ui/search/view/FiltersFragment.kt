@@ -1,14 +1,21 @@
 package com.sthoray.allright.ui.search.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
+import com.sthoray.allright.ui.search.adapter.CategoryAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
+import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersMall
+import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersSecondhand
+import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_filters.*
 
 /**
@@ -21,7 +28,8 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
 
     private lateinit var viewModel: SearchViewModel
-    private val TAG = "FiltersFragment"
+    private lateinit var categoryAdapter: CategoryAdapter
+    private var parentCategory: Int? = null
 
 
     /**
@@ -37,24 +45,126 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as SearchActivity).viewModel
-        updateFilters()
-        setListeners()
+        viewModel.draftSearch()
+        setupView()
+        setupObservers()
     }
 
+    private fun setupView() {
+        setVisibleFilters()
+        setupRecyclerViews()
+        setupListeners()
+    }
 
-    private fun updateFilters() {
-        if (viewModel.isMall(viewModel.searchRequestDraft)) {
+    private fun setVisibleFilters() {
+        if (with(viewModel) { searchRequestDraft.isMall() }) {
             showMallFilters()
             setMallFilters()
         } else {
             showSecondhandFilters()
             setSecondhandFilters()
         }
+        viewModel.draftSearch()
+    }
+
+    private fun setupRecyclerViews() {
+        // Child categories
+        categoryAdapter = CategoryAdapter()
+        categoryAdapter.setOnItemClickListener { category ->
+            category.id?.let { viewModel.searchRequestDraft.categoryId = it }
+            viewModel.draftSearch()
+        }
+
+        rvCategoryChildren.apply {
+            adapter = categoryAdapter
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
+
+        btnCategoryUp.setOnClickListener {
+            viewModel.searchRequestDraft.categoryId = parentCategory ?: 0
+            viewModel.draftSearch()
+        }
+    }
+
+    private fun setupListeners() {
+        // Marketplace radio group
+        rgMarketplace.setOnCheckedChangeListener { _, id ->
+            viewModel.setDraftMarketplace(id == rbMarketplaceMall.id)
+            // Each marketplace has its own set of filters so we must also reconfigure the UI
+            setVisibleFilters()
+        }
+
+        // Sort order spinner
+        spSortBy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                // Empty overridden function
+            }
+
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                viewModel.apply {
+                    if (searchRequestDraft.isMall()) {
+                        searchRequestDraft.sortBy = sortOrdersMall[position].key
+                    } else {
+                        searchRequestDraft.sortBy = sortOrdersSecondhand[position].key
+                    }
+                }
+            }
+        }
+
+        // Apply button
+        btnApplyFilters.setOnClickListener {
+            // Check any views that do not automatically update the search request
+            viewModel.setDraftBinaryFilters(
+                cbFreeShipping.isChecked,
+                cbFastShipping.isChecked,
+                cbBrandNew.isChecked
+            )
+
+            viewModel.applyFiltersAndSearch()
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun setupObservers() {
+        // Category info
+        viewModel.draftBrowseResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    pbChildCategoriesLoading.visibility = View.GONE
+                    response.data?.apply {
+                        children?.let { categoryAdapter.differ.submitList(it) }
+                        category?.name?.let { tvCurrentCategory.text = it }
+                        parentCategory = category?.parent
+                        btnCategoryUp.isEnabled = !(parentCategory == null || parentCategory == 0)
+                    }
+                }
+                is Resource.Error -> {
+                    pbChildCategoriesLoading.visibility = View.GONE
+                    response.message?.let {
+                        tvCurrentCategory.text = it
+                        Toast.makeText(
+                            activity, "An error occurred: $it",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+                is Resource.Loading -> {
+                    pbChildCategoriesLoading.visibility = View.VISIBLE
+                    btnCategoryUp.isEnabled = false // Prevent the user from spamming up
+                }
+            }
+        })
     }
 
     private fun showMallFilters() {
         val sortOrderTitleMall = ArrayList<String>()
-        viewModel.sortOrdersMall.forEach { sortOrderTitleMall.add(getString(it.resourceId)) }
+        sortOrdersMall.forEach { sortOrderTitleMall.add(getString(it.resourceId)) }
 
         spSortBy.adapter = ArrayAdapter<String>(
             this@FiltersFragment.requireContext(),
@@ -69,7 +179,7 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
 
     private fun showSecondhandFilters() {
         val sortOrderTitleSecondhand = ArrayList<String>()
-        viewModel.sortOrdersSecondhand.forEach { sortOrderTitleSecondhand.add(getString(it.resourceId)) }
+        sortOrdersSecondhand.forEach { sortOrderTitleSecondhand.add(getString(it.resourceId)) }
 
         spSortBy.adapter = ArrayAdapter<String>(
             this@FiltersFragment.requireContext(),
@@ -78,8 +188,8 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         )
 
         cbFreeShipping.visibility = View.VISIBLE
-        cbFastShipping.visibility = View.INVISIBLE
-        cbBrandNew.visibility = View.INVISIBLE
+        cbFastShipping.visibility = View.GONE
+        cbBrandNew.visibility = View.GONE
     }
 
     private fun setMallFilters() {
@@ -109,58 +219,6 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
             cbFastShipping.isChecked = searchRequestDraft.fastShipping != 0
             cbFreeShipping.isChecked = searchRequestDraft.freeShipping != 0
             cbBrandNew.isChecked = searchRequestDraft.brandNew != 0
-        }
-    }
-
-
-    private fun setListeners() {
-        setMarketplaceRgListener()
-        setSortBySpListener()
-        setApplyFiltersBtnListener()
-    }
-
-    private fun setMarketplaceRgListener() {
-        rgMarketplace.setOnCheckedChangeListener { _, id ->
-            viewModel.setDraftMarketplace(id == rbMarketplaceMall.id)
-            // Each marketplace has its own set of filters so we must also reconfigure the UI
-            updateFilters()
-        }
-    }
-
-    private fun setSortBySpListener() {
-        spSortBy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                Log.e(TAG, "spSortBy")
-            }
-
-            override fun onItemSelected(
-                adapterView: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                viewModel.apply {
-                    if (isMall(searchRequestDraft)) {
-                        searchRequestDraft.sortBy = sortOrdersMall[position].key
-                    } else {
-                        searchRequestDraft.sortBy = sortOrdersSecondhand[position].key
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setApplyFiltersBtnListener() {
-        btnApplyFilters.setOnClickListener {
-            // Check any views that do not automatically update the search request
-            viewModel.setDraftBinaryFilters(
-                cbFreeShipping.isChecked,
-                cbFastShipping.isChecked,
-                cbBrandNew.isChecked
-            )
-
-            viewModel.applyFiltersAndSearch()
-            findNavController().popBackStack()
         }
     }
 }

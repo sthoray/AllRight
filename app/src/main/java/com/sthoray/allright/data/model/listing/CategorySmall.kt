@@ -3,11 +3,13 @@ package com.sthoray.allright.data.model.listing
 import com.google.gson.annotations.SerializedName
 
 /**
- * Model representing a category.
+ * Model representing a category with less recursive fields.
+ *
+ * This model uses different data types than the primary Category data class.
  *
  * @property id The category ID.
  * @property name The name of the category.
- * @property parent The category's direct parent. The parent category will be one level higher.
+ * @property parent The category's direct parent ID.
  * @property level The tree level of the category. Second tier categories are level 1 while their children are level 2, etc.
  * @property icon The name of the icon representing the category.
  * @property appIcon The name of the icon in the mobil app representing the category.
@@ -23,10 +25,10 @@ import com.google.gson.annotations.SerializedName
  * @property defaultToListLayout 1 if the search results should be displayed in a list by default, else 0.
  * @property children The list of categories that are one level below this category. If the category is a child node, [children] will not be present.
  */
-data class Category(
+data class CategorySmall(
     val id: Int?,
     val name: String?,
-    val parent: CategorySmall?,
+    val parent: Int?,
     val level: Int?,
     val icon: String?,
     @SerializedName("app_icon") val appIcon: String?,
@@ -40,5 +42,5 @@ data class Category(
     @SerializedName("default_fast_shipping") val defaultToFastShipping: Int?,
     @SerializedName("default_brand_new") val defaultToBrandNew: Int?,
     @SerializedName("default_layout_list") val defaultToListLayout: Int?,
-    val children: List<Category>?
+    val children: List<CategorySmall>?
 )

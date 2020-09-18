@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.listing.Category
+import com.sthoray.allright.data.model.listing.CategorySmall
 import com.sthoray.allright.utils.AppIcon
 import kotlinx.android.synthetic.main.item_layout_second_tier_category.view.*
 
@@ -17,15 +17,15 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHol
     /** Responsible for displaying a single top level category. */
     inner class TopLevelCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    private val differCallback = object : DiffUtil.ItemCallback<Category>() {
+    private val differCallback = object : DiffUtil.ItemCallback<CategorySmall>() {
 
-        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+        override fun areItemsTheSame(oldItem: CategorySmall, newItem: CategorySmall): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: Category,
-            newItem: Category
+            oldItem: CategorySmall,
+            newItem: CategorySmall
         ): Boolean {
             return oldItem == newItem
         }
@@ -85,14 +85,14 @@ class BrowseAdapter : RecyclerView.Adapter<BrowseAdapter.TopLevelCategoryViewHol
         }
     }
 
-    private var onItemClickListener: ((Category) -> Unit)? = null
+    private var onItemClickListener: ((CategorySmall) -> Unit)? = null
 
     /**
      * Set the on click listener for an itemView.
      *
      * @param listener the onclick listener lambda function
      */
-    fun setOnItemClickListener(listener: (Category) -> Unit) {
+    fun setOnItemClickListener(listener: (CategorySmall) -> Unit) {
         onItemClickListener = listener
     }
 }

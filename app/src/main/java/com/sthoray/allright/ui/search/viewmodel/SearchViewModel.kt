@@ -1,10 +1,13 @@
 package com.sthoray.allright.ui.search.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sthoray.allright.R
+import com.sthoray.allright.data.model.browse.BrowseResponse
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
@@ -28,14 +31,42 @@ class SearchViewModel(
     private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
+    private val DEBUG_TAG = "SearchViewModel"
+    private val _searchResponse: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
+    private val _browseResponse: MutableLiveData<Resource<BrowseResponse>> = MutableLiveData()
+    private val _draftSearchResponse: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
+    private val _draftBrowseResponse: MutableLiveData<Resource<BrowseResponse>> = MutableLiveData()
+
     /** The search request to search for. */
     lateinit var searchRequest: SearchRequest
 
-    /** Search listings data. */
-    val searchListings: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
+    /**
+     * The draft search request when selecting filters.
+     *
+     * The draft search request lets us work on a copy of the current [searchRequest].
+     * This can be useful for setting filters as a user might want to discard all
+     * their changes and return to the original request.
+     */
+    lateinit var searchRequestDraft: SearchRequest
 
-    /** Last search listings response. */
+    /** Last search response. */
     var searchListingsResponse: SearchResponse? = null
+
+    /** Search response data containing results. */
+    val searchResponse: LiveData<Resource<SearchResponse>> = _searchResponse
+
+    /** Browse response data containing category information. */
+    val browseResponse: LiveData<Resource<BrowseResponse>> = _browseResponse
+
+    /**
+     * Draft search response data containing results.
+     *
+     * This is used for checking the result of a potential [searchRequestDraft]. Allows
+     * us to navigate through subcategories without discarding the actual [searchResponse].
+     */
+    val draftSearchResponse: LiveData<Resource<SearchResponse>> = _draftSearchResponse
+
+    val draftBrowseResponse: LiveData<Resource<BrowseResponse>> = _draftBrowseResponse
 
     /**
      * Initialise [searchRequest] and perform the first search.
@@ -51,41 +82,52 @@ class SearchViewModel(
     fun initSearch(categoryId: Int, marketplace: String) {
         if (!::searchRequest.isInitialized) {
             searchRequest = if (marketplace == "secondhand") {
-                setMarketplace(SearchRequest(categoryId = categoryId), false)
+                SearchRequest(categoryId = categoryId).setMarketplace(mall = false)
             } else {
-                setMarketplace(SearchRequest(categoryId = categoryId), true)
+                SearchRequest(categoryId = categoryId).setMarketplace(mall = true)
             }
             searchRequestDraft = searchRequest
-            searchListings()
+            search()
         }
     }
 
+
     /** Search AllGoods for listings. */
-    fun searchListings() = viewModelScope.launch {
+    fun search() = viewModelScope.launch {
         safeSearchCall()
+        safeBrowseCall()
     }
 
+
+    // ==========================================
+    // Search API calls
+    // ==========================================
+
+
     private suspend fun safeSearchCall() {
-        searchListings.postValue(Resource.Loading())
+        _searchResponse.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.searchListings(searchRequest)
-                searchListings.postValue(handleSearchListingsResponse(response))
+                _searchResponse.postValue(handleSearchResponse(response))
             } else {
-                searchListings.postValue(
+                _searchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.no_network_error)
                     )
                 )
             }
-        } catch (t: Throwable) {
-            when (t) {
-                is IOException -> searchListings.postValue(
+
+        } catch (e: Exception) {
+            e.message?.let { Log.e(DEBUG_TAG, "safeSearchCall: $it") }
+
+            when (e) {
+                is IOException -> _searchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.api_error_network)
                     )
                 )
-                else -> searchListings.postValue(
+                else -> _searchResponse.postValue(
                     Resource.Error(
                         getApplication<Application>().getString(R.string.api_error_conversion)
                     )
@@ -94,18 +136,22 @@ class SearchViewModel(
         }
     }
 
-    private fun handleSearchListingsResponse(
+    private fun handleSearchResponse(
         response: Response<SearchResponse>
     ): Resource<SearchResponse> {
         if (response.isSuccessful) {
             response.body()?.let { responseBody ->
                 searchRequest.pageNumber++
                 if (searchListingsResponse == null) {
+                    // First page: replace existing list
                     searchListingsResponse = responseBody
+
                 } else {
-                    val oldListings = searchListingsResponse!!.data
+                    // New page: add to existing list
+                    val oldListings = searchListingsResponse?.data
                     val newListings = responseBody.data
-                    oldListings.addAll(newListings)
+                    oldListings?.addAll(newListings)
+
                 }
                 return Resource.Success(searchListingsResponse ?: responseBody)
             }
@@ -113,33 +159,183 @@ class SearchViewModel(
         return Resource.Error(response.message())
     }
 
+
+    // ==========================================
+    // Browse API calls
+    // ==========================================
+
+
+    private suspend fun safeBrowseCall() {
+        _browseResponse.postValue(Resource.Loading())
+
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.browseCategory(
+                    categoryId = searchRequest.categoryId,
+                    type = searchRequest.type()
+                )
+                _browseResponse.postValue(processBrowseResponse(response))
+            } else {
+                _browseResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_network_error)))
+            }
+
+        } catch (e: Exception) {
+            e.message?.let { Log.e(DEBUG_TAG, "safeBrowseCall: $it") }
+
+            when (e) {
+                is IOException -> _browseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.api_error_network
+                        )
+                    )
+                )
+                else -> _browseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.api_error_conversion
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    private fun processBrowseResponse(
+        response: Response<BrowseResponse>
+    ): Resource<BrowseResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(it)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+
+    // ==========================================
+    // Draft search API calls
+    // ==========================================
+
+
     /**
-     * The draft search request when selecting filters.
+     * Search AllGoods for listings using the draft request.
      *
-     * The draft search request lets us work on a copy of the current [searchRequest].
-     * This can be useful for setting filters as a user might want to discard all
-     * their changes and return to the original request.
+     * This will modify draft resources instead of the actual search resources.
      */
-    lateinit var searchRequestDraft: SearchRequest
+    fun draftSearch() = viewModelScope.launch {
+        searchRequestDraft.pageNumber = 1
+        safeDraftSearchCall()
+        safeDraftBrowseCall()
+    }
+
+    private suspend fun safeDraftSearchCall() {
+        _draftSearchResponse.postValue(Resource.Loading())
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.searchListings(searchRequestDraft)
+                _draftSearchResponse.postValue(handleDraftSearchResponse(response))
+            } else {
+                _draftSearchResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.no_network_error)
+                    )
+                )
+            }
+
+        } catch (e: Exception) {
+            e.message?.let { Log.e(DEBUG_TAG, "safeDraftSearchCall: $it") }
+
+            when (e) {
+                is IOException -> _draftSearchResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_network)
+                    )
+                )
+                else -> _draftSearchResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(R.string.api_error_conversion)
+                    )
+                )
+            }
+        }
+    }
+
+    private fun handleDraftSearchResponse(
+        response: Response<SearchResponse>
+    ): Resource<SearchResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(it)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private suspend fun safeDraftBrowseCall() {
+        _draftBrowseResponse.postValue(Resource.Loading())
+
+        try {
+            if (Internet.hasConnection(getApplication())) {
+                val response = appRepository.browseCategory(
+                    categoryId = searchRequestDraft.categoryId,
+                    type = searchRequestDraft.type()
+                )
+                _draftBrowseResponse.postValue(processBrowseResponse(response))
+            } else {
+                _draftBrowseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.no_network_error
+                        )
+                    )
+                )
+            }
+
+        } catch (e: Exception) {
+            e.message?.let { Log.e(DEBUG_TAG, "safeBrowseCall: $it") }
+
+            when (e) {
+                is IOException -> _draftBrowseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.api_error_network
+                        )
+                    )
+                )
+                else -> _draftBrowseResponse.postValue(
+                    Resource.Error(
+                        getApplication<Application>().getString(
+                            R.string.api_error_conversion
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+
+    // ==========================================
+    // More actions
+    // ==========================================
+
+
+    /** Clear the search result and begin searching again for fresh data. */
+    fun refreshSearchResults() {
+        _searchResponse.postValue(Resource.Success(data = null))
+        searchListingsResponse = null
+        searchRequest.pageNumber = 1
+        searchListingsResponse = null
+        search()
+    }
 
     /** Make the draft search request active, clear the last search, then begin searching. */
     fun applyFiltersAndSearch() {
         searchRequest = searchRequestDraft.copy()
         searchRequest.pageNumber = 1
         searchListingsResponse = null
-        searchListings()
+        search()
     }
-
-    /** Clear the search result and begin searching again for fresh data. */
-    fun refreshSearchResults() {
-        searchListings.postValue(Resource.Success(data = null))
-        searchListingsResponse = null
-        searchRequest.pageNumber = 1
-        searchListingsResponse = null
-        searchListings()
-    }
-
-    private fun Boolean.toInt() = if (this) 1 else 0
 
     /**
      * Set [searchRequestDraft]s binary filters.
@@ -164,50 +360,59 @@ class SearchViewModel(
      * @param isMall True if the marketplace is "mall", false if it is "secondhand".
      */
     fun setDraftMarketplace(isMall: Boolean) {
-        searchRequestDraft = setMarketplace(searchRequestDraft, isMall)
+        searchRequestDraft = searchRequestDraft.setMarketplace(isMall)
     }
 
-    private fun setMarketplace(searchRequest: SearchRequest, isMall: Boolean): SearchRequest {
-        return searchRequest.apply {
-            auctions = (!isMall).toInt()
-            products = isMall.toInt()
-        }
-    }
+
+    // ==========================================
+    // Helper functions
+    // ==========================================
+
 
     /**
-     * Check what market place the [searchRequest] will search.
-     *
-     * @param searchRequest The [SearchRequest] to check.
+     * Check what marketplace a [searchRequest] will search.
      *
      * @return True if the marketplace is "mall" and "false" if it is "secondhand".
      */
-    fun isMall(searchRequest: SearchRequest): Boolean {
-        return (searchRequest.auctions == 0) && (searchRequest.products == 1)
+    fun SearchRequest.isMall() = (this.auctions == 0) && (this.products == 1)
+
+    private fun SearchRequest.type() = (this.isMall().toInt() - 2) * -1 // 1 = mall, 2 = secondhand
+
+    private fun SearchRequest.setMarketplace(mall: Boolean): SearchRequest {
+        return this.apply {
+            auctions = (!mall).toInt()
+            products = mall.toInt()
+        }
     }
 
-    /** List of [SortOrder] option for the AllGoods mall marketplace. */
-    val sortOrdersMall = listOf(
-        SortOrder.BEST,
-        SortOrder.POPULAR,
-        SortOrder.PRICE_SHIPPED_LOWEST,
-        SortOrder.PRICE_LOWEST,
-        SortOrder.PRICE_HIGHEST,
-        SortOrder.NEW_PRODUCTS,
-        SortOrder.SALE,
-        SortOrder.ALPHABETICAL
-    )
+    private fun Boolean.toInt() = if (this) 1 else 0
 
-    /** List of [SortOrder] option for the AllGoods secondhand marketplace. */
-    val sortOrdersSecondhand = listOf(
-        SortOrder.BEST,
-        SortOrder.TRENDING,
-        SortOrder.NEW_LISTINGS,
-        SortOrder.CLOSING_SOON,
-        SortOrder.MOST_BIDS,
-        SortOrder.BUY_NOW_LOWEST,
-        SortOrder.BUY_NOW_HIGHEST,
-        SortOrder.PRICE_LOWEST,
-        SortOrder.PRICE_HIGHEST,
-        SortOrder.ALPHABETICAL
-    )
+
+    companion object {
+        /** List of [SortOrder] option for the AllGoods mall marketplace. */
+        val sortOrdersMall = listOf(
+            SortOrder.BEST,
+            SortOrder.POPULAR,
+            SortOrder.PRICE_SHIPPED_LOWEST,
+            SortOrder.PRICE_LOWEST,
+            SortOrder.PRICE_HIGHEST,
+            SortOrder.NEW_PRODUCTS,
+            SortOrder.SALE,
+            SortOrder.ALPHABETICAL
+        )
+
+        /** List of [SortOrder] option for the AllGoods secondhand marketplace. */
+        val sortOrdersSecondhand = listOf(
+            SortOrder.BEST,
+            SortOrder.TRENDING,
+            SortOrder.NEW_LISTINGS,
+            SortOrder.CLOSING_SOON,
+            SortOrder.MOST_BIDS,
+            SortOrder.BUY_NOW_LOWEST,
+            SortOrder.BUY_NOW_HIGHEST,
+            SortOrder.PRICE_LOWEST,
+            SortOrder.PRICE_HIGHEST,
+            SortOrder.ALPHABETICAL
+        )
+    }
 }
