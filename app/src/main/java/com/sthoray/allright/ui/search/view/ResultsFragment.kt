@@ -24,8 +24,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var resultsAdapter: ResultsAdapter
-
-
     /**
      * Set up ViewModel, UI, and observers.
      *
@@ -66,7 +64,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
             findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
         }
     }
-
     private fun setupObservers() {
         viewModel.searchResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
@@ -77,6 +74,11 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         resultsAdapter.differ.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
+                        val categoryHasNoListings = resultsAdapter.itemCount == 0
+
+                        if (categoryHasNoListings){
+
+                        }
                     }
                 }
                 is Resource.Error -> {
