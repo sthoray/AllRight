@@ -18,7 +18,7 @@ Refer to the Android Studio [User Guide](https://developer.android.com/studio/ru
 
 ### Command line
 
-To use the included Gradle wrapper you must have a working JDK version 8 or later installation. Once setup, the following command will create an installable APK at `app/build/outputs/apk/debug/app-debug.apk`
+To use the included Gradle wrapper you must have a working JDK version 11 or later installation. Once setup, the following command will create an installable APK at `app/build/outputs/apk/debug/app-debug.apk`
 
 ```bash
 ./gradlew assembleDebug
