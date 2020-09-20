@@ -2,9 +2,12 @@ package com.sthoray.allright.ui.listing.view
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -39,6 +42,7 @@ class ListingImagesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_listing_images)
         setupViewModel()
 
@@ -48,6 +52,7 @@ class ListingImagesActivity : AppCompatActivity() {
         imagePosition = intent.getIntExtra("ImagePosition", 0)
 
         setupObservers()
+
 
     }
 
@@ -88,9 +93,11 @@ class ListingImagesActivity : AppCompatActivity() {
     private fun setViewPager(images: List<Image>) {
 
         viewPagerAdapter = ViewPagerAdapter(images)
-        viewPagerAdapter
         vpListingImages.adapter = viewPagerAdapter
+        vpListingImages.setCurrentItem(imagePosition, false)
         wdiListingImages.setViewPager2(vpListingImages)
+        
+
 
 
     }

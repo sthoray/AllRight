@@ -15,7 +15,7 @@ class ViewPagerAdapter(
     private val images: List<Image>
 ) : RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
 
-
+    private var currentPos : Int = 0
 
     /** ViewHolder to represent the type for single item in the view pager. */
     inner class ViewPagerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -55,20 +55,14 @@ class ViewPagerAdapter(
      * @param position The position of the item within the adapter's data set.
      */
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
-        
-        val imageUrl = images[position].largeUrl
 
-
-
-        holder.itemView.ivListingImage.load(imageUrl)
-
-
-
+        val image = images[position]
         //BENJAMIN
         holder.itemView.apply {
+            ivListingImage.load(image.largeUrl)
 
             setOnClickListener {
-                onItemClickListener?.let { it(imageUrl) }
+                onItemClickListener?.let { it(image) }
             }
         }
 
@@ -80,11 +74,12 @@ class ViewPagerAdapter(
 
     //BENJAMIN
     //
-    private var onItemClickListener: ((String?) -> Unit)? = null
+    private var onItemClickListener: ((Image) -> Unit)? = null
 
-    fun setOnItemClickListener(imageUrl: (String?) -> Unit) {
-        onItemClickListener = imageUrl
+    fun setOnItemClickListener(image: (Image) -> Unit) {
+        onItemClickListener = image
     }
+
 
     //
     //BENJAMIN

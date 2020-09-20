@@ -81,18 +81,17 @@ class ListingActivity : AppCompatActivity() {
         vpListingImages.adapter = viewPagerAdapter
         wdiListingImages.setViewPager2(vpListingImages)
 
-
-
-        Log.i(TAG, "HERE")
-
     }
 
     //BENJAMIN
     private fun setOnClickListeners(listing: Listing) {
-        viewPagerAdapter.setOnItemClickListener { listener ->
+        viewPagerAdapter.setOnItemClickListener { image ->
+            val index = image.number?.let {
+                it-1
+            }
             Intent(this@ListingActivity, ListingImagesActivity::class.java).also {
                 it.putExtra(LISTING_ID_KEY, listing.id)
-                it.putExtra("ImagePosition", viewPagerAdapter.getPosition())
+                it.putExtra("ImagePosition", index)
                 startActivity(it)
             }
         }
@@ -114,17 +113,11 @@ class ListingActivity : AppCompatActivity() {
         // Description
         tvListingName.text = listing.name
         tvListingDescription.text = listing.description
-
         //Here we can access the listing variable and maybe save it to send to the ListingImagesActivity???
-
-
-
         listing.locationName?.let {
             tvListingLocation.text = it
             tvListingLocation.visibility = View.VISIBLE
         }
-
-
         // Price
         if (listing.buyNowPrice == null && listing.currentPrice == null) {
             // Likely a mall listing
@@ -154,8 +147,6 @@ class ListingActivity : AppCompatActivity() {
                 tvListingBuyNowPrice.visibility = View.VISIBLE
             }
         }
-
-
         //Item Specifics
         listing.properties?.let {
             if (it.size > 0) {
@@ -173,7 +164,6 @@ class ListingActivity : AppCompatActivity() {
                 tvListingPropertiesTitle.visibility = View.VISIBLE
             }
         }
-
         // Seller's info
         listing.manager?.let { manager ->
             if (manager.storeName != null) {
@@ -190,7 +180,6 @@ class ListingActivity : AppCompatActivity() {
                 tvSellersLocation.text = manager.createdAt
             }
         }
-
         // Images
         listing.images?.let { setViewPager(it) }
         listing.let { setOnClickListeners(it) }
