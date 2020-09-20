@@ -10,7 +10,16 @@
         android:id="@+id/srlBrowse"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <TextView
+            android:id="@+id/categoryHasNoResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/no_listings_available"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textColorHighlight="@android:color/primary_text_dark"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="50sp"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSecondTierCategories"
             android:layout_width="match_parent"
