@@ -74,7 +74,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                     hideProgressBar()
                     response.data?.let { listingResponse ->
                         // Not sure why differ is not working when providing a MutableList
-                        resultsAdapter.differ.submitList(listingResponse.data.toList())
+                        resultsAdapter.differSearchResults.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
                     }

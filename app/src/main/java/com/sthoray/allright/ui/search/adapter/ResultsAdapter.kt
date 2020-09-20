@@ -12,11 +12,14 @@ import com.sthoray.allright.data.model.listing.Listing
 import kotlinx.android.synthetic.main.item_layout_search.view.*
 
 /** Adapter for adapting listings into a RecyclerView. */
-class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() {
+class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    /** Responsible for displaying a single listing. */
-    inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    /** Responsible for displaying a single result. */
+    inner class ResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    /** Responsible for displaying a single result. */
+    inner class ResultsFeaturedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
     private val differCallback = object : DiffUtil.ItemCallback<Listing>() {
@@ -46,9 +49,8 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
         }
     }
 
-    /** Calculate the differences between two lists. */
-    val differ = AsyncListDiffer(this, differCallback)
-
+    /** The lists of search results. */
+    val differSearchResults = AsyncListDiffer(this, differCallback)
 
     /**
      * Inflate the view holder with a layout upon creation.
@@ -56,14 +58,26 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
      * @param parent the parent ViewGroup of this ViewHolder
      * @param viewType the id of the viewType
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListingViewHolder {
-        return ListingViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_layout_search,
-                parent,
-                false
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == 0) {
+            // Featured categories
+            return ResultsFeaturedViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_layout_search_feature_panel,
+                    parent,
+                    false
+                )
             )
-        )
+        } else {
+            // Search results
+            return ResultsViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_layout_search,
+                    parent,
+                    false
+                )
+            )
+        }
     }
 
     /**
@@ -72,7 +86,7 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
      * @return the size of the current list
      */
     override fun getItemCount(): Int {
-        return differ.currentList.size
+        return differSearchResults.currentList.size
     }
 
     /**
@@ -81,8 +95,8 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
      * @param holder the ViewHolder to bind to
      * @param position the index of the data to bind
      */
-    override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
-        val listing = differ.currentList[position]
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val listing = differSearchResults.currentList[position]
         holder.itemView.apply {
             // Mall mappings
             tvSearchName.text = listing.name
@@ -97,6 +111,22 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
             setOnClickListener {
                 onItemClickListener?.let { it(listing) }
             }
+        }
+    }
+
+    /**
+     * Return the type of view at the position.
+     *
+     * This The first item in the recycler view should be featured categories (type 0).
+     * All remaining items should be search results.
+     *
+     * @return 0 if the view type is featured categories, else 0 for search results.
+     */
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) {
+            0
+        } else {
+            1
         }
     }
 
