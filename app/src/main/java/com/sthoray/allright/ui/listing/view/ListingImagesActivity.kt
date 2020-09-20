@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
@@ -96,11 +97,16 @@ class ListingImagesActivity : AppCompatActivity() {
         vpListingImages.adapter = viewPagerAdapter
         vpListingImages.setCurrentItem(imagePosition, false)
         wdiListingImages.setViewPager2(vpListingImages)
-        
-
-
+        vpListingImages.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                wdiListingImages.visibility = View.VISIBLE
+            }
+        })
 
     }
+
+
 
 
     private fun showProgressBar() {
@@ -112,6 +118,6 @@ class ListingImagesActivity : AppCompatActivity() {
     private fun hideProgressBar() {
         pbListingImages.visibility = View.GONE
         vpListingImages.visibility = View.VISIBLE
-        wdiListingImages.visibility = View.VISIBLE
+        wdiListingImages.visibility = View.GONE
     }
 }
