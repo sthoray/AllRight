@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Image
@@ -21,6 +22,7 @@ import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_K
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_listing.*
+import kotlinx.android.synthetic.main.fragment_my_allgoods.*
 
 /** The listing activity to display information about a listing. */
 class ListingActivity : AppCompatActivity() {
@@ -146,11 +148,15 @@ class ListingActivity : AppCompatActivity() {
         // Seller's info
         listing.manager?.let { manager ->
             if (manager.storeName != null) {
-                ivSellersImage.load(manager.logo?.thumbUrl)
+                ivSellersImage.load(manager.logo?.thumbUrl) {
+                    transformations(CircleCropTransformation())
+                }
                 tvSellersName.text = manager.storeName
                 tvSellersLocation.text = manager.locationName
             } else {
-                ivSellersImage.load(manager.avatar?.thumb)
+                ivSellersImage.load(manager.avatar?.thumb) {
+                    transformations(CircleCropTransformation())
+                }
                 tvSellersName.text = manager.firstName
                 tvSellersLocation.text = manager.createdAt
             }
