@@ -78,6 +78,9 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
                     }
+                    viewModel.searchListingsResponse?.let {
+                        resultsPerPage = it.meta.pagination.perPage
+                    }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
@@ -99,9 +102,11 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private var isLoading = false
     private var isLastPage = false
     private var isScrolling = false
+    private var resultsPerPage = 24
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            view
             super.onScrolled(recyclerView, dx, dy)
             val layoutManager = recyclerView.layoutManager as LinearLayoutManager
             val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
@@ -111,8 +116,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
             val isNotLoadingNotLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible =
-                totalItemCount >= viewModel.searchListingsResponse!!.meta.pagination.perPage
+            val isTotalMoreThanVisible = totalItemCount >= resultsPerPage
             val shouldPaginate = isNotLoadingNotLastPage && isAtLastItem &&
                     isNotAtBeginning && isTotalMoreThanVisible && isScrolling
 
