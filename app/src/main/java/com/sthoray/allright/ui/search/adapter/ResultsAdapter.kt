@@ -1,15 +1,18 @@
 package com.sthoray.allright.ui.search.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Listing
 import kotlinx.android.synthetic.main.item_layout_search.view.*
+import kotlinx.android.synthetic.main.item_layout_search_feature_panel.view.*
 
 /** Adapter for adapting listings into a RecyclerView. */
 class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -18,7 +21,7 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     /** Responsible for displaying a single result. */
     inner class ResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    /** Responsible for displaying a single result. */
+    /** Responsible for displaying a featured category panel. */
     inner class ResultsFeaturedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
@@ -96,20 +99,40 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * @param position the index of the data to bind
      */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val listing = differSearchResults.currentList[position]
-        holder.itemView.apply {
-            // Mall mappings
-            tvSearchName.text = listing.name
-            tvSearchSubtitle.text = listing.locationName
-            tvSearchPrice0.text = String.format(
-                context.getString(R.string.format_price),
-                listing.startPrice
-            )
-            tvSearchPrice1.text = ""
-            ivSearchImage.load(listing.mainImage?.thumbUrl)
+        if (holder.itemViewType == 0) {
+            // Featured categories
+            val featuredHolder = holder as ResultsFeaturedViewHolder
 
-            setOnClickListener {
-                onItemClickListener?.let { it(listing) }
+            val featuredCategoryAdapter = FeaturedCategoryAdapter()
+            featuredCategoryAdapter.setOnItemClickListener { listing ->
+                Log.d("ResultsAdapter", listing.id.toString())
+            }
+
+            featuredHolder.itemView.apply {
+                rvSearchFeaturePanel.apply {
+                    adapter = featuredCategoryAdapter
+                    layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                }
+            }
+
+        } else {
+            // Search results
+            val listing = differSearchResults.currentList[position - 1]
+            holder.itemView.apply {
+                // Mall mappings
+                tvSearchName.text = listing.name
+                tvSearchSubtitle.text = listing.locationName
+                tvSearchPrice0.text = String.format(
+                    context.getString(R.string.format_price),
+                    listing.startPrice
+                )
+                tvSearchPrice1.text = ""
+                ivSearchImage.load(listing.mainImage?.thumbUrl)
+
+                setOnClickListener {
+                    onItemClickListener?.let { it(listing) }
+                }
             }
         }
     }
