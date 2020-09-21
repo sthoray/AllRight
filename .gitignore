@@ -14,6 +14,7 @@
 
 # Built application files
 *.apk
+*.aab
 *.ap_
 
 # Compiled class file
