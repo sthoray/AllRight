@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
-//apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'com.hiya.jacoco-android'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
@@ -91,10 +90,13 @@ android {
                 "UnsafeExperimentalUsageWarning"
     }
 
-    //dokka {
-    //    outputFormat = 'html'
-    //    outputDirectory = "$rootDir/docs"
-    //}
+    dokkaJavadoc.configure {
+        dokkaSourceSets {
+            named("main") {
+                noAndroidSdkLink.set(false)
+            }
+        }
+    }
 }
 
 dependencies {
