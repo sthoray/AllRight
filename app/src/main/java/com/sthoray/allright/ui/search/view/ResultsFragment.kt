@@ -76,11 +76,21 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         resultsAdapter.differ.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
-//                        val categoryHasNoListings = resultsAdapter.itemCount == 0
-//
-//                        if (categoryHasNoListings){
-//
-//                        }
+                        val categoryHasNoListings = resultsAdapter.itemCount == 0
+
+                        // TODO Make the following if else { if } easier to read (and possibly more efficient)
+                        if (categoryHasNoListings){
+                            rvSearchResults.visibility = View.GONE
+                            tvCategoryHasNoResults.visibility = View.VISIBLE
+                            //-----------------------------------------------------
+                        } else {
+                            if (rvSearchResults.visibility == View.GONE
+                                && tvCategoryHasNoResults.visibility == View.VISIBLE){
+                                //-----------------------------------------------------
+                                rvSearchResults.visibility = View.VISIBLE
+                                tvCategoryHasNoResults.visibility = View.GONE
+                            }
+                        }
                     }
                 }
                 is Resource.Error -> {
