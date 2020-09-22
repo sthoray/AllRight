@@ -32,11 +32,13 @@ jobs:
 
       - name: Generate docs
         run: |
+          rm -rf javadoc
           ./gradlew dokkaJavadoc
+          mv app/build/dokka/javadoc .
 
       - name: Commit changes
         run: |
-          git add -f docs
+          git add -f javadoc
           git diff-index --quiet HEAD || git commit -m "Automatically update docs"
 
       - name: Push changes
