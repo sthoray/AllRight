@@ -22,7 +22,6 @@ import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_K
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_listing.*
-import kotlinx.android.synthetic.main.fragment_my_allgoods.*
 
 /** The listing activity to display information about a listing. */
 class ListingActivity : AppCompatActivity() {
@@ -129,13 +128,13 @@ class ListingActivity : AppCompatActivity() {
 
         //Item Specifics
         listing.properties?.let {
-            if (it.size > 0){
+            if (it.size > 0) {
                 var allProperties = String()
-                for (p in it){
+                for (p in it) {
                     allProperties += p.title
-                    if (p.type == 1){
+                    if (p.type == 1) {
                         allProperties += ": " + p.option + "\n"
-                    } else if (p.type == 2){
+                    } else if (p.type == 2) {
                         allProperties += ": " + p.value + "\n"
                     }
                 }
@@ -174,7 +173,7 @@ class ListingActivity : AppCompatActivity() {
         tvListingLocation.visibility = View.GONE
         tvListingDescription.visibility = View.GONE
         btnVisitListing.visibility = View.GONE
-        tvListingStartPriceTitle.visibility = View.INVISIBLE // Allows buy now price views be displayed individually
+        tvListingStartPriceTitle.visibility = View.INVISIBLE // fix for individual buy now prices
         tvListingStartPrice.visibility = View.GONE
         tvListingBuyNowPriceTitle.visibility = View.GONE
         tvListingBuyNowPrice.visibility = View.GONE
