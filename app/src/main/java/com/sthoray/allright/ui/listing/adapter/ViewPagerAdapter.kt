@@ -7,15 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Image
-import com.sthoray.allright.data.model.listing.Listing
 import kotlinx.android.synthetic.main.item_view_pager_listing_image.view.*
 
-/** Adapter for images in the listing activity. */
+/** Adapter for images in the ListingImages activity. */
 class ViewPagerAdapter(
     private val images: List<Image>
 ) : RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
-
-    private var currentPos : Int = 0
 
     /** ViewHolder to represent the type for single item in the view pager. */
     inner class ViewPagerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -35,8 +32,6 @@ class ViewPagerAdapter(
         return ViewPagerViewHolder(view)
     }
 
-
-
     /**
      * Returns the total number of items in the data set held by the adapter.
      *
@@ -55,34 +50,23 @@ class ViewPagerAdapter(
      * @param position The position of the item within the adapter's data set.
      */
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
-
         val image = images[position]
-        //BENJAMIN
         holder.itemView.apply {
             ivListingImage.load(image.largeUrl)
-
             setOnClickListener {
                 onItemClickListener?.let { it(image) }
             }
         }
-
-        //BENJAMIN
-
-
-
     }
 
-    //BENJAMIN
-    //
     private var onItemClickListener: ((Image) -> Unit)? = null
 
-    fun setOnItemClickListener(image: (Image) -> Unit) {
-        onItemClickListener = image
+    /**
+     * Set the on click listener for images in the view pager.
+     *
+     * @param listener The lambda function to perform when an image is tapped.
+     */
+    fun setOnItemClickListener(listener: (Image) -> Unit) {
+        onItemClickListener = listener
     }
-
-
-    //
-    //BENJAMIN
-
-
 }

@@ -18,9 +18,6 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.adapter.ViewPagerAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
-import com.sthoray.allright.ui.main.adapter.BrowseAdapter
-import com.sthoray.allright.ui.main.view.MainActivity
-import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
@@ -30,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_listing.*
 class ListingActivity : AppCompatActivity() {
 
 
-    private val TAG = "ListingActivity"
+    private val DEBUG_TAG = "ListingActivity"
     private lateinit var viewModel: ListingViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
@@ -65,7 +62,7 @@ class ListingActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message.let { message ->
-                        Log.e(TAG, "An error occurred $message")
+                        Log.e(DEBUG_TAG, "An error occurred $message")
                     }
                 }
                 is Resource.Loading -> {
@@ -86,9 +83,7 @@ class ListingActivity : AppCompatActivity() {
     //BENJAMIN
     private fun setOnClickListeners(listing: Listing) {
         viewPagerAdapter.setOnItemClickListener { image ->
-            val index = image.number?.let {
-                it-1
-            }
+            val index = image.number?.let { it - 1 }
             Intent(this@ListingActivity, ListingImagesActivity::class.java).also {
                 it.putExtra(LISTING_ID_KEY, listing.id)
                 it.putExtra("ImagePosition", index)
@@ -96,9 +91,6 @@ class ListingActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
 
 
     private fun setVisitListingBtnListener(listingId: Int) {

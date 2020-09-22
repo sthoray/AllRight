@@ -1,19 +1,12 @@
 package com.sthoray.allright.ui.listing.view
 
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import coil.api.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Image
@@ -22,11 +15,8 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.adapter.ViewPagerAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingImagesViewModel
-import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
-import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
-import kotlinx.android.synthetic.main.activity_listing.*
 import kotlinx.android.synthetic.main.activity_listing.vpListingImages
 import kotlinx.android.synthetic.main.activity_listing.wdiListingImages
 import kotlinx.android.synthetic.main.activity_listing_images.*
@@ -35,26 +25,22 @@ import kotlinx.android.synthetic.main.activity_listing_images.*
 class ListingImagesActivity : AppCompatActivity() {
 
 
-    private val TAG = "ListingImagesActivity"
+    private val DEBUG_TAG = "ListingImagesActivity"
     private lateinit var viewModel: ListingImagesViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
-    private var imagePosition : Int = 0
+    private var imagePosition: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_listing_images)
         setupViewModel()
 
         val listingId = intent.getIntExtra(LISTING_ID_KEY, 0)
         viewModel.getListing(listingId)
-
         imagePosition = intent.getIntExtra("ImagePosition", 0)
 
         setupObservers()
-
-
     }
 
     private fun setupViewModel() {
@@ -74,7 +60,7 @@ class ListingImagesActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message.let { message ->
-                        Log.e(TAG, "An error occurred $message")
+                        Log.e(DEBUG_TAG, "An error occurred $message")
                     }
                 }
                 is Resource.Loading -> {
@@ -85,29 +71,23 @@ class ListingImagesActivity : AppCompatActivity() {
     }
 
     private fun fillView(listing: Listing) {
-        // Images
         listing.images?.let { setViewPager(it) }
     }
 
-
-
     private fun setViewPager(images: List<Image>) {
-
         viewPagerAdapter = ViewPagerAdapter(images)
         vpListingImages.adapter = viewPagerAdapter
         vpListingImages.setCurrentItem(imagePosition, false)
         wdiListingImages.setViewPager2(vpListingImages)
-        vpListingImages.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+
+        // hack to prevent worm dots indicator from showing with the incorrect index
+        vpListingImages.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
                 wdiListingImages.visibility = View.VISIBLE
             }
         })
-
     }
-
-
-
 
     private fun showProgressBar() {
         pbListingImages.visibility = View.VISIBLE
