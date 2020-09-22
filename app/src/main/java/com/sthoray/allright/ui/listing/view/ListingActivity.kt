@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Image
@@ -127,13 +128,13 @@ class ListingActivity : AppCompatActivity() {
 
         //Item Specifics
         listing.properties?.let {
-            if (it.size > 0){
+            if (it.size > 0) {
                 var allProperties = String()
-                for (p in it){
+                for (p in it) {
                     allProperties += p.title
-                    if (p.type == 1){
+                    if (p.type == 1) {
                         allProperties += ": " + p.option + "\n"
-                    } else if (p.type == 2){
+                    } else if (p.type == 2) {
                         allProperties += ": " + p.value + "\n"
                     }
                 }
@@ -146,11 +147,15 @@ class ListingActivity : AppCompatActivity() {
         // Seller's info
         listing.manager?.let { manager ->
             if (manager.storeName != null) {
-                ivSellersImage.load(manager.logo?.thumbUrl)
+                ivSellersImage.load(manager.logo?.thumbUrl) {
+                    transformations(CircleCropTransformation())
+                }
                 tvSellersName.text = manager.storeName
                 tvSellersLocation.text = manager.locationName
             } else {
-                ivSellersImage.load(manager.avatar?.thumb)
+                ivSellersImage.load(manager.avatar?.thumb) {
+                    transformations(CircleCropTransformation())
+                }
                 tvSellersName.text = manager.firstName
                 tvSellersLocation.text = manager.createdAt
             }
@@ -168,7 +173,7 @@ class ListingActivity : AppCompatActivity() {
         tvListingLocation.visibility = View.GONE
         tvListingDescription.visibility = View.GONE
         btnVisitListing.visibility = View.GONE
-        tvListingStartPriceTitle.visibility = View.INVISIBLE // Allows buy now price views be displayed individually
+        tvListingStartPriceTitle.visibility = View.INVISIBLE // fix for individual buy now prices
         tvListingStartPrice.visibility = View.GONE
         tvListingBuyNowPriceTitle.visibility = View.GONE
         tvListingBuyNowPrice.visibility = View.GONE
