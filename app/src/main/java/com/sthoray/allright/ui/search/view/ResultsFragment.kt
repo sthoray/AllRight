@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -24,6 +25,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var resultsAdapter: ResultsAdapter
+
     /**
      * Set up ViewModel, UI, and observers.
      *
@@ -74,11 +76,11 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         resultsAdapter.differ.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
-                        val categoryHasNoListings = resultsAdapter.itemCount == 0
-
-                        if (categoryHasNoListings){
-
-                        }
+//                        val categoryHasNoListings = resultsAdapter.itemCount == 0
+//
+//                        if (categoryHasNoListings){
+//
+//                        }
                     }
                 }
                 is Resource.Error -> {
