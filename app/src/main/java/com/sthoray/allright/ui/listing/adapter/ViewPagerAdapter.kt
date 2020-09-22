@@ -9,7 +9,7 @@ import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Image
 import kotlinx.android.synthetic.main.item_view_pager_listing_image.view.*
 
-/** Adapter for images in the listing activity. */
+/** Adapter for images in the ListingImages activity. */
 class ViewPagerAdapter(
     private val images: List<Image>
 ) : RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
@@ -50,7 +50,23 @@ class ViewPagerAdapter(
      * @param position The position of the item within the adapter's data set.
      */
     override fun onBindViewHolder(holder: ViewPagerViewHolder, position: Int) {
-        val imageUrl = images[position].largeUrl
-        holder.itemView.ivListingImage.load(imageUrl)
+        val image = images[position]
+        holder.itemView.apply {
+            ivListingImage.load(image.largeUrl)
+            setOnClickListener {
+                onItemClickListener?.let { it(image) }
+            }
+        }
+    }
+
+    private var onItemClickListener: ((Image) -> Unit)? = null
+
+    /**
+     * Set the on click listener for images in the view pager.
+     *
+     * @param listener The lambda function to perform when an image is tapped.
+     */
+    fun setOnItemClickListener(listener: (Image) -> Unit) {
+        onItemClickListener = listener
     }
 }

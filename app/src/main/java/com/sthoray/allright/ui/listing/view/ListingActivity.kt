@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_listing.*
 class ListingActivity : AppCompatActivity() {
 
 
-    private val TAG = "ListingActivity"
+    private val DEBUG_TAG = "ListingActivity"
     private lateinit var viewModel: ListingViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
@@ -42,6 +42,7 @@ class ListingActivity : AppCompatActivity() {
         setVisitListingBtnListener(listingId)
 
         setupObservers()
+
     }
 
     private fun setupViewModel() {
@@ -61,7 +62,7 @@ class ListingActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message.let { message ->
-                        Log.e(TAG, "An error occurred $message")
+                        Log.e(DEBUG_TAG, "An error occurred $message")
                     }
                 }
                 is Resource.Loading -> {
@@ -72,10 +73,25 @@ class ListingActivity : AppCompatActivity() {
     }
 
     private fun setViewPager(images: List<Image>) {
+
         viewPagerAdapter = ViewPagerAdapter(images)
         vpListingImages.adapter = viewPagerAdapter
         wdiListingImages.setViewPager2(vpListingImages)
+
     }
+
+    //BENJAMIN
+    private fun setOnClickListeners(listing: Listing) {
+        viewPagerAdapter.setOnItemClickListener { image ->
+            val index = image.number?.let { it - 1 }
+            Intent(this@ListingActivity, ListingImagesActivity::class.java).also {
+                it.putExtra(LISTING_ID_KEY, listing.id)
+                it.putExtra("ImagePosition", index)
+                startActivity(it)
+            }
+        }
+    }
+
 
     private fun setVisitListingBtnListener(listingId: Int) {
         btnVisitListing.setOnClickListener {
@@ -89,12 +105,11 @@ class ListingActivity : AppCompatActivity() {
         // Description
         tvListingName.text = listing.name
         tvListingDescription.text = listing.description
+        //Here we can access the listing variable and maybe save it to send to the ListingImagesActivity???
         listing.locationName?.let {
             tvListingLocation.text = it
             tvListingLocation.visibility = View.VISIBLE
         }
-
-
         // Price
         if (listing.buyNowPrice == null && listing.currentPrice == null) {
             // Likely a mall listing
@@ -124,8 +139,6 @@ class ListingActivity : AppCompatActivity() {
                 tvListingBuyNowPrice.visibility = View.VISIBLE
             }
         }
-
-
         //Item Specifics
         listing.properties?.let {
             if (it.size > 0) {
@@ -143,7 +156,6 @@ class ListingActivity : AppCompatActivity() {
                 tvListingPropertiesTitle.visibility = View.VISIBLE
             }
         }
-
         // Seller's info
         listing.manager?.let { manager ->
             if (manager.storeName != null) {
@@ -160,9 +172,9 @@ class ListingActivity : AppCompatActivity() {
                 tvSellersLocation.text = manager.createdAt
             }
         }
-
         // Images
         listing.images?.let { setViewPager(it) }
+        listing.let { setOnClickListeners(it) }
     }
 
     private fun showProgressBar() {
