@@ -25,6 +25,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var resultsAdapter: ResultsAdapter
+
     /**
      * Set up ViewModel, UI, and observers.
      *
@@ -65,6 +66,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
             findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
         }
     }
+
     private fun setupObservers() {
         viewModel.searchResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
@@ -76,17 +78,16 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
                         val categoryHasNoListings = resultsAdapter.itemCount == 0
-                        if (categoryHasNoListings){
+                        if (categoryHasNoListings) {
                             rvSearchResults.visibility = View.GONE
                             tvCategoryHasNoResults.visibility = View.VISIBLE
                             //-----------------------------------------------------
-                        } else {
-                            if (rvSearchResults.visibility == View.GONE
-                                && tvCategoryHasNoResults.visibility == View.VISIBLE){
-                                //-----------------------------------------------------
-                                rvSearchResults.visibility = View.VISIBLE
-                                tvCategoryHasNoResults.visibility = View.GONE
-                            }
+                        } else if (rvSearchResults.visibility == View.GONE
+                            && tvCategoryHasNoResults.visibility == View.VISIBLE
+                        ) {
+                            //-----------------------------------------------------
+                            rvSearchResults.visibility = View.VISIBLE
+                            tvCategoryHasNoResults.visibility = View.GONE
                         }
                     }
                 }
