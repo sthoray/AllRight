@@ -25,7 +25,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var resultsAdapter: ResultsAdapter
-
     /**
      * Set up ViewModel, UI, and observers.
      *
@@ -77,8 +76,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
                         val categoryHasNoListings = resultsAdapter.itemCount == 0
-
-                        // TODO Make the following if else { if } easier to read (and possibly more efficient)
                         if (categoryHasNoListings){
                             rvSearchResults.visibility = View.GONE
                             tvCategoryHasNoResults.visibility = View.VISIBLE
