@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
+import coil.load
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.listing.Category
 import com.sthoray.allright.utils.Constants.Companion.BASE_URL

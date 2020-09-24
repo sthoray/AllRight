@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import coil.api.load
+import coil.load
 import coil.transform.CircleCropTransformation
 import com.sthoray.allright.R
 import com.sthoray.allright.data.model.user.User
