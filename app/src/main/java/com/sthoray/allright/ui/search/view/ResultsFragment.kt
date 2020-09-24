@@ -25,7 +25,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private lateinit var viewModel: SearchViewModel
     private lateinit var resultsAdapter: ResultsAdapter
 
-
     /**
      * Set up ViewModel, UI, and observers.
      *
@@ -77,6 +76,13 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         resultsAdapter.differ.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
+                        if (resultsAdapter.itemCount == 0) {
+                            tvNoResultsTitle.visibility = View.VISIBLE
+                            tvNoResultsInfo.visibility = View.VISIBLE
+                        } else {
+                            tvNoResultsTitle.visibility = View.INVISIBLE
+                            tvNoResultsInfo.visibility = View.INVISIBLE
+                        }
                     }
                     viewModel.searchListingsResponse?.let {
                         resultsPerPage = it.meta.pagination.perPage

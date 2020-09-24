@@ -22,7 +22,7 @@ jacocoAndroidUnitTestReport {
 // Version numbers used for versionCode and versionName
 def versionMajor = 0
 def versionMinor = 5
-def versionPatch = 3
+def versionPatch = 4
 
 android {
     compileSdkVersion 30
