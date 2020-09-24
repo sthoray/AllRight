@@ -76,17 +76,12 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         resultsAdapter.differ.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
-                        val categoryHasNoListings = resultsAdapter.itemCount == 0
-                        if (categoryHasNoListings) {
-                            rvSearchResults.visibility = View.GONE
-                            tvQueryHasNoResults.visibility = View.VISIBLE
-                            //-----------------------------------------------------
-                        } else if (rvSearchResults.visibility == View.GONE
-                            && tvQueryHasNoResults.visibility == View.VISIBLE
-                        ) {
-                            //-----------------------------------------------------
-                            rvSearchResults.visibility = View.VISIBLE
-                            tvQueryHasNoResults.visibility = View.GONE
+                        if (resultsAdapter.itemCount == 0) {
+                            tvNoResultsTitle.visibility = View.VISIBLE
+                            tvNoResultsInfo.visibility = View.VISIBLE
+                        } else {
+                            tvNoResultsTitle.visibility = View.INVISIBLE
+                            tvNoResultsInfo.visibility = View.INVISIBLE
                         }
                     }
                 }

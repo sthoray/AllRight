@@ -94,7 +94,7 @@
     <string name="invalid_token_error">Invalid or expired credentials</string>
     <string name="category_up_description">Navigate to parent category</string>
     <string name="loading_child_categories">Fetching categories</string>
-    <string name="no_listings_available"><b>No results found</b>\n\n
-        We could not find any listings that match your query.
+    <string name="no_results_title">No items found</string>
+    <string name="no_results_info">We couldn\'t find anything that matched your query.
         You could try adjusting your filters or search inside a different category.</string>
 </resources>
