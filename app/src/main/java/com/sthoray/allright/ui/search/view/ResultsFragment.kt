@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -80,14 +79,14 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         val categoryHasNoListings = resultsAdapter.itemCount == 0
                         if (categoryHasNoListings) {
                             rvSearchResults.visibility = View.GONE
-                            tvCategoryHasNoResults.visibility = View.VISIBLE
+                            tvQueryHasNoResults.visibility = View.VISIBLE
                             //-----------------------------------------------------
                         } else if (rvSearchResults.visibility == View.GONE
-                            && tvCategoryHasNoResults.visibility == View.VISIBLE
+                            && tvQueryHasNoResults.visibility == View.VISIBLE
                         ) {
                             //-----------------------------------------------------
                             rvSearchResults.visibility = View.VISIBLE
-                            tvCategoryHasNoResults.visibility = View.GONE
+                            tvQueryHasNoResults.visibility = View.GONE
                         }
                     }
                 }
