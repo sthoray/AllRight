@@ -11,9 +11,11 @@
         android:icon="@drawable/ic_browse_24dp"
         android:title="@string/title_browse" />
 
+    <!-- Uncomment to enable access to accounts
     <item
         android:id="@+id/navigation_my_allgoods"
         android:icon="@drawable/ic_profile_24dp"
         android:title="@string/title_my_allgoods" />
+    -->
 
 </menu>
