@@ -178,6 +178,11 @@ class ListingActivity : AppCompatActivity() {
         tvSellersLocation.visibility = View.GONE
         tvListingProperties.visibility = View.GONE
         tvListingPropertiesTitle.visibility = View.GONE
+        cardDescription.visibility = View.GONE
+        cardDetails.visibility = View.GONE
+        cardPrices.visibility = View.GONE
+        cardSeller.visibility = View.GONE
+
     }
 
     private fun hideProgressBar() {
@@ -191,5 +196,9 @@ class ListingActivity : AppCompatActivity() {
         ivSellersImage.visibility = View.VISIBLE
         tvSellersName.visibility = View.VISIBLE
         tvSellersLocation.visibility = View.VISIBLE
+        cardDescription.visibility = View.VISIBLE
+        cardDetails.visibility = View.VISIBLE
+        cardPrices.visibility = View.VISIBLE
+        cardSeller.visibility = View.VISIBLE
     }
 }
