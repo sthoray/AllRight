@@ -25,7 +25,6 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private lateinit var viewModel: SearchViewModel
     private lateinit var resultsAdapter: ResultsAdapter
 
-
     /**
      * Set up ViewModel, UI, and observers.
      *
@@ -77,6 +76,16 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         resultsAdapter.differ.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
+                        if (resultsAdapter.itemCount == 0) {
+                            tvNoResultsTitle.visibility = View.VISIBLE
+                            tvNoResultsInfo.visibility = View.VISIBLE
+                        } else {
+                            tvNoResultsTitle.visibility = View.INVISIBLE
+                            tvNoResultsInfo.visibility = View.INVISIBLE
+                        }
+                    }
+                    viewModel.searchListingsResponse?.let {
+                        resultsPerPage = it.meta.pagination.perPage
                     }
                 }
                 is Resource.Error -> {
@@ -99,6 +108,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private var isLoading = false
     private var isLastPage = false
     private var isScrolling = false
+    private var resultsPerPage = 24
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -111,8 +121,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
             val isNotLoadingNotLastPage = !isLoading && !isLastPage
             val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible =
-                totalItemCount >= viewModel.searchListingsResponse!!.meta.pagination.perPage
+            val isTotalMoreThanVisible = totalItemCount >= resultsPerPage
             val shouldPaginate = isNotLoadingNotLastPage && isAtLastItem &&
                     isNotAtBeginning && isTotalMoreThanVisible && isScrolling
 

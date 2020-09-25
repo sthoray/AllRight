@@ -2,6 +2,7 @@
     <string name="app_name">AllRight</string>
     <string name="search_label">Search</string>
     <string name="listing_label">Listing</string>
+    <string name="listing_images_label">Listing Images</string>
     <string name="coming_soon_text">Coming soon</string>
     <string name="extended_fab_filter_content">Filter</string>
     <string name="login_btn">Login</string>
@@ -94,4 +95,7 @@
     <string name="invalid_token_error">Invalid or expired credentials</string>
     <string name="category_up_description">Navigate to parent category</string>
     <string name="loading_child_categories">Fetching categories</string>
+    <string name="no_results_title">No items found</string>
+    <string name="no_results_info">We couldn\'t find anything that matched your query.
+        You could try adjusting your filters or search inside a different category.</string>
 </resources>

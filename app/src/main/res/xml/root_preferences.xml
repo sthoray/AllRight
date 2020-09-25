@@ -13,6 +13,7 @@
 
     </PreferenceCategory>
 
+    <!-- Uncomment to enable access to accounts
     <PreferenceCategory app:title="@string/account_header">
 
         <Preference
@@ -20,6 +21,7 @@
             android:title="@string/logout_title" />
 
     </PreferenceCategory>
+    -->
 
     <PreferenceCategory app:title="@string/about_header">
 
@@ -27,8 +29,8 @@
             app:key="oss"
             app:title="@string/oss_notices_title">
             <intent
-                android:targetPackage="com.sthoray.allright"
-                android:targetClass="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
+                android:targetClass="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+                android:targetPackage="com.sthoray.allright" />
         </Preference>
 
         <Preference
