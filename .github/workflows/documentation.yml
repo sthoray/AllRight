@@ -20,9 +20,9 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v1.4.2
         with:
-          java-version: 1.8
+          java-version: 11
 
       - name: Merge changes
         run: |
@@ -30,14 +30,15 @@ jobs:
           git config --local user.name "Sebastian Sole"
           git merge origin/master
 
-      - name: Run dokka
+      - name: Generate docs
         run: |
-          rm -rf dokka
-          ./gradlew dokka
+          rm -rf javadoc
+          ./gradlew dokkaJavadoc
+          mv app/build/dokka/javadoc .
 
-      - name: Commit files
+      - name: Commit changes
         run: |
-          git add -f docs
+          git add -f javadoc
           git diff-index --quiet HEAD || git commit -m "Automatically update docs"
 
       - name: Push changes

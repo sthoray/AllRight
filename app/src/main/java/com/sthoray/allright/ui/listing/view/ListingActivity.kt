@@ -8,7 +8,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import coil.api.load
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.sthoray.allright.R
 import com.sthoray.allright.data.db.SearchHistoryDatabase
 import com.sthoray.allright.data.model.listing.Image
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_listing.*
 class ListingActivity : AppCompatActivity() {
 
 
-    private val TAG = "ListingActivity"
+    private val DEBUG_TAG = "ListingActivity"
     private lateinit var viewModel: ListingViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
@@ -41,6 +42,7 @@ class ListingActivity : AppCompatActivity() {
         setVisitListingBtnListener(listingId)
 
         setupObservers()
+
     }
 
     private fun setupViewModel() {
@@ -60,7 +62,7 @@ class ListingActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message.let { message ->
-                        Log.e(TAG, "An error occurred $message")
+                        Log.e(DEBUG_TAG, "An error occurred $message")
                     }
                 }
                 is Resource.Loading -> {
@@ -71,10 +73,25 @@ class ListingActivity : AppCompatActivity() {
     }
 
     private fun setViewPager(images: List<Image>) {
+
         viewPagerAdapter = ViewPagerAdapter(images)
         vpListingImages.adapter = viewPagerAdapter
         wdiListingImages.setViewPager2(vpListingImages)
+
     }
+
+    //BENJAMIN
+    private fun setOnClickListeners(listing: Listing) {
+        viewPagerAdapter.setOnItemClickListener { image ->
+            val index = image.number?.let { it - 1 }
+            Intent(this@ListingActivity, ListingImagesActivity::class.java).also {
+                it.putExtra(LISTING_ID_KEY, listing.id)
+                it.putExtra("ImagePosition", index)
+                startActivity(it)
+            }
+        }
+    }
+
 
     private fun setVisitListingBtnListener(listingId: Int) {
         btnVisitListing.setOnClickListener {
@@ -88,12 +105,11 @@ class ListingActivity : AppCompatActivity() {
         // Description
         tvListingName.text = listing.name
         tvListingDescription.text = listing.description
+        //Here we can access the listing variable and maybe save it to send to the ListingImagesActivity???
         listing.locationName?.let {
             tvListingLocation.text = it
             tvListingLocation.visibility = View.VISIBLE
         }
-
-
         // Price
         if (listing.buyNowPrice == null && listing.currentPrice == null) {
             // Likely a mall listing
@@ -123,17 +139,15 @@ class ListingActivity : AppCompatActivity() {
                 tvListingBuyNowPrice.visibility = View.VISIBLE
             }
         }
-
-
         //Item Specifics
         listing.properties?.let {
-            if (it.size > 0){
+            if (it.size > 0) {
                 var allProperties = String()
-                for (p in it){
+                for (p in it) {
                     allProperties += p.title
-                    if (p.type == 1){
+                    if (p.type == 1) {
                         allProperties += ": " + p.option + "\n"
-                    } else if (p.type == 2){
+                    } else if (p.type == 2) {
                         allProperties += ": " + p.value + "\n"
                     }
                 }
@@ -142,22 +156,25 @@ class ListingActivity : AppCompatActivity() {
                 tvListingPropertiesTitle.visibility = View.VISIBLE
             }
         }
-
         // Seller's info
         listing.manager?.let { manager ->
             if (manager.storeName != null) {
-                ivSellersImage.load(manager.logo?.thumbUrl)
+                ivSellersImage.load(manager.logo?.thumbUrl) {
+                    transformations(CircleCropTransformation())
+                }
                 tvSellersName.text = manager.storeName
                 tvSellersLocation.text = manager.locationName
             } else {
-                ivSellersImage.load(manager.avatar?.thumb)
+                ivSellersImage.load(manager.avatar?.thumb) {
+                    transformations(CircleCropTransformation())
+                }
                 tvSellersName.text = manager.firstName
                 tvSellersLocation.text = manager.createdAt
             }
         }
-
         // Images
         listing.images?.let { setViewPager(it) }
+        listing.let { setOnClickListeners(it) }
     }
 
     private fun showProgressBar() {
@@ -168,7 +185,7 @@ class ListingActivity : AppCompatActivity() {
         tvListingLocation.visibility = View.GONE
         tvListingDescription.visibility = View.GONE
         btnVisitListing.visibility = View.GONE
-        tvListingStartPriceTitle.visibility = View.INVISIBLE // Allows buy now price views be displayed individually
+        tvListingStartPriceTitle.visibility = View.INVISIBLE // fix for individual buy now prices
         tvListingStartPrice.visibility = View.GONE
         tvListingBuyNowPriceTitle.visibility = View.GONE
         tvListingBuyNowPrice.visibility = View.GONE

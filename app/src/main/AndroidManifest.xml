@@ -44,6 +44,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.listing.view.ListingActivity" />
         </activity>
+        <activity
+            android:name=".ui.listing.view.ListingImagesActivity"
+            android:label="@string/listing_images_label"
+            android:launchMode="singleTop" />
+
     </application>
 
 </manifest>

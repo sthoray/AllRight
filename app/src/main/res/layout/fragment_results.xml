@@ -6,6 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".ui.search.view.SearchActivity">
 
+    <TextView
+        android:id="@+id/tvNoResultsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/no_results_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tvNoResultsInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/srlSearchResults" />
+
+    <TextView
+        android:id="@+id/tvNoResultsInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/no_results_info"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/srlSearchResults"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNoResultsTitle" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srlSearchResults"
         android:layout_width="match_parent"
