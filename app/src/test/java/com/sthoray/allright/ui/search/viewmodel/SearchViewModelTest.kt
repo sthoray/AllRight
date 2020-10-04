@@ -116,7 +116,7 @@ class SearchViewModelTest {
 
             SearchViewModel(app, appRepository).apply {
                 searchRequest = testSearchRequest
-                searchListingsResponse = singleSearchListingResponse
+                lastSearchResponse = singleSearchListingResponse
                 search()
 
                 verify { Internet.hasConnection(any()) }
@@ -223,7 +223,7 @@ class SearchViewModelTest {
         SearchViewModel(app, appRepository).apply {
             searchRequestDraft = SearchRequest(pageNumber = 999)
             searchRequest = mockk(relaxed = true)
-            searchListingsResponse = mockk(relaxed = true)
+            lastSearchResponse = mockk(relaxed = true)
 
             every { app.getString(any()) } returns ""
 
