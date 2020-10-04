@@ -61,7 +61,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
 
         // Floating action button
         extendedFabFilter.setOnClickListener {
-            viewModel.searchRequestDraft = viewModel.searchRequest.copy()
+            viewModel.initFilters()
             findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
         }
     }
@@ -84,7 +84,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                             tvNoResultsInfo.visibility = View.INVISIBLE
                         }
                     }
-                    viewModel.searchListingsResponse?.let {
+                    viewModel.lastSearchResponse?.let {
                         resultsPerPage = it.meta.pagination.perPage
                     }
                 }
@@ -147,7 +147,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     }
 
     private fun showProgressBar() {
-        if (viewModel.searchListingsResponse == null) {
+        if (viewModel.lastSearchResponse == null) {
             srlSearchResults.isRefreshing = true
             pbSearchResultsPagination.visibility = View.GONE
         } else {
