@@ -19,6 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical"
             android:padding="8dp">
 
@@ -53,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="0dp"
-                android:singleLine="true"
+                android:ellipsize="end"
+                android:lines="1"
                 android:text="@android:string/unknownName"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 android:textColor="?android:attr/textColorSecondary"

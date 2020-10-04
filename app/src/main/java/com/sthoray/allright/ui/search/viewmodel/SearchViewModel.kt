@@ -50,7 +50,7 @@ class SearchViewModel(
     lateinit var searchRequestDraft: SearchRequest
 
     /** Last search response. */
-    var searchListingsResponse: SearchResponse? = null
+    var lastSearchResponse: SearchResponse? = null
 
     /** Search response data containing results. */
     val searchResponse: LiveData<Resource<SearchResponse>> = _searchResponse
@@ -66,6 +66,12 @@ class SearchViewModel(
      */
     val draftSearchResponse: LiveData<Resource<SearchResponse>> = _draftSearchResponse
 
+    /**
+     * Draft browse response data containing category info.
+     *
+     * This is used for checking the result of a potential [searchRequestDraft]. Allows
+     * us to navigate through subcategories without discarding the actual [searchResponse].
+     */
     val draftBrowseResponse: LiveData<Resource<BrowseResponse>> = _draftBrowseResponse
 
     /**
@@ -91,18 +97,29 @@ class SearchViewModel(
         }
     }
 
-
-    /** Search AllGoods for listings. */
+    /**
+     * Search AllGoods for listings.
+     */
     fun search() = viewModelScope.launch {
-        safeSearchCall()
-        safeBrowseCall()
+        launch { safeSearchCall() }
+        launch { safeBrowseCall() }
+    }
+
+    /**
+     * Search AllGoods for listings using the draft request.
+     *
+     * This will modify draft resources instead of the actual search resources.
+     */
+    fun draftSearch() = viewModelScope.launch {
+        searchRequestDraft.pageNumber = 1
+        launch { safeSearchCall() }
+        launch { safeDraftBrowseCall() }
     }
 
 
     // ==========================================
     // Search API calls
     // ==========================================
-
 
     private suspend fun safeSearchCall() {
         _searchResponse.postValue(Resource.Loading())
@@ -142,18 +159,18 @@ class SearchViewModel(
         if (response.isSuccessful) {
             response.body()?.let { responseBody ->
                 searchRequest.pageNumber++
-                if (searchListingsResponse == null) {
+                if (lastSearchResponse == null) {
                     // First page: replace existing list
-                    searchListingsResponse = responseBody
+                    lastSearchResponse = responseBody
 
                 } else {
                     // New page: add to existing list
-                    val oldListings = searchListingsResponse?.data
+                    val oldListings = lastSearchResponse?.data
                     val newListings = responseBody.data
                     oldListings?.addAll(newListings)
 
                 }
-                return Resource.Success(searchListingsResponse ?: responseBody)
+                return Resource.Success(lastSearchResponse ?: responseBody)
             }
         }
         return Resource.Error(response.message())
@@ -163,7 +180,6 @@ class SearchViewModel(
     // ==========================================
     // Browse API calls
     // ==========================================
-
 
     private suspend fun safeBrowseCall() {
         _browseResponse.postValue(Resource.Loading())
@@ -216,18 +232,6 @@ class SearchViewModel(
     // ==========================================
     // Draft search API calls
     // ==========================================
-
-
-    /**
-     * Search AllGoods for listings using the draft request.
-     *
-     * This will modify draft resources instead of the actual search resources.
-     */
-    fun draftSearch() = viewModelScope.launch {
-        searchRequestDraft.pageNumber = 1
-        safeDraftSearchCall()
-        safeDraftBrowseCall()
-    }
 
     private suspend fun safeDraftSearchCall() {
         _draftSearchResponse.postValue(Resource.Loading())
@@ -320,20 +324,28 @@ class SearchViewModel(
     // ==========================================
 
 
-    /** Clear the search result and begin searching again for fresh data. */
+    /**
+     * Clear the search result and begin searching again for fresh data.
+     */
     fun refreshSearchResults() {
         _searchResponse.postValue(Resource.Success(data = null))
-        searchListingsResponse = null
         searchRequest.pageNumber = 1
-        searchListingsResponse = null
+        lastSearchResponse = null
         search()
+    }
+
+    /**
+     * Setup the draft search request.
+     */
+    fun initFilters() {
+        searchRequestDraft = searchRequest.copy()
     }
 
     /** Make the draft search request active, clear the last search, then begin searching. */
     fun applyFiltersAndSearch() {
         searchRequest = searchRequestDraft.copy()
         searchRequest.pageNumber = 1
-        searchListingsResponse = null
+        lastSearchResponse = null
         search()
     }
 

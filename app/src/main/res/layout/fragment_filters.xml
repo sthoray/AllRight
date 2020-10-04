@@ -122,12 +122,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:ellipsize="end"
+            android:lines="1"
             android:text="@string/loading_child_categories"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            app:layout_constraintBottom_toTopOf="@+id/rvCategoryChildren"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCategoryUp"
             app:layout_constraintEnd_toStartOf="@+id/pbChildCategoriesLoading"
             app:layout_constraintStart_toEndOf="@+id/btnCategoryUp"
+            app:layout_constraintTop_toTopOf="@+id/btnCategoryUp"
             tools:text="Current Category" />
 
         <ImageButton

@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:paddingHorizontal="16dp"
     android:paddingVertical="8dp">
 
     <TextView
         android:id="@+id/tvCategory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
         android:text="@android:string/unknownName"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="parent"

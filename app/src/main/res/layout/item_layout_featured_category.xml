@@ -19,6 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical"
             android:padding="8dp">
 
@@ -37,7 +38,8 @@
                 android:id="@+id/tvFeaturedCategoryName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
+                android:ellipsize="end"
+                android:lines="1"
                 android:text="@android:string/unknownName"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceBody2"
