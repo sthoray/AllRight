@@ -69,7 +69,8 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
 
         // Category selected
         mainAdapter.setOnItemClickListener { category ->
-            if (category.id == 1) {
+            val vehiclesCategoryId = 1
+            if (category.id == vehiclesCategoryId) {
                 AlertDialog.Builder(activity)
                     .setMessage(R.string.marketplace_not_supported_message)
                     .setPositiveButton(R.string.yes, DialogInterface.OnClickListener { _, _ ->
