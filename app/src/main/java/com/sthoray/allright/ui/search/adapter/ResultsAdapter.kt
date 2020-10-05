@@ -98,7 +98,7 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * @return the size of the current list
      */
     override fun getItemCount(): Int {
-        return differSearchResults.currentList.size
+        return differSearchResults.currentList.size + 1
     }
 
     /**
