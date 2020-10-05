@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.sthoray.allright.R
+import com.sthoray.allright.data.model.browse.CategoryFeature
 import com.sthoray.allright.data.model.listing.Listing
 import kotlinx.android.synthetic.main.item_layout_search.view.*
 import kotlinx.android.synthetic.main.item_layout_search_feature_panel.view.*
@@ -54,6 +55,8 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /** The lists of search results. */
     val differSearchResults = AsyncListDiffer(this, differCallback)
+
+    var featuredPanel = listOf<CategoryFeature>()
 
     /**
      * Inflate the view holder with a layout upon creation.
@@ -101,13 +104,14 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType == 0) {
             // Featured categories
+            // This block is not the most elegant way to proceed, but it works
             val featuredHolder = holder as ResultsFeaturedViewHolder
-
             val featuredCategoryAdapter = FeaturedCategoryAdapter()
+
+            featuredCategoryAdapter.differSearchFeaturedCategories.submitList(featuredPanel)
             featuredCategoryAdapter.setOnItemClickListener { listing ->
                 Log.d("ResultsAdapter", listing.id.toString())
             }
-
             featuredHolder.itemView.apply {
                 rvSearchFeaturePanel.apply {
                     adapter = featuredCategoryAdapter

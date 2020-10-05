@@ -67,6 +67,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     }
 
     private fun setupObservers() {
+        // Search results
         viewModel.searchResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
@@ -99,6 +100,25 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 }
                 is Resource.Loading -> {
                     showProgressBar()
+                }
+            }
+        })
+
+        // Featured panel
+        viewModel.browseResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    response.data?.featuredPanel?.let {
+                        resultsAdapter.featuredPanel = it
+                    }
+                }
+                is Resource.Error -> {
+                    response.message?.let { message ->
+                        Toast.makeText(
+                            activity, "An error occurred: $message",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         })

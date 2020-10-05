@@ -6,31 +6,32 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
+import coil.load
 import com.sthoray.allright.R
-import com.sthoray.allright.data.model.listing.Category
+import com.sthoray.allright.data.model.browse.CategoryFeature
 import com.sthoray.allright.utils.Constants.Companion.BASE_URL
 import kotlinx.android.synthetic.main.item_layout_featured_category.view.*
 
 /**
  * Adapter for adapting Featured Categories in Main Activity.
  */
-class FeaturedCategoryAdapter : RecyclerView.Adapter<FeaturedCategoryAdapter.FeatureCategoryViewHolder>() {
+class FeaturedCategoryAdapter :
+    RecyclerView.Adapter<FeaturedCategoryAdapter.FeatureCategoryViewHolder>() {
 
 
     /** Responsible for displaying a single category. */
     inner class FeatureCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
-    private val differCallback = object : DiffUtil.ItemCallback<Category>() {
+    private val differCallback = object : DiffUtil.ItemCallback<CategoryFeature>() {
 
-        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+        override fun areItemsTheSame(oldItem: CategoryFeature, newItem: CategoryFeature): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: Category,
-            newItem: Category
+            oldItem: CategoryFeature,
+            newItem: CategoryFeature
         ): Boolean {
             return oldItem == newItem
         }
@@ -38,7 +39,6 @@ class FeaturedCategoryAdapter : RecyclerView.Adapter<FeaturedCategoryAdapter.Fea
 
     /** Calculate the difference between two lists. */
     val differSearchFeaturedCategories = AsyncListDiffer(this, differCallback)
-
 
     /**
      * Inflate the view holder with a layout upon creation.
@@ -86,14 +86,14 @@ class FeaturedCategoryAdapter : RecyclerView.Adapter<FeaturedCategoryAdapter.Fea
     }
 
 
-    private var onItemClickListener: ((Category) -> Unit)? = null
+    private var onItemClickListener: ((CategoryFeature) -> Unit)? = null
 
     /**
      * Set on click listener for an item.
      *
      * @param listener the onclick listener lambda function
      */
-    fun setOnItemClickListener(listener: (Category) -> Unit) {
+    fun setOnItemClickListener(listener: (CategoryFeature) -> Unit) {
         onItemClickListener = listener
     }
 }

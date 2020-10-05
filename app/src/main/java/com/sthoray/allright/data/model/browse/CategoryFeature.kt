@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName
  * @property size Unused / To be explored.
  * @property id The category's ID.
  */
-data class FeaturedPanel(
+data class CategoryFeature(
     @SerializedName("image")
     val imagePath: String?, // img/browse/electronics/Artboard_7.jpg
     val name: String?, // Computers
