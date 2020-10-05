@@ -55,6 +55,12 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     /** The list of search results. */
     val differSearchResults = AsyncListDiffer(this, differCallback)
 
+    /** The view holder for the feature panel. */
+    var featuredHolder: ResultsFeaturedViewHolder? = null
+
+    /** The adapter for the feature panel. */
+    var featuredCategoryAdapter: FeaturedCategoryAdapter? = null
+
     /** The list of featured categories. */
     var featuredPanel = listOf<CategoryFeature>()
 
@@ -105,12 +111,11 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder.itemViewType == 0) {
             // Featured categories
             // This block is not the most elegant way to proceed, but it works
-            val featuredHolder = holder as ResultsFeaturedViewHolder
-            val featuredCategoryAdapter = FeaturedCategoryAdapter()
-
-            featuredCategoryAdapter.differSearchFeaturedCategories.submitList(featuredPanel)
-            _featuredOnItemClickListener?.let { featuredCategoryAdapter.setOnItemClickListener(it) }
-            featuredHolder.itemView.apply {
+            featuredHolder = holder as ResultsFeaturedViewHolder
+            featuredCategoryAdapter = FeaturedCategoryAdapter()
+            featuredCategoryAdapter?.differSearchFeaturedCategories?.submitList(featuredPanel)
+            _featuredOnItemClickListener?.let { featuredCategoryAdapter?.setOnItemClickListener(it) }
+            featuredHolder?.itemView?.apply {
                 rvSearchFeaturePanel.apply {
                     adapter = featuredCategoryAdapter
                     layoutManager =

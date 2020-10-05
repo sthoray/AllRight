@@ -114,6 +114,9 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 is Resource.Success -> {
                     response.data?.featuredPanel?.let {
                         resultsAdapter.featuredPanel = it
+                        resultsAdapter.featuredCategoryAdapter
+                            ?.differSearchFeaturedCategories
+                            ?.submitList(it)
                     }
                 }
                 is Resource.Error -> {
