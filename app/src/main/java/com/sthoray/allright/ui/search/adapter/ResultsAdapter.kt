@@ -5,18 +5,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.sthoray.allright.R
+import com.sthoray.allright.data.model.browse.CategoryFeature
 import com.sthoray.allright.data.model.listing.Listing
 import kotlinx.android.synthetic.main.item_layout_search.view.*
+import kotlinx.android.synthetic.main.item_layout_search_feature_panel.view.*
 
 /** Adapter for adapting listings into a RecyclerView. */
-class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() {
+class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    /** Responsible for displaying a single listing. */
-    inner class ListingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    /** Responsible for displaying a single result. */
+    inner class ResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    /** Responsible for displaying a featured category panel. */
+    inner class ResultsFeaturedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
     private val differCallback = object : DiffUtil.ItemCallback<Listing>() {
@@ -46,9 +52,17 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
         }
     }
 
-    /** Calculate the differences between two lists. */
-    val differ = AsyncListDiffer(this, differCallback)
+    /** The list of search results. */
+    val differSearchResults = AsyncListDiffer(this, differCallback)
 
+    /** The view holder for the feature panel. */
+    var featuredHolder: ResultsFeaturedViewHolder? = null
+
+    /** The adapter for the feature panel. */
+    var featuredCategoryAdapter: FeaturedCategoryAdapter? = null
+
+    /** The list of featured categories. */
+    var featuredPanel = listOf<CategoryFeature>()
 
     /**
      * Inflate the view holder with a layout upon creation.
@@ -56,14 +70,26 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
      * @param parent the parent ViewGroup of this ViewHolder
      * @param viewType the id of the viewType
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListingViewHolder {
-        return ListingViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_layout_search,
-                parent,
-                false
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == 0) {
+            // Featured categories
+            return ResultsFeaturedViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_layout_search_feature_panel,
+                    parent,
+                    false
+                )
             )
-        )
+        } else {
+            // Search results
+            return ResultsViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_layout_search,
+                    parent,
+                    false
+                )
+            )
+        }
     }
 
     /**
@@ -72,7 +98,7 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
      * @return the size of the current list
      */
     override fun getItemCount(): Int {
-        return differ.currentList.size
+        return differSearchResults.currentList.size + 1
     }
 
     /**
@@ -81,33 +107,77 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ListingViewHolder>() 
      * @param holder the ViewHolder to bind to
      * @param position the index of the data to bind
      */
-    override fun onBindViewHolder(holder: ListingViewHolder, position: Int) {
-        val listing = differ.currentList[position]
-        holder.itemView.apply {
-            // Mall mappings
-            tvSearchName.text = listing.name
-            tvSearchSubtitle.text = listing.locationName
-            tvSearchPrice0.text = String.format(
-                context.getString(R.string.format_price),
-                listing.startPrice
-            )
-            tvSearchPrice1.text = ""
-            ivSearchImage.load(listing.mainImage?.thumbUrl)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder.itemViewType == 0) {
+            // Featured categories
+            // This block is not the most elegant way to proceed, but it works
+            featuredHolder = holder as ResultsFeaturedViewHolder
+            featuredCategoryAdapter = FeaturedCategoryAdapter()
+            featuredCategoryAdapter?.differSearchFeaturedCategories?.submitList(featuredPanel)
+            _featuredOnItemClickListener?.let { featuredCategoryAdapter?.setOnItemClickListener(it) }
+            featuredHolder?.itemView?.apply {
+                rvSearchFeaturePanel.apply {
+                    adapter = featuredCategoryAdapter
+                    layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                }
+            }
 
-            setOnClickListener {
-                onItemClickListener?.let { it(listing) }
+        } else {
+            // Search results
+            val listing = differSearchResults.currentList[position - 1]
+            holder.itemView.apply {
+                // Mall mappings
+                tvSearchName.text = listing.name
+                tvSearchSubtitle.text = listing.locationName
+                tvSearchPrice0.text = String.format(
+                    context.getString(R.string.format_price),
+                    listing.startPrice
+                )
+                tvSearchPrice1.text = ""
+                ivSearchImage.load(listing.mainImage?.thumbUrl)
+
+                setOnClickListener {
+                    _onItemClickListener?.let { it(listing) }
+                }
             }
         }
     }
 
-    private var onItemClickListener: ((Listing) -> Unit)? = null
+    /**
+     * Return the type of view at the position.
+     *
+     * This The first item in the recycler view should be featured categories (type 0).
+     * All remaining items should be search results.
+     *
+     * @return 0 if the view type is featured categories, else 0 for search results.
+     */
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) {
+            0
+        } else {
+            1
+        }
+    }
+
+    private var _onItemClickListener: ((Listing) -> Unit)? = null
+    private var _featuredOnItemClickListener: ((CategoryFeature) -> Unit)? = null
 
     /**
-     * Set on click listener for a listing.
+     * Set the on click listener for a search result.
      *
-     * @param listener the on click listener lambda for a Listing
+     * @param listener The on click listener lambda for a Listing.
      */
     fun setOnItemClickListener(listener: (Listing) -> Unit) {
-        onItemClickListener = listener
+        _onItemClickListener = listener
+    }
+
+    /**
+     * Set the on click listener for a featured panel item.
+     *
+     * @param listener The on click listener lambda for a featured category.
+     */
+    fun setFeaturedOnItemClickListener(listener: (CategoryFeature) -> Unit) {
+        _featuredOnItemClickListener = listener
     }
 }

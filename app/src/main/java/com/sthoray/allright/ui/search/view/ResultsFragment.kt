@@ -42,11 +42,15 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private fun setupView() {
         // Recycler view
         resultsAdapter = ResultsAdapter()
-        resultsAdapter.setOnItemClickListener { listing ->
+        resultsAdapter.setOnItemClickListener { result ->
             Intent(activity, ListingActivity::class.java).also {
-                it.putExtra(LISTING_ID_KEY, listing.id)
+                it.putExtra(LISTING_ID_KEY, result.id)
                 startActivity(it)
             }
+        }
+        resultsAdapter.setFeaturedOnItemClickListener { categoryFeature ->
+            categoryFeature.id?.let { viewModel.searchRequest.categoryId = it }
+            viewModel.refreshSearchResults()
         }
         rvSearchResults.apply {
             adapter = resultsAdapter
@@ -67,16 +71,17 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     }
 
     private fun setupObservers() {
+        // Search results
         viewModel.searchResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { listingResponse ->
                         // Not sure why differ is not working when providing a MutableList
-                        resultsAdapter.differ.submitList(listingResponse.data.toList())
+                        resultsAdapter.differSearchResults.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
-                        if (resultsAdapter.itemCount == 0) {
+                        if (listingResponse.data.size == 0) {
                             tvNoResultsTitle.visibility = View.VISIBLE
                             tvNoResultsInfo.visibility = View.VISIBLE
                         } else {
@@ -99,6 +104,28 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 }
                 is Resource.Loading -> {
                     showProgressBar()
+                }
+            }
+        })
+
+        // Featured panel
+        viewModel.browseResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    response.data?.featuredPanel?.let {
+                        resultsAdapter.featuredPanel = it
+                        resultsAdapter.featuredCategoryAdapter
+                            ?.differSearchFeaturedCategories
+                            ?.submitList(it)
+                    }
+                }
+                is Resource.Error -> {
+                    response.message?.let { message ->
+                        Toast.makeText(
+                            activity, "An error occurred: $message",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         })
