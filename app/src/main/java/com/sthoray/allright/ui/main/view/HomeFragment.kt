@@ -72,6 +72,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     })
                     .setNegativeButton(R.string.cancel, null)
                     .show()
+            } else if (category.isRestricted == 1) {
+                AlertDialog.Builder(activity)
+                    .setTitle(R.string.restricted_category_title)
+                    .setMessage(R.string.restricted_category_message)
+                    .setPositiveButton(R.string.restricted_category_continue, DialogInterface.OnClickListener { _, _ ->
+                        Intent(activity, SearchActivity::class.java).also {
+                            it.putExtra(CATEGORY_ID_KEY, category.id)
+                            startActivity(it)
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
             } else {
                 Intent(activity, SearchActivity::class.java).also {
                     it.putExtra(CATEGORY_ID_KEY, category.id)
