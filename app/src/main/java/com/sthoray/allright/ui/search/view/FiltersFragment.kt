@@ -1,5 +1,9 @@
 package com.sthoray.allright.ui.search.view
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -15,6 +19,7 @@ import com.sthoray.allright.ui.search.adapter.CategoryAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersMall
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersSecondhand
+import com.sthoray.allright.utils.Constants
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_filters.*
 
@@ -71,8 +76,21 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         // Child categories
         categoryAdapter = CategoryAdapter()
         categoryAdapter.setOnItemClickListener { category ->
-            category.id?.let { viewModel.searchRequestDraft.categoryId = it }
-            viewModel.draftSearch()
+            if (category.id == 1) {
+                AlertDialog.Builder(activity)
+                    .setMessage(R.string.marketplace_not_supported_message)
+                    .setPositiveButton(R.string.yes, DialogInterface.OnClickListener { _, _ ->
+                        Intent(Intent.ACTION_VIEW).also {
+                            it.data = Uri.parse(Constants.BASE_URL + "vehicles")
+                            this.startActivity(it)
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            } else {
+                category.id?.let { viewModel.searchRequestDraft.categoryId = it }
+                viewModel.draftSearch()
+            }
         }
 
         rvCategoryChildren.apply {
