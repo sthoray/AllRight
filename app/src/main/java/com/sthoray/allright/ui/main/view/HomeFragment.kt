@@ -1,6 +1,9 @@
 package com.sthoray.allright.ui.main.view
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,6 +16,7 @@ import com.sthoray.allright.ui.main.adapter.HomeAdapter
 import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity
+import com.sthoray.allright.utils.Constants.Companion.BASE_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -55,11 +59,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewModel.refreshHomeFragment()
         }
 
-        // Category selected listener
+        // Featured panel category selected
         mainAdapter.setOnItemClickListener { category ->
-            Intent(activity, SearchActivity::class.java).also {
-                it.putExtra(CATEGORY_ID_KEY, category.id)
-                startActivity(it)
+            if (category.id == 1) {
+                AlertDialog.Builder(activity)
+                    .setMessage(R.string.marketplace_not_supported_message)
+                    .setPositiveButton(R.string.yes, DialogInterface.OnClickListener { _, _ ->
+                        Intent(Intent.ACTION_VIEW).also {
+                            it.data = Uri.parse(BASE_URL + "vehicles")
+                            this.startActivity(it)
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            } else {
+                Intent(activity, SearchActivity::class.java).also {
+                    it.putExtra(CATEGORY_ID_KEY, category.id)
+                    startActivity(it)
+                }
             }
         }
     }
