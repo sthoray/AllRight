@@ -42,11 +42,15 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
     private fun setupView() {
         // Recycler view
         resultsAdapter = ResultsAdapter()
-        resultsAdapter.setOnItemClickListener { listing ->
+        resultsAdapter.setOnItemClickListener { result ->
             Intent(activity, ListingActivity::class.java).also {
-                it.putExtra(LISTING_ID_KEY, listing.id)
+                it.putExtra(LISTING_ID_KEY, result.id)
                 startActivity(it)
             }
+        }
+        resultsAdapter.setFeaturedOnItemClickListener { categoryFeature ->
+            categoryFeature.id?.let { viewModel.searchRequest.categoryId = it }
+            viewModel.refreshSearchResults()
         }
         rvSearchResults.apply {
             adapter = resultsAdapter

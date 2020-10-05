@@ -80,13 +80,13 @@ class FeaturedCategoryAdapter :
             ivFeaturedCategory.load(BASE_URL + category.imagePath)
 
             setOnClickListener {
-                onItemClickListener?.let { it(category) }
+                _onItemClickListener?.let { it(category) }
             }
         }
     }
 
 
-    private var onItemClickListener: ((CategoryFeature) -> Unit)? = null
+    private var _onItemClickListener: ((CategoryFeature) -> Unit)? = null
 
     /**
      * Set on click listener for an item.
@@ -94,6 +94,6 @@ class FeaturedCategoryAdapter :
      * @param listener the onclick listener lambda function
      */
     fun setOnItemClickListener(listener: (CategoryFeature) -> Unit) {
-        onItemClickListener = listener
+        _onItemClickListener = listener
     }
 }

@@ -1,6 +1,5 @@
 package com.sthoray.allright.ui.search.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,9 +52,10 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    /** The lists of search results. */
+    /** The list of search results. */
     val differSearchResults = AsyncListDiffer(this, differCallback)
 
+    /** The list of featured categories. */
     var featuredPanel = listOf<CategoryFeature>()
 
     /**
@@ -109,9 +109,7 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val featuredCategoryAdapter = FeaturedCategoryAdapter()
 
             featuredCategoryAdapter.differSearchFeaturedCategories.submitList(featuredPanel)
-            featuredCategoryAdapter.setOnItemClickListener { listing ->
-                Log.d("ResultsAdapter", listing.id.toString())
-            }
+            _featuredOnItemClickListener?.let { featuredCategoryAdapter.setOnItemClickListener(it) }
             featuredHolder.itemView.apply {
                 rvSearchFeaturePanel.apply {
                     adapter = featuredCategoryAdapter
@@ -135,7 +133,7 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 ivSearchImage.load(listing.mainImage?.thumbUrl)
 
                 setOnClickListener {
-                    onItemClickListener?.let { it(listing) }
+                    _onItemClickListener?.let { it(listing) }
                 }
             }
         }
@@ -157,14 +155,24 @@ class ResultsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    private var onItemClickListener: ((Listing) -> Unit)? = null
+    private var _onItemClickListener: ((Listing) -> Unit)? = null
+    private var _featuredOnItemClickListener: ((CategoryFeature) -> Unit)? = null
 
     /**
-     * Set on click listener for a listing.
+     * Set the on click listener for a search result.
      *
-     * @param listener the on click listener lambda for a Listing
+     * @param listener The on click listener lambda for a Listing.
      */
     fun setOnItemClickListener(listener: (Listing) -> Unit) {
-        onItemClickListener = listener
+        _onItemClickListener = listener
+    }
+
+    /**
+     * Set the on click listener for a featured panel item.
+     *
+     * @param listener The on click listener lambda for a featured category.
+     */
+    fun setFeaturedOnItemClickListener(listener: (CategoryFeature) -> Unit) {
+        _featuredOnItemClickListener = listener
     }
 }
