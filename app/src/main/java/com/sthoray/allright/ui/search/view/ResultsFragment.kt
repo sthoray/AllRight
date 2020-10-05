@@ -81,7 +81,7 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                         resultsAdapter.differSearchResults.submitList(listingResponse.data.toList())
                         isLastPage =
                             viewModel.searchRequest.pageNumber == listingResponse.meta.pagination.totalPages
-                        if (resultsAdapter.itemCount == 0) {
+                        if (listingResponse.data.size == 0) {
                             tvNoResultsTitle.visibility = View.VISIBLE
                             tvNoResultsInfo.visibility = View.VISIBLE
                         } else {
