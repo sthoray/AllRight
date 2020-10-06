@@ -1,5 +1,6 @@
 package com.sthoray.allright.data.api
 
+import com.sthoray.allright.BuildConfig
 import com.sthoray.allright.utils.Constants.Companion.BASE_API_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,8 +16,10 @@ class RetrofitInstance {
         private val retrofit by lazy {
             // Logging interceptor to make debugging easier.
             val logging = HttpLoggingInterceptor()
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-
+            val loggingLevel =
+                if (BuildConfig.DEBUG)  HttpLoggingInterceptor.Level.BODY
+                else                    HttpLoggingInterceptor.Level.NONE
+            logging.setLevel(loggingLevel)
             // OKHttp client with logging interceptor
             val client = OkHttpClient.Builder()
                 .addInterceptor(logging)

@@ -1,0 +1,23 @@
+-keep class kotlin.* { *; }
+-keep class kotlin.Metadata { *; }
+-dontwarn kotlin.**
+-keepclassmembers class **$WhenMappings {
+    <fields>;
+}
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+    static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
+}
+# Don't use -assumenosideeffects class android.util.Log { *; }
+# It will remove the wait() function, and others
+# https://stackoverflow.com/a/13327603/9713161
+-assumenosideeffects class android.util.Log {
+    static boolean isLoggable(java.lang.String, int);
+    static int v(...);
+    static int i(...);
+    static int w(...);
+    static int d(...);
+    static int e(...);
+}
