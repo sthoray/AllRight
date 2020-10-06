@@ -17,6 +17,7 @@ import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_K
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_results.*
+import timber.log.Timber
 
 /** Fragment to display search results in a recycler view. */
 class ResultsFragment : Fragment(R.layout.fragment_results) {
@@ -92,9 +93,11 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                     hideProgressBar()
                     response.message?.let { message ->
                         Toast.makeText(
-                            activity, "An error occurred: $message",
+                            activity,
+                            getString(R.string.error_occurred_preamble) + message,
                             Toast.LENGTH_LONG
                         ).show()
+                        Timber.e("%s%s", getString(R.string.error_occurred_preamble), message)
                     }
                 }
                 is Resource.Loading -> {

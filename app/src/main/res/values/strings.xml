@@ -103,4 +103,5 @@
     <string name="restricted_category_title">Restricted category</string>
     <string name="restricted_category_message">You must be at least 18 years old to browse this category.</string>
     <string name="restricted_category_continue">Continue</string>
+    <string name="error_occurred_preamble">An error occurred: </string>
 </resources>

@@ -3,8 +3,8 @@ package com.sthoray.allright.ui.listing.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,12 +22,12 @@ import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_K
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_listing.*
+import timber.log.Timber
 
 /** The listing activity to display information about a listing. */
 class ListingActivity : AppCompatActivity() {
 
 
-    private val DEBUG_TAG = "ListingActivity"
     private lateinit var viewModel: ListingViewModel
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
@@ -62,7 +62,12 @@ class ListingActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message.let { message ->
-                        Log.e(DEBUG_TAG, "An error occurred $message")
+                        Toast.makeText(
+                            this,
+                            getString(R.string.error_occurred_preamble) + message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Timber.e("%s%s", getString(R.string.error_occurred_preamble), message)
                     }
                 }
                 is Resource.Loading -> {

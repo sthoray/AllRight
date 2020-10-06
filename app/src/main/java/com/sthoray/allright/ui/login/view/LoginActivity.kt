@@ -4,14 +4,12 @@ import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +17,7 @@ import com.sthoray.allright.R
 import com.sthoray.allright.ui.login.viewmodel.LoginViewModel
 import com.sthoray.allright.ui.login.viewmodel.LoginViewModelFactory
 import com.sthoray.allright.utils.Resource
+import timber.log.Timber
 
 /**
  * Activity to handle user authentication with AllGoods.
@@ -128,6 +127,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoginFailed(errorMessage: String) {
         Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
+        Timber.e(errorMessage)
     }
 }
 

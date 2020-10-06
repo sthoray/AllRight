@@ -3,7 +3,6 @@ package com.sthoray.allright.ui.main.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,6 +18,7 @@ import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.utils.Constants.Companion.BASE_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_my_allgoods.*
+import timber.log.Timber
 
 /**
  * Fragment for viewing and interacting with the user's AllGoods account.
@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.fragment_my_allgoods.*
 class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
 
     private lateinit var viewModel: MainViewModel
-    private val TAG = "HomeFragment"
 
     /**
      * Set up ViewModel, UI, and observers.
@@ -103,10 +102,10 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
                     response.message?.let { message ->
                         Toast.makeText(
                             activity,
-                            "An error occurred: $message",
+                            getString(R.string.error_occurred_preamble) + message,
                             Toast.LENGTH_LONG
                         ).show()
-                        Log.e(TAG, "An error occurred: $message")
+                        Timber.e("%s%s", getString(R.string.error_occurred_preamble), message)
                     }
                 }
                 is Resource.Loading -> {
