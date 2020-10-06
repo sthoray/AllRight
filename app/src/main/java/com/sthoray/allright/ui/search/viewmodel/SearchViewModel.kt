@@ -135,7 +135,7 @@ class SearchViewModel(
             }
 
         } catch (e: Exception) {
-            e.message?.let { Timber.e("safeSearchCall: %s", it) }
+            e.message?.let { Timber.e(it) }
 
             when (e) {
                 is IOException -> _searchResponse.postValue(
@@ -195,7 +195,7 @@ class SearchViewModel(
             }
 
         } catch (e: Exception) {
-            e.message?.let { Timber.e("safeBrowseCall: %s", it) }
+            e.message?.let { Timber.e(it) }
 
             when (e) {
                 is IOException -> _browseResponse.postValue(
@@ -247,7 +247,7 @@ class SearchViewModel(
             }
 
         } catch (e: Exception) {
-            e.message?.let { Timber.e("safeDraftSearchCall: %s", it) }
+            e.message?.let { Timber.e(it) }
 
             when (e) {
                 is IOException -> _draftSearchResponse.postValue(
@@ -296,7 +296,7 @@ class SearchViewModel(
             }
 
         } catch (e: Exception) {
-            e.message?.let { Timber.e("safeDraftBrowseCall: %s", it) }
+            e.message?.let { Timber.e(it) }
 
             when (e) {
                 is IOException -> _draftBrowseResponse.postValue(
