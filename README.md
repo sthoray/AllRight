@@ -5,7 +5,7 @@ A simple and fast browser for the AllGoods marketplace. Built for Android device
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5b0c01100f364f5db9cc7d18912b58f6)](https://www.codacy.com/gh/sthoray/AllRight?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sthoray/AllRight&amp;utm_campaign=Badge_Grade)
 [![Codecov](https://codecov.io/gh/sthoray/AllRight/branch/master/graph/badge.svg)](https://codecov.io/gh/sthoray/AllRight)
 [![Android CI](https://github.com/sthoray/AllRight/workflows/Android%20CI/badge.svg)](https://github.com/sthoray/AllRight/actions?query=workflow%3A%22Android+CI%22)
-[![Documentation](https://github.com/sthoray/AllRight/workflows/Documentation/badge.svg)](https://sthoray.github.io/AllRight/javadoc)
+[![Documentation](https://github.com/sthoray/AllRight/workflows/Documentation/badge.svg)](https://sthoray.github.io/AllRight/docs/app)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Build
@@ -34,7 +34,7 @@ All tests must pass on GitHub before being accepted. To run tests locally, eithe
 
 ## Documentation
 
-Developer documentation can be found [here](https://sthoray.github.io/AllRight/javadoc). This will always be in sync with the master branch. The `dokka` Gradle task can also be used to generate local documentation.
+Developer documentation can be found [here](https://sthoray.github.io/AllRight/docs/app). This will always be in sync with the master branch. The `dokka` Gradle task can also be used to generate local documentation.
 
 ## Disclaimer
 

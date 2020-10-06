@@ -90,7 +90,7 @@ android {
                 "UnsafeExperimentalUsageWarning"
     }
 
-    dokkaJavadoc.configure {
+    dokkaHtml.configure {
         dokkaSourceSets {
             named("main") {
                 noAndroidSdkLink.set(false)
