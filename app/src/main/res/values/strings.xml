@@ -97,4 +97,10 @@
     <string name="no_results_title">No items found</string>
     <string name="no_results_info">We couldn\'t find anything that matched your query.
         You could try adjusting your filters or search inside a different category.</string>
+    <string name="marketplace_not_supported_message">We do not support this marketplace. Would you like to continue in your browser?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="restricted_category_title">Restricted category</string>
+    <string name="restricted_category_message">You must be at least 18 years old to browse this category.</string>
+    <string name="restricted_category_continue">Continue</string>
 </resources>

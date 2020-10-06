@@ -1,5 +1,8 @@
 package com.sthoray.allright.ui.search.view
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -11,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
+import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.search.adapter.CategoryAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersMall
@@ -71,8 +75,22 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
         // Child categories
         categoryAdapter = CategoryAdapter()
         categoryAdapter.setOnItemClickListener { category ->
-            category.id?.let { viewModel.searchRequestDraft.categoryId = it }
-            viewModel.draftSearch()
+            if (category.isRestricted == 1) {
+                AlertDialog.Builder(activity)
+                    .setTitle(R.string.restricted_category_title)
+                    .setMessage(R.string.restricted_category_message)
+                    .setPositiveButton(
+                        R.string.restricted_category_continue,
+                        DialogInterface.OnClickListener { _, _ ->
+                            category.id?.let { viewModel.searchRequestDraft.categoryId = it }
+                            viewModel.draftSearch()
+                        })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            } else {
+                category.id?.let { viewModel.searchRequestDraft.categoryId = it }
+                viewModel.draftSearch()
+            }
         }
 
         rvCategoryChildren.apply {
