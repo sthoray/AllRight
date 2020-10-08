@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,6 +18,7 @@ import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Constants.Companion.BASE_URL
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_home.*
+import timber.log.Timber
 
 /**
  * Fragment for the home page.
@@ -30,7 +30,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var mainAdapter: HomeAdapter
-    private val DEBUG_TAG = "HomeFragment"
 
     /**
      * Set up ViewModel, UI, and observers.
@@ -77,12 +76,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 AlertDialog.Builder(activity)
                     .setTitle(R.string.restricted_category_title)
                     .setMessage(R.string.restricted_category_message)
-                    .setPositiveButton(R.string.restricted_category_continue, DialogInterface.OnClickListener { _, _ ->
-                        Intent(activity, SearchActivity::class.java).also {
-                            it.putExtra(CATEGORY_ID_KEY, category.id)
-                            startActivity(it)
-                        }
-                    })
+                    .setPositiveButton(
+                        R.string.restricted_category_continue,
+                        DialogInterface.OnClickListener { _, _ ->
+                            Intent(activity, SearchActivity::class.java).also {
+                                it.putExtra(CATEGORY_ID_KEY, category.id)
+                                startActivity(it)
+                            }
+                        })
                     .setNegativeButton(R.string.cancel, null)
                     .show()
             } else {
@@ -107,9 +108,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
-                            .show()
-                        Log.e(DEBUG_TAG, "An error occurred: $message")
+                        Toast.makeText(
+                            activity,
+                            getString(R.string.error_occurred_preamble) + message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Timber.e("%s%s", getString(R.string.error_occurred_preamble), message)
                     }
                 }
                 is Resource.Loading -> {

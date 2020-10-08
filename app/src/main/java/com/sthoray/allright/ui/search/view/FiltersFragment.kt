@@ -2,7 +2,6 @@ package com.sthoray.allright.ui.search.view
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -14,13 +13,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sthoray.allright.R
-import com.sthoray.allright.ui.main.view.MainActivity
 import com.sthoray.allright.ui.search.adapter.CategoryAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersMall
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersSecondhand
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_filters.*
+import timber.log.Timber
 
 /**
  * Search filtering fragment.
@@ -167,9 +166,11 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
                     response.message?.let {
                         tvCurrentCategory.text = it
                         Toast.makeText(
-                            activity, "An error occurred: $it",
+                            activity,
+                            getString(R.string.error_occurred_preamble) + it,
                             Toast.LENGTH_LONG
                         ).show()
+                        Timber.e("%s%s", getString(R.string.error_occurred_preamble), it)
                     }
                 }
                 is Resource.Loading -> {

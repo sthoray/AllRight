@@ -1,7 +1,6 @@
 package com.sthoray.allright.ui.search.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +15,7 @@ import com.sthoray.allright.utils.Resource
 import com.sthoray.allright.utils.SortOrder
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import timber.log.Timber
 import java.io.IOException
 
 /**
@@ -31,7 +31,6 @@ class SearchViewModel(
     private val appRepository: AppRepository
 ) : AndroidViewModel(app) {
 
-    private val DEBUG_TAG = "SearchViewModel"
     private val _searchResponse: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
     private val _browseResponse: MutableLiveData<Resource<BrowseResponse>> = MutableLiveData()
     private val _draftSearchResponse: MutableLiveData<Resource<SearchResponse>> = MutableLiveData()
@@ -136,7 +135,7 @@ class SearchViewModel(
             }
 
         } catch (e: Exception) {
-            e.message?.let { Log.e(DEBUG_TAG, "safeSearchCall: $it") }
+            e.message?.let { Timber.e(it) }
 
             when (e) {
                 is IOException -> _searchResponse.postValue(
@@ -196,7 +195,7 @@ class SearchViewModel(
             }
 
         } catch (e: Exception) {
-            e.message?.let { Log.e(DEBUG_TAG, "safeBrowseCall: $it") }
+            e.message?.let { Timber.e(it) }
 
             when (e) {
                 is IOException -> _browseResponse.postValue(
@@ -248,7 +247,7 @@ class SearchViewModel(
             }
 
         } catch (e: Exception) {
-            e.message?.let { Log.e(DEBUG_TAG, "safeDraftSearchCall: $it") }
+            e.message?.let { Timber.e(it) }
 
             when (e) {
                 is IOException -> _draftSearchResponse.postValue(
@@ -297,7 +296,7 @@ class SearchViewModel(
             }
 
         } catch (e: Exception) {
-            e.message?.let { Log.e(DEBUG_TAG, "safeBrowseCall: $it") }
+            e.message?.let { Timber.e(it) }
 
             when (e) {
                 is IOException -> _draftBrowseResponse.postValue(

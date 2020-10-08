@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -20,6 +19,7 @@ import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Constants
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_browse.*
+import timber.log.Timber
 
 /**
  * Fragment for exploring AllGoods through the top level categories.
@@ -32,7 +32,6 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var mainAdapter: BrowseAdapter
-    private val DEBUG_TAG = "BrowseFragment"
 
     /**
      * Setup the ViewModel, UI and observers.
@@ -69,42 +68,41 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
 
         // Category selected
         mainAdapter.setOnItemClickListener { category ->
-                val vehiclesCategoryId = 1
-                if (category.id == vehiclesCategoryId) {
-                    AlertDialog.Builder(activity)
-                        .setMessage(R.string.marketplace_not_supported_message)
-                        .setPositiveButton(R.string.yes, DialogInterface.OnClickListener { _, _ ->
-                            Intent(Intent.ACTION_VIEW).also {
-                                it.data = Uri.parse(Constants.BASE_URL + "vehicles")
-                                this.startActivity(it)
+            val vehiclesCategoryId = 1
+            if (category.id == vehiclesCategoryId) {
+                AlertDialog.Builder(activity)
+                    .setMessage(R.string.marketplace_not_supported_message)
+                    .setPositiveButton(R.string.yes, DialogInterface.OnClickListener { _, _ ->
+                        Intent(Intent.ACTION_VIEW).also {
+                            it.data = Uri.parse(Constants.BASE_URL + "vehicles")
+                            this.startActivity(it)
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+
+            } else if (category.isRestricted == 1) {
+                AlertDialog.Builder(activity)
+                    .setTitle(R.string.restricted_category_title)
+                    .setMessage(R.string.restricted_category_message)
+                    .setPositiveButton(
+                        R.string.restricted_category_continue,
+                        DialogInterface.OnClickListener { _, _ ->
+                            Intent(activity, SearchActivity::class.java).also {
+                                it.putExtra(CATEGORY_ID_KEY, category.id)
+                                startActivity(it)
                             }
                         })
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
-
-                } else if (category.isRestricted == 1) {
-                    AlertDialog.Builder(activity)
-                        .setTitle(R.string.restricted_category_title)
-                        .setMessage(R.string.restricted_category_message)
-                        .setPositiveButton(
-                            R.string.restricted_category_continue,
-                            DialogInterface.OnClickListener { _, _ ->
-                                Intent(activity, SearchActivity::class.java).also {
-                                    it.putExtra(CATEGORY_ID_KEY, category.id)
-                                    startActivity(it)
-                                }
-                            })
-                        .setNegativeButton(R.string.cancel, null)
-                        .show()
-                } else {
-                    Intent(activity, SearchActivity::class.java).also {
-                        it.putExtra(CATEGORY_ID_KEY, category.id)
-                        startActivity(it)
-                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            } else {
+                Intent(activity, SearchActivity::class.java).also {
+                    it.putExtra(CATEGORY_ID_KEY, category.id)
+                    startActivity(it)
                 }
             }
         }
-
+    }
 
 
     private fun setupObservers() {
@@ -119,9 +117,12 @@ class BrowseFragment : Fragment(R.layout.fragment_browse) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
-                            .show()
-                        Log.e(DEBUG_TAG, "An error occurred: $message")
+                        Toast.makeText(
+                            activity,
+                            getString(R.string.error_occurred_preamble) + message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Timber.e("%s%s", getString(R.string.error_occurred_preamble), message)
                     }
                 }
                 is Resource.Loading -> {
