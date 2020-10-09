@@ -16,6 +16,7 @@ import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.listing.adapter.ViewPagerAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingImagesViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
+import com.sthoray.allright.utils.EspressoIdlingResource
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_listing.vpListingImages
 import kotlinx.android.synthetic.main.activity_listing.wdiListingImages
@@ -33,6 +34,10 @@ class ListingImagesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         setContentView(R.layout.activity_listing_images)
         setupViewModel()
 
@@ -41,6 +46,9 @@ class ListingImagesActivity : AppCompatActivity() {
         imagePosition = intent.getIntExtra("ImagePosition", 0)
 
         setupObservers()
+
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
     }
 
     private fun setupViewModel() {
@@ -51,11 +59,17 @@ class ListingImagesActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         viewModel.listing.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { fillView(it) }
+
+                    //Decrement the idling resource for testing
+                    EspressoIdlingResource.decrement()
                 }
                 is Resource.Error -> {
                     hideProgressBar()

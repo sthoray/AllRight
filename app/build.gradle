@@ -22,7 +22,7 @@ jacocoAndroidUnitTestReport {
 // Version numbers used for versionCode and versionName
 def versionMajor = 1
 def versionMinor = 1
-def versionPatch = 0
+def versionPatch = 1
 
 android {
     compileSdkVersion 30
@@ -140,6 +140,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
     androidTestImplementation 'com.squareup.okhttp3:mockwebserver:4.7.2'
 
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'

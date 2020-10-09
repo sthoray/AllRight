@@ -36,9 +36,14 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
         viewModel = (activity as MainActivity).viewModel
         setOnClickListeners()
         setupObservers()
+
+
     }
 
     /**
