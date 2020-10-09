@@ -14,6 +14,17 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 class RetrofitInstance {
     companion object {
+        /**
+         * Reset the existing retrofit and api instances.
+         *
+         * Can be used to change the baseUrl of the Retrofit builder when performing tests.
+         * It would probably be beneficial to refactor the [RetrofitInstance] class to better
+         * support tests without these extra requirements.
+         */
+        fun resetInstance() {
+            retrofitInstance = null
+            apiInstance = null
+        }
 
         /**
          * The base url for the retrofit builder.
@@ -27,34 +38,46 @@ class RetrofitInstance {
          */
         var baseUrl: HttpUrl = BASE_API_URL.toHttpUrl()
 
-        private val retrofit by lazy {
-            // Logging interceptor to make debugging easier.
-            val logging = HttpLoggingInterceptor()
-            logging.setLevel(
-                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
-                else HttpLoggingInterceptor.Level.NONE
-            )
+        private var retrofitInstance: Retrofit? = null
 
-            // OKHttp client with logging interceptor
-            val client = OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build()
+        private val retrofit: Retrofit
+            get() {
+                if (retrofitInstance == null) {
+                    // Logging interceptor to make debugging easier.
+                    val logging = HttpLoggingInterceptor()
+                    logging.setLevel(
+                        if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                        else HttpLoggingInterceptor.Level.NONE
+                    )
 
-            // Finally, the retrofit builder with Gson converter for deserialization
-            Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build()
-        }
+                    // OKHttp client with logging interceptor
+                    val client = OkHttpClient.Builder()
+                        .addInterceptor(logging)
+                        .build()
+
+                    // Finally, the retrofit builder with Gson converter for deserialization
+                    retrofitInstance = Retrofit.Builder()
+                        .baseUrl(baseUrl)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(client)
+                        .build()
+                }
+                return retrofitInstance!!
+            }
+
+        private var apiInstance: AllGoodsApi? = null
 
         /**
          * The actual API service object for making network requests.
          *
          * Implements the [AllGoodsApi] interface.
          */
-        val api: AllGoodsApi by lazy {
-            retrofit.create(AllGoodsApi::class.java)
-        }
+        val api: AllGoodsApi
+            get() {
+                if (apiInstance == null) {
+                    apiInstance = retrofit.create(AllGoodsApi::class.java)
+                }
+                return apiInstance!!
+            }
     }
 }
