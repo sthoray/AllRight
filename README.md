@@ -24,6 +24,7 @@
 
 <p align="center">
     <a href="#about">About</a>
+  • <a href="#contributing">Contributing</a>
   • <a href="#build">Build</a>
   • <a href="#test">Test</a>
   • <a href="#documentation">Documentation</a>
@@ -42,6 +43,10 @@ AllRight is designed to make browsing AllGoods categories painless. We aim to mi
         <img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="30%">
     </a>
 </p>
+
+## Contributing
+
+Want to help improve this project? Please have a read through [CONTRIBUTING](./CONTRIBUTING.md). We welcome everything from requesting features to submitting pull request.
 
 ## Build
 
