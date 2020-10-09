@@ -17,6 +17,7 @@ import com.sthoray.allright.ui.search.adapter.CategoryAdapter
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersMall
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel.Companion.sortOrdersSecondhand
+import com.sthoray.allright.utils.EspressoIdlingResource
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_filters.*
 import timber.log.Timber
@@ -47,10 +48,17 @@ class FiltersFragment : Fragment(R.layout.fragment_filters) {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         viewModel = (activity as SearchActivity).viewModel
         viewModel.draftSearch()
         setupView()
         setupObservers()
+
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
     }
 
     private fun setupView() {

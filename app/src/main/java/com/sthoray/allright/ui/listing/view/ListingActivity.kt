@@ -20,6 +20,7 @@ import com.sthoray.allright.ui.listing.adapter.ViewPagerAdapter
 import com.sthoray.allright.ui.listing.viewmodel.ListingViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
 import com.sthoray.allright.utils.Constants.Companion.BASE_PRODUCT_URL
+import com.sthoray.allright.utils.EspressoIdlingResource
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.activity_listing.*
 import timber.log.Timber
@@ -34,6 +35,10 @@ class ListingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         setContentView(R.layout.activity_listing)
         setupViewModel()
 
@@ -42,6 +47,9 @@ class ListingActivity : AppCompatActivity() {
         setVisitListingBtnListener(listingId)
 
         setupObservers()
+
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
 
     }
 
@@ -53,11 +61,17 @@ class ListingActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         viewModel.listing.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { fillView(it) }
+
+                    //Decrement the idling resource for testing
+                    EspressoIdlingResource.decrement()
                 }
                 is Resource.Error -> {
                     hideProgressBar()
@@ -78,15 +92,24 @@ class ListingActivity : AppCompatActivity() {
     }
 
     private fun setViewPager(images: List<Image>) {
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
 
         viewPagerAdapter = ViewPagerAdapter(images)
         vpListingImages.adapter = viewPagerAdapter
         wdiListingImages.setViewPager2(vpListingImages)
 
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
+
     }
 
     //BENJAMIN
     private fun setOnClickListeners(listing: Listing) {
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         viewPagerAdapter.setOnItemClickListener { image ->
             val index = image.number?.let { it - 1 }
             Intent(this@ListingActivity, ListingImagesActivity::class.java).also {
@@ -95,6 +118,8 @@ class ListingActivity : AppCompatActivity() {
                 startActivity(it)
             }
         }
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
     }
 
 
@@ -107,6 +132,9 @@ class ListingActivity : AppCompatActivity() {
     }
 
     private fun fillView(listing: Listing) {
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         // Description
         tvListingName.text = listing.name
         tvListingDescription.text = listing.description
@@ -180,6 +208,9 @@ class ListingActivity : AppCompatActivity() {
         // Images
         listing.images?.let { setViewPager(it) }
         listing.let { setOnClickListeners(it) }
+
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
     }
 
     private fun showProgressBar() {

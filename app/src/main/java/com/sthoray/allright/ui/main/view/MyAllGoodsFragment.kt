@@ -16,6 +16,7 @@ import com.sthoray.allright.data.model.user.User
 import com.sthoray.allright.ui.login.view.LoginActivity
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.utils.Constants.Companion.BASE_URL
+import com.sthoray.allright.utils.EspressoIdlingResource
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_my_allgoods.*
 import timber.log.Timber
@@ -36,9 +37,14 @@ class MyAllGoodsFragment : Fragment(R.layout.fragment_my_allgoods) {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
         viewModel = (activity as MainActivity).viewModel
         setOnClickListeners()
         setupObservers()
+
+
     }
 
     /**

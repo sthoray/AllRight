@@ -13,6 +13,7 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.settings.view.SettingsActivity
+import com.sthoray.allright.utils.EspressoIdlingResource
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -45,9 +46,18 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
+
+
         setContentView(R.layout.activity_main)
         setupViewModel()
         setupView()
+
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
     }
 
     private fun setupViewModel() {
@@ -57,6 +67,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
+
+
         // Bottom Nav
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.navigationHostFragment) as NavHostFragment
@@ -69,6 +81,8 @@ class MainActivity : AppCompatActivity() {
                     Intent(this, SettingsActivity::class.java).also {
                         startActivity(it)
                     }
+
+
                     true
                 }
                 else -> false
