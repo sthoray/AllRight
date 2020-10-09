@@ -35,17 +35,21 @@
 
 A simple and fast browser for the AllGoods marketplace. Built for Android devices using Kotlin.
 
-<a href="https://play.google.com/store/apps/details?id=com.sthoray.allright">
-    <img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="25%">
-</a>
+AllRight is designed to make browsing AllGoods categories painless. We aim to minimise complex layouts to provide reliable and responsive interfaces. When the app first launches, users can immeditally select a category to start browsing. To further refine results, filters and marketplace categories can be adjusted in the filters page by tapping on the floating FILTER button. Uers can discard their filters and return to existing results by using their devices back button instead of the APPLY FILTERS button at the bottom of the page. When viewing a product's details, the currently displayed image will be enlarged once tapped on. The devices back button will navigate back to the product details as usual. The VIEW LISTING button at the bottom of the product details allows users to  visit the product in their web browser for more information or to make a purchase. 
+
+<p align="center">
+    <a href="https://play.google.com/store/apps/details?id=com.sthoray.allright">
+        <img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="30%">
+    </a>
+</p>
 
 ## Build
 
-The app can be built from source using [Android Studio](###Android-Studio) or via the [command line](###Command-line).
+The app can be built from source using [Android Studio](###Android-Studio) or via the [command line](###Command-line). Signed release variants should be downloaded from the [Google Play Store](https://play.google.com/store/apps/details?id=com.sthoray.allright).
 
 ### Android Studio
 
-Refer to the Android Studio [User Guide](https://developer.android.com/studio/run) for help building and running the app.
+Please refer to the Android Studio [User Guide](https://developer.android.com/studio/run) for help building and running the app.
 
 ### Command line
 
@@ -60,13 +64,14 @@ To use the included Gradle wrapper you must have a working JDK version 11 or lat
 All tests must pass on GitHub before being accepted. To run tests locally, either use Android Studio or `gradlew`. Tests may fail when using `gradlew` depending on your systems JDK version. Try running the tests inside Android Studio if you encounter errors.
 
 ```bash
-./gradlew test
+./gradlew test                  # Unit tests
+./gradlew connectedAndroidTest  # Instrumented tests
 ```
 
 ## Documentation
 
-Developer documentation can be found [here](https://sthoray.github.io/AllRight/docs/app). This will always be in sync with the master branch. The `dokka` Gradle task can also be used to generate local documentation.
+Developer documentation can be found [here](https://sthoray.github.io/AllRight/docs/app). This is generated every time the `master` branch recieves a new commit. The `dokkaHtml` Gradle task can be used to generate local documentation on your machine.
 
 ## Disclaimer
 
-This project is not associated with or officially supported by AllGoods.
+This project is not associated with or officially supported by ALLGOODS GROUP LIMITED.
