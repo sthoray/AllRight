@@ -37,5 +37,5 @@ object EspressoIdlingResource {
             countingIdlingResource.decrement()
     }
 
-    
+
 }
