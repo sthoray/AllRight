@@ -15,6 +15,7 @@ import com.sthoray.allright.ui.listing.view.ListingActivity
 import com.sthoray.allright.ui.search.adapter.ResultsAdapter
 import com.sthoray.allright.ui.search.view.SearchActivity.Companion.LISTING_ID_KEY
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
+import com.sthoray.allright.utils.EspressoIdlingResource
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_results.*
 import timber.log.Timber
@@ -35,12 +36,23 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         viewModel = (activity as SearchActivity).viewModel
         setupView()
         setupObservers()
+
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
     }
 
     private fun setupView() {
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         // Recycler view
         resultsAdapter = ResultsAdapter()
         resultsAdapter.setOnItemClickListener { listing ->
@@ -60,14 +72,23 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
             viewModel.refreshSearchResults()
         }
 
+
         // Floating action button
         extendedFabFilter.setOnClickListener {
             viewModel.initFilters()
             findNavController().navigate(R.id.action_navigation_results_to_navigation_filters)
+
+
         }
+
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
     }
 
     private fun setupObservers() {
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         viewModel.searchResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
@@ -84,6 +105,8 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                             tvNoResultsTitle.visibility = View.INVISIBLE
                             tvNoResultsInfo.visibility = View.INVISIBLE
                         }
+                        //Decrement the idling resource for testing
+                        EspressoIdlingResource.decrement()
                     }
                     viewModel.lastSearchResponse?.let {
                         resultsPerPage = it.meta.pagination.perPage
@@ -103,8 +126,11 @@ class ResultsFragment : Fragment(R.layout.fragment_results) {
                 is Resource.Loading -> {
                     showProgressBar()
                 }
+
             }
+
         })
+
     }
 
     // Pagination

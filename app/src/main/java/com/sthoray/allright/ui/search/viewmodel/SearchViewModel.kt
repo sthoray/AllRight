@@ -10,6 +10,7 @@ import com.sthoray.allright.data.model.browse.BrowseResponse
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.utils.EspressoIdlingResource
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
 import com.sthoray.allright.utils.SortOrder
@@ -155,6 +156,10 @@ class SearchViewModel(
     private fun handleSearchResponse(
         response: Response<SearchResponse>
     ): Resource<SearchResponse> {
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         if (response.isSuccessful) {
             response.body()?.let { responseBody ->
                 searchRequest.pageNumber++
@@ -169,7 +174,11 @@ class SearchViewModel(
                     oldListings?.addAll(newListings)
 
                 }
+                //Decrement the idling resource for testing
+                EspressoIdlingResource.decrement()
+
                 return Resource.Success(lastSearchResponse ?: responseBody)
+
             }
         }
         return Resource.Error(response.message())
@@ -181,6 +190,10 @@ class SearchViewModel(
     // ==========================================
 
     private suspend fun safeBrowseCall() {
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         _browseResponse.postValue(Resource.Loading())
 
         try {
@@ -193,6 +206,9 @@ class SearchViewModel(
             } else {
                 _browseResponse.postValue(Resource.Error(getApplication<Application>().getString(R.string.no_network_error)))
             }
+
+            //Decrement the idling resource for testing
+            EspressoIdlingResource.decrement()
 
         } catch (e: Exception) {
             e.message?.let { Timber.e(it) }
@@ -219,8 +235,16 @@ class SearchViewModel(
     private fun processBrowseResponse(
         response: Response<BrowseResponse>
     ): Resource<BrowseResponse> {
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         if (response.isSuccessful) {
             response.body()?.let {
+
+                //Decrement the idling resource for testing
+                EspressoIdlingResource.decrement()
+
                 return Resource.Success(it)
             }
         }
@@ -233,10 +257,16 @@ class SearchViewModel(
     // ==========================================
 
     private suspend fun safeDraftSearchCall() {
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         _draftSearchResponse.postValue(Resource.Loading())
         try {
             if (Internet.hasConnection(getApplication())) {
                 val response = appRepository.searchListings(searchRequestDraft)
+                //Decrement the idling resource for testing
+                EspressoIdlingResource.decrement()
+
                 _draftSearchResponse.postValue(handleDraftSearchResponse(response))
             } else {
                 _draftSearchResponse.postValue(

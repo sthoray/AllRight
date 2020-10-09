@@ -10,6 +10,8 @@ import com.sthoray.allright.data.repository.AppRepository
 import com.sthoray.allright.ui.base.ViewModelProviderFactory
 import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.search.viewmodel.SearchViewModel
+import com.sthoray.allright.utils.EspressoIdlingResource
+
 
 /**
  * Activity for viewing search results.
@@ -42,16 +44,30 @@ class SearchActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         setContentView(R.layout.activity_search)
         setupViewModel()
         setupSearchRequest(intent.getIntExtra(CATEGORY_ID_KEY, 0))
+
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
+
     }
 
     private fun setupViewModel() {
+        //Increment the idling resource for testing
+        EspressoIdlingResource.increment()
+
         val appRepository = AppRepository(SearchHistoryDatabase(this))
         val viewModelProviderFactory = ViewModelProviderFactory(application, appRepository)
         viewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(SearchViewModel::class.java)
+
+        //Decrement the idling resource for testing
+        EspressoIdlingResource.decrement()
     }
 
     private fun setupSearchRequest(categoryId: Int) {

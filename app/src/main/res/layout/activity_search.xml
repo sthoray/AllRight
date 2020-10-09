@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_grey"
-    tools:context=".ui.search.view.SearchActivity">
+    tools:context=".ui.search.view.SearchActivity"
+    android:id="@+id/search">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

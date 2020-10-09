@@ -12,6 +12,7 @@ import com.sthoray.allright.data.model.main.FeatureCategoriesResponse
 import com.sthoray.allright.data.model.user.User
 import com.sthoray.allright.data.model.user.UserResponse
 import com.sthoray.allright.data.repository.AppRepository
+import com.sthoray.allright.utils.EspressoIdlingResource
 import com.sthoray.allright.utils.Internet
 import com.sthoray.allright.utils.Resource
 import kotlinx.coroutines.launch
@@ -43,9 +44,14 @@ class MainViewModel(
 
     /** Make network requests on initialisation. */
     init {
+
+
+
         getFeaturedCategories()
         getSecondTierCategories()
         getUserProfile()
+
+
     }
 
     /** Refresh data used in the HomeFragment. */
