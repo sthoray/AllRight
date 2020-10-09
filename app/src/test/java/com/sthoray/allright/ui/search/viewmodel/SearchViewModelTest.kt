@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.google.gson.JsonSyntaxException
+import com.sthoray.allright.data.model.browse.BrowseResponse
 import com.sthoray.allright.data.model.listing.Listing
 import com.sthoray.allright.data.model.search.SearchRequest
 import com.sthoray.allright.data.model.search.SearchResponse
@@ -48,17 +49,30 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun initSearch_withUninitialisedSearchRequest_initialisesSearchRequest() =
+    fun initSearchMall_withUninitialisedSearchRequest_initialisesSearchRequest() =
         mainCoroutineRule.runBlockingTest {
             every { app.getString(any()) } returns ""
 
             SearchViewModel(app, appRepository).apply {
                 initSearch(testId, "mall")
 
-                // coVerify { searchListings() }
+                assertThat(searchRequest.categoryId).isEqualTo(testId)
+                assertThat(searchRequest.isMall()).isTrue()
+                assertThat(searchRequestDraft).isSameInstanceAs(searchRequest)
+            }
+        }
+
+    @Test
+    fun initSearchSecondhand_withUninitialisedSearchRequest_initialisesSearchRequest() =
+        mainCoroutineRule.runBlockingTest {
+            every { app.getString(any()) } returns ""
+
+            SearchViewModel(app, appRepository).apply {
+                initSearch(testId, "secondhand")
 
                 assertThat(searchRequest.categoryId).isEqualTo(testId)
-                assertThat(searchRequestDraft).isEqualTo(searchRequest)
+                assertThat(searchRequest.isMall()).isFalse()
+                assertThat(searchRequestDraft).isSameInstanceAs(searchRequest)
             }
         }
 
@@ -77,15 +91,19 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun searchListings_withResponseSuccess_and_firstPage_setsResourceSuccess() =
+    fun search_withResponseSuccess_and_firstPage_setsResourceSuccess() =
         mainCoroutineRule.runBlockingTest {
             val testSearchRequest = SearchRequest(categoryId = testId)
             val testSearchResponse = mockk<SearchResponse>(relaxed = true)
+            val testBrowseResponse = mockk<BrowseResponse>(relaxed = true)
 
             every { Internet.hasConnection(any()) } returns true
             coEvery {
                 appRepository.searchListings(eq(testSearchRequest))
             } returns Response.success(testSearchResponse)
+            coEvery {
+                appRepository.browseCategory(eq(testId), eq(1))
+            } returns Response.success(testBrowseResponse)
 
             SearchViewModel(app, appRepository).apply {
                 searchRequest = testSearchRequest
@@ -96,11 +114,13 @@ class SearchViewModelTest {
                 assertThat(searchRequest.pageNumber).isEqualTo(2)
                 assertThat(searchResponse.value).isInstanceOf(Resource.Success::class.java)
                 assertThat(searchResponse.value?.data).isEqualTo(testSearchResponse)
+                assertThat(browseResponse.value).isInstanceOf(Resource.Success::class.java)
+                assertThat(browseResponse.value?.data).isEqualTo(testBrowseResponse)
             }
         }
 
     @Test
-    fun searchListings_withResponseSuccess_and_notFirstPage_setsResourceSuccess() =
+    fun search_withResponseSuccess_and_notFirstPage_setsResourceSuccess() =
         mainCoroutineRule.runBlockingTest {
             val startingPage = 2
             val testSearchRequest = SearchRequest(categoryId = testId, pageNumber = startingPage)
@@ -128,7 +148,7 @@ class SearchViewModelTest {
         }
 
     @Test
-    fun searchListings_withResponseError_setsResourceError() =
+    fun search_withResponseError_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val testSearchRequest = SearchRequest(categoryId = testId)
             val errorResponse: Response<SearchResponse> = Response.error(
@@ -136,9 +156,15 @@ class SearchViewModelTest {
                 "{\"key\":[\"some_stuff\"]}"
                     .toResponseBody("application/json".toMediaTypeOrNull())
             )
+            val browseErrorResponse: Response<BrowseResponse> = Response.error(
+                400,
+                "{\"key\":[\"some_stuff\"]}"
+                    .toResponseBody("application/json".toMediaTypeOrNull())
+            )
 
             every { Internet.hasConnection(any()) } returns true
             coEvery { appRepository.searchListings(eq(testSearchRequest)) } returns errorResponse
+            coEvery { appRepository.browseCategory(eq(testId), eq(1)) } returns browseErrorResponse
 
             SearchViewModel(app, appRepository).apply {
                 searchRequest = testSearchRequest
@@ -148,11 +174,13 @@ class SearchViewModelTest {
 
                 assertThat(searchResponse.value).isInstanceOf(Resource.Error::class.java)
                 assertThat(searchResponse.value?.message).isEqualTo(errorResponse.message())
+                assertThat(browseResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(browseResponse.value?.message).isEqualTo(browseErrorResponse.message())
             }
         }
 
     @Test
-    fun searchListings_withoutNetworkConnection_setsResourceError() =
+    fun search_withoutNetworkConnection_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val testSearchRequest = SearchRequest(categoryId = testId)
             val errorMsg = "Some error message"
@@ -166,14 +194,17 @@ class SearchViewModelTest {
 
                 verify { Internet.hasConnection(any()) }
                 coVerify(exactly = 0) { appRepository.searchListings(any()) }
+                coVerify(exactly = 0) { appRepository.browseCategory(any(), any()) }
 
                 assertThat(searchResponse.value).isInstanceOf(Resource.Error::class.java)
                 assertThat(searchResponse.value?.message).isEqualTo(errorMsg)
+                assertThat(browseResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(browseResponse.value?.message).isEqualTo(errorMsg)
             }
         }
 
     @Test
-    fun searchListings_withNetworkFailure_setsResourceError() =
+    fun search_withNetworkFailure_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val testSearchRequest = SearchRequest(categoryId = testId)
             val errorMsg = "Some error message"
@@ -182,6 +213,9 @@ class SearchViewModelTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery {
                 appRepository.searchListings(eq(testSearchRequest))
+            } throws IOException()
+            coEvery {
+                appRepository.browseCategory(eq(testId), eq(1))
             } throws IOException()
 
             SearchViewModel(app, appRepository).apply {
@@ -192,11 +226,13 @@ class SearchViewModelTest {
 
                 assertThat(searchResponse.value).isInstanceOf(Resource.Error::class.java)
                 assertThat(searchResponse.value?.message).isEqualTo(errorMsg)
+                assertThat(browseResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(browseResponse.value?.message).isEqualTo(errorMsg)
             }
         }
 
     @Test
-    fun searchListings_withConversionError_setsResourceError() =
+    fun search_withConversionError_setsResourceError() =
         mainCoroutineRule.runBlockingTest {
             val testSearchRequest = SearchRequest(categoryId = testId)
             val errorMsg = "Some error message"
@@ -205,6 +241,9 @@ class SearchViewModelTest {
             every { Internet.hasConnection(any()) } returns true
             coEvery {
                 appRepository.searchListings(eq(testSearchRequest))
+            } throws JsonSyntaxException("Something happened")
+            coEvery {
+                appRepository.browseCategory(eq(testId), eq(1))
             } throws JsonSyntaxException("Something happened")
 
             SearchViewModel(app, appRepository).apply {
@@ -215,8 +254,161 @@ class SearchViewModelTest {
 
                 assertThat(searchResponse.value).isInstanceOf(Resource.Error::class.java)
                 assertThat(searchResponse.value?.message).isEqualTo(errorMsg)
+                assertThat(browseResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(browseResponse.value?.message).isEqualTo(errorMsg)
             }
         }
+
+    @Test
+    fun draftSearch_withResponseSuccess_setsResourceSuccess() =
+        mainCoroutineRule.runBlockingTest {
+            val testSearchRequest = SearchRequest(categoryId = testId, pageNumber = 50)
+            val testSearchResponse = mockk<SearchResponse>(relaxed = true)
+            val testBrowseResponse = mockk<BrowseResponse>(relaxed = true)
+
+            every { Internet.hasConnection(any()) } returns true
+            coEvery {
+                appRepository.searchListings(eq(testSearchRequest))
+            } returns Response.success(testSearchResponse)
+            coEvery {
+                appRepository.browseCategory(eq(testId), eq(1))
+            } returns Response.success(testBrowseResponse)
+
+            SearchViewModel(app, appRepository).apply {
+                searchRequestDraft = testSearchRequest
+                draftSearch()
+
+                verify { Internet.hasConnection(any()) }
+
+                assertThat(searchRequestDraft.pageNumber).isEqualTo(1)
+                assertThat(draftSearchResponse.value).isInstanceOf(Resource.Success::class.java)
+                assertThat(draftSearchResponse.value?.data).isEqualTo(testSearchResponse)
+                assertThat(draftBrowseResponse.value).isInstanceOf(Resource.Success::class.java)
+                assertThat(draftBrowseResponse.value?.data).isEqualTo(testBrowseResponse)
+            }
+        }
+
+    @Test
+    fun draftSearch_withResponseError_setsResourceError() =
+        mainCoroutineRule.runBlockingTest {
+            val testSearchRequest = SearchRequest(categoryId = testId)
+            val errorResponse: Response<SearchResponse> = Response.error(
+                400,
+                "{\"key\":[\"some_stuff\"]}"
+                    .toResponseBody("application/json".toMediaTypeOrNull())
+            )
+            val browseErrorResponse: Response<BrowseResponse> = Response.error(
+                400,
+                "{\"key\":[\"some_stuff\"]}"
+                    .toResponseBody("application/json".toMediaTypeOrNull())
+            )
+
+            every { Internet.hasConnection(any()) } returns true
+            coEvery { appRepository.searchListings(eq(testSearchRequest)) } returns errorResponse
+            coEvery { appRepository.browseCategory(eq(testId), eq(1)) } returns browseErrorResponse
+
+            SearchViewModel(app, appRepository).apply {
+                searchRequestDraft = testSearchRequest
+                draftSearch()
+
+                verify { Internet.hasConnection(any()) }
+
+                assertThat(draftSearchResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(draftSearchResponse.value?.message).isEqualTo(errorResponse.message())
+                assertThat(draftBrowseResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(draftBrowseResponse.value?.message).isEqualTo(browseErrorResponse.message())
+            }
+        }
+
+    @Test
+    fun draftSearch_withoutNetworkConnection_setsResourceError() =
+        mainCoroutineRule.runBlockingTest {
+            val testSearchRequest = SearchRequest(categoryId = testId)
+            val errorMsg = "Some error message"
+
+            every { app.getString(any()) } returns errorMsg
+            every { Internet.hasConnection(any()) } returns false
+
+            SearchViewModel(app, appRepository).apply {
+                searchRequestDraft = testSearchRequest
+                draftSearch()
+
+                verify { Internet.hasConnection(any()) }
+                coVerify(exactly = 0) { appRepository.searchListings(any()) }
+                coVerify(exactly = 0) { appRepository.browseCategory(any(), any()) }
+
+                assertThat(draftSearchResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(draftSearchResponse.value?.message).isEqualTo(errorMsg)
+                assertThat(draftBrowseResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(draftBrowseResponse.value?.message).isEqualTo(errorMsg)
+            }
+        }
+
+    @Test
+    fun draftSearch_withNetworkFailure_setsResourceError() =
+        mainCoroutineRule.runBlockingTest {
+            val testSearchRequest = SearchRequest(categoryId = testId)
+            val errorMsg = "Some error message"
+
+            every { app.getString(any()) } returns errorMsg
+            every { Internet.hasConnection(any()) } returns true
+            coEvery {
+                appRepository.searchListings(eq(testSearchRequest))
+            } throws IOException()
+            coEvery {
+                appRepository.browseCategory(eq(testId), eq(1))
+            } throws IOException()
+
+            SearchViewModel(app, appRepository).apply {
+                searchRequestDraft = testSearchRequest
+                draftSearch()
+
+                verify { Internet.hasConnection(any()) }
+
+                assertThat(draftSearchResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(draftSearchResponse.value?.message).isEqualTo(errorMsg)
+                assertThat(draftBrowseResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(draftBrowseResponse.value?.message).isEqualTo(errorMsg)
+            }
+        }
+
+    @Test
+    fun draftSearch_withConversionError_setsResourceError() =
+        mainCoroutineRule.runBlockingTest {
+            val testSearchRequest = SearchRequest(categoryId = testId)
+            val errorMsg = "Some error message"
+
+            every { app.getString(any()) } returns errorMsg
+            every { Internet.hasConnection(any()) } returns true
+            coEvery {
+                appRepository.searchListings(eq(testSearchRequest))
+            } throws JsonSyntaxException("Something happened")
+            coEvery {
+                appRepository.browseCategory(eq(testId), eq(1))
+            } throws JsonSyntaxException("Something happened")
+
+            SearchViewModel(app, appRepository).apply {
+                searchRequestDraft = testSearchRequest
+                draftSearch()
+
+                verify { Internet.hasConnection(any()) }
+
+                assertThat(draftSearchResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(draftSearchResponse.value?.message).isEqualTo(errorMsg)
+                assertThat(draftBrowseResponse.value).isInstanceOf(Resource.Error::class.java)
+                assertThat(draftBrowseResponse.value?.message).isEqualTo(errorMsg)
+            }
+        }
+
+    @Test
+    fun initFilters_setsDraftSearchRequest() {
+        SearchViewModel(app, appRepository).apply {
+            searchRequest = SearchRequest(categoryId = testId)
+            initFilters()
+            assertThat(searchRequestDraft).isNotSameInstanceAs(searchRequest)
+            assertThat(searchRequestDraft).isEqualTo(searchRequest)
+        }
+    }
 
     @Test
     fun applyFiltersAndSearch() {
@@ -228,8 +420,6 @@ class SearchViewModelTest {
             every { app.getString(any()) } returns ""
 
             applyFiltersAndSearch()
-
-            // verify { searchListings() }
 
             assertThat(searchRequest).isEqualTo(SearchRequest(pageNumber = 1))
             assertThat(searchRequest.pageNumber).isEqualTo(1)
@@ -309,4 +499,24 @@ class SearchViewModelTest {
             assertThat(secondhandSearchRequest.isMall()).isFalse()
         }
     }
+
+    @Test
+    fun refreshSearchResults_resetsSearchRequest_and_beginsSearch() =
+        mainCoroutineRule.runBlockingTest {
+            // Removing internet access should prevent the search from being performed
+            // and thus leave `lastSearchResponse` and `searchRequest.pageNumber` at
+            // their reset values.
+            every { app.getString(any()) } returns ""
+            every { Internet.hasConnection(any()) } returns false
+
+            SearchViewModel(app, appRepository).apply {
+                searchRequest = SearchRequest(categoryId = testId, pageNumber = 1234)
+                lastSearchResponse = mockk<SearchResponse>(relaxed = true)
+
+                refreshSearchResults()
+
+                assertThat(lastSearchResponse).isNull()
+                assertThat(searchRequest.pageNumber).isEqualTo(1)
+            }
+        }
 }
