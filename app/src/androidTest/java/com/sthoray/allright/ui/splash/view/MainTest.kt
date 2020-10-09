@@ -32,12 +32,12 @@ class MainTest {
     var mActivityTestRule = ActivityTestRule(SplashActivity::class.java)
 
     @Before
-    fun registerIdlingResource(){
+    fun registerIdlingResource() {
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
     }
 
     @After
-    fun unregisterIdlingResource(){
+    fun unregisterIdlingResource() {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
 
