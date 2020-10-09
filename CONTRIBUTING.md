@@ -2,7 +2,7 @@
 
 We welcome your input! Wether you would like to report a bug, propose a new feature, or submit a fix, please open an issue on GitHub to discuss it with one the owners of this repository.
 
-## We Develop with Github
+## We Develop with Github Flow
 
 We use [Github Flow](https://guides.github.com/introduction/flow/index.html), so pull requests are the best way to propose changes to the codebase. We actively welcome your pull requests:
 

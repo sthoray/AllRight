@@ -13,7 +13,9 @@ import com.sthoray.allright.data.model.user.UserResponse
 import retrofit2.Response
 import retrofit2.http.*
 
-/** Defines requests for interacting with the AllGoods API. */
+/**
+ * Defines requests for interacting with the AllGoods API.
+ */
 interface AllGoodsApi {
 
     /**
