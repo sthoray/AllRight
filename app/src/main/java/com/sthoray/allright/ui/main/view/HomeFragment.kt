@@ -16,7 +16,6 @@ import com.sthoray.allright.ui.main.view.MainActivity.Companion.CATEGORY_ID_KEY
 import com.sthoray.allright.ui.main.viewmodel.MainViewModel
 import com.sthoray.allright.ui.search.view.SearchActivity
 import com.sthoray.allright.utils.Constants.Companion.BASE_URL
-import com.sthoray.allright.utils.EspressoIdlingResource
 import com.sthoray.allright.utils.Resource
 import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
