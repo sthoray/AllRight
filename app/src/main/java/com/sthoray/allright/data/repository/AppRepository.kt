@@ -13,11 +13,14 @@ import com.sthoray.allright.data.model.search.SearchRequest
 class AppRepository(
     private val historyDatabase: SearchHistoryDatabase
 ) {
-    /** Get the category feature panel. */
-    suspend fun getFeatureCategories() =
-        RetrofitInstance.api.getFeatureCategories()
+    /**
+     * Get the category feature panel.
+     */
+    suspend fun getFeatureCategories() = RetrofitInstance.api.getFeatureCategories()
 
-    /** Get the second tier categories. */
+    /**
+     * Get the second tier categories.
+     */
     suspend fun getSecondTierCategories() = RetrofitInstance.api.getSecondTierCategories()
 
     /**

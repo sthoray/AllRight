@@ -111,7 +111,7 @@ class SearchViewModel(
      */
     fun draftSearch() = viewModelScope.launch {
         searchRequestDraft.pageNumber = 1
-        launch { safeSearchCall() }
+        launch { safeDraftSearchCall() }
         launch { safeDraftBrowseCall() }
     }
 
